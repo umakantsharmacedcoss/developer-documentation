@@ -30,6 +30,21 @@
 
     $(".page-wrapper").click(closeToc);
     $(".tocify-item").click(closeToc);
+
+      $('ul').prev('li').find('a').each(function( index ) {
+          var that = this;
+          setTimeout(function() {
+              var startingClass = ($(that).parent().hasClass('tocify-focus')) ? 'close' : 'open';
+              $(that).append(
+                  $("<span />").addClass(startingClass)
+              );
+          }, 200);
+
+          $(this).click(function() {
+              $('#toc a span').removeClass('close');
+              $(this).find('span').first().addClass('close');
+          });
+      });
   };
 
   // Hack to make already open sections to start opened,
