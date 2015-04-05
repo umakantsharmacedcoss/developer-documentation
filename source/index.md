@@ -5,10 +5,11 @@ language_tabs:
   - php
 
 toc_footers:
-  - <a href='https://github.com/mautic/mautic'>Download Mautic Source</a>
-  - <a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a>
+  - <a href='https://github.com/mautic/mautic'>Download Mautic source</a>
+  - <a href='http://github.com/tripit/slate'>Documentation powered by Slate</a>
 
 includes:
+  - introduction
   - addon_intro
   - addon_structure
   - addon_config
@@ -20,12 +21,18 @@ includes:
   - addon_security
   - addon_install
   - addon_helpers
-  - addon_events
-  - addon_events_campaigns
-  - addon_events_forms
-  - addon_events_points
+  - addon_events_intro
   - addon_events_custom
-  - addon_api_endpoints
+  - addon_events_list
+  - addon_extending_intro  
+  - addon_extending_api  
+  - addon_extending_campaigns
+  - addon_extending_emails
+  - addon_extending_forms
+  - addon_extending_integrations
+  - addon_extending_leads
+  - addon_extending_pages
+  - addon_extending_points
   - themes_intro
   - themes_structure
   - themes_config

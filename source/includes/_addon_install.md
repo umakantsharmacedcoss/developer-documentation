@@ -1,4 +1,4 @@
-## Addon Management
+## Installation
 
 ### Install
 ### Update
