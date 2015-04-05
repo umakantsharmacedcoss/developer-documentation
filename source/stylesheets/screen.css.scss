@@ -40,7 +40,6 @@ html, body {
 ////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 ////////////////////////////////////////////////////////////////////////////////
-
 #toc > ul > li > a > span {
   float: right;
   background-color: #2484FF;
@@ -92,6 +91,7 @@ html, body {
   // This is the logo at the top of the ToC
   &>img {
     display: block;
+    max-width: 230px;
   }
 
   &>.search {
@@ -154,7 +154,6 @@ html, body {
     }
   }
 
-
   .tocify-item>a, .toc-footer li {
     padding: 0 $nav-padding 0 $nav-padding;
     display: block;
@@ -187,20 +186,29 @@ html, body {
     color: $nav-active-text;
   }
 
+  .tocify-header {
+    font-size: 14px;
+  }
+
+  #toc a:hover {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
   // Subheaders are the submenus that slide open
   // in the table of contents.
   .tocify-subheader {
     display: none; // tocify will override this when needed
     background-color: $nav-subitem-bg;
     font-weight: 500;
+
     .tocify-item>a {
       padding-left: $nav-padding + $nav-indent;
-      font-size: 12px;
+      font-size: 13px;
     }
     .tocify-subheader {
         .tocify-item>a {
             padding-left: $nav-padding + $nav-indent + $nav-indent;
-            font-size: 11px;
+            font-size: 12px;
         }
       }
 
@@ -373,13 +381,10 @@ html, body {
     font-size: 30px;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
-    border-bottom: 1px solid #ccc;
     margin-bottom: $h1-margin-bottom;
     margin-top: 2em;
-    border-top: 1px solid #ddd;
-    @include background-image(
-      linear-gradient(top, #fff, #f9f9f9)
-    );
+    background-color: $h1-bg;
+    box-shadow: inset 0 -1px 0 0 #e5e8eb;
   }
 
   h1:first-child, div:first-child + h1 {
@@ -409,14 +414,14 @@ html, body {
 
   h3, h4, h5, h6 {
     @extend %header-font;
-    font-size: 12px;
+    font-size: 13px;
     margin-top: 2.5em;
     margin-bottom: 0.8em;
     text-transform: uppercase;
   }
 
   h4, h5, h6 {
-    font-size: 10px;
+    font-size: 11px;
   }
 
   hr {
@@ -449,11 +454,11 @@ html, body {
     }
 
     tr:nth-child(odd)>td {
-      background-color: lighten($main-bg,4.2%);
+      background-color: $h1-bg;
     }
 
     tr:nth-child(even)>td {
-      background-color: lighten($main-bg,2.4%);
+      background-color: lighten($h1-bg,2.4%);
     }
   }
 
@@ -493,17 +498,20 @@ html, body {
     @include text-shadow(0 1px 0 lighten($aside-notice-bg, 15%));
     margin-top: 1.5em;
     margin-bottom: 1.5em;
+    color: $aside-notice-text;
     background: $aside-notice-bg;
     line-height: 1.6;
 
     &.warning {
       background-color: $aside-warning-bg;
       @include text-shadow(0 1px 0 lighten($aside-warning-bg, 15%));
+      color: $aside-warning-text;
     }
 
     &.success {
       background-color: $aside-success-bg;
       @include text-shadow(0 1px 0 lighten($aside-success-bg, 15%));
+      color: $aside-success-text;
     }
   }
 
@@ -580,6 +588,43 @@ html, body {
       border-bottom: 1px solid #404040;
     }
   }
+}
+
+.mautic-brand {
+  display: block;
+  height: 60px;
+  overflow: hidden;
+  width: 230px;
+  background-color: #4e5d9d;
+  padding-left: 34px;
+}
+
+.mautic-brand > svg.mautic-logo-figure {
+  width: 32px;
+  height: 60px;
+}
+
+.mautic-brand > svg.mautic-logo-figure .circle {
+  fill: #ffffff;
+}
+
+.mautic-brand > svg.mautic-logo-figure .m,
+.mautic-brand > svg.mautic-logo-figure .m-arrow {
+  fill: #fdb933;
+}
+
+.mautic-brand > svg.mautic-logo-text {
+  height: 60px;
+  width: 98px;
+}
+
+.mautic-brand > svg.mautic-logo-text .m,
+.mautic-brand > svg.mautic-logo-text .a,
+.mautic-brand > svg.mautic-logo-text .u,
+.mautic-brand > svg.mautic-logo-text .t,
+.mautic-brand > svg.mautic-logo-text .i,
+.mautic-brand > svg.mautic-logo-text .c {
+  fill: #ffffff;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
