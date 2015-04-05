@@ -28,7 +28,7 @@ $examples-bg: #212831;
 $code-bg: #292929;
 $code-annotation-bg: #1c1c1c;
 $nav-subitem-bg: #212831;
-$nav-active-bg: #fdb933;
+$nav-active-bg: transparent;
 $lang-select-border: #000;
 $lang-select-bg: #1d232b;
 $lang-select-active-bg: $examples-bg; // feel free to change this to blue or something
@@ -37,14 +37,14 @@ $main-bg: rgb(255, 255, 255);
 $aside-notice-bg: rgb(78, 93, 157);
 $aside-warning-bg: rgb(252, 248, 227);
 $aside-success-bg: rgb(223, 240, 216);
-$search-notice-bg: #c97a7e;
+$search-notice-bg: #FBB843;
 $h1-bg: #fbfbfb;
 
 // TEXT COLORS
 ////////////////////
 $main-text: rgb(71, 83, 95); // main content text color
 $nav-text: rgba(255, 255, 255, 0.5);
-$nav-active-text: #fff;
+$nav-active-text: rgba(255, 255, 255, 0.8);
 $lang-select-text: rgba(255, 255, 255, 0.5); // color of unselected language tab text
 $lang-select-active-text: rgba(255, 255, 255, 0.8); // color of selected language tab text
 $lang-select-pressed-text: rgba(255, 255, 255, 0.8); // color of language tab text when mouse is pressed
