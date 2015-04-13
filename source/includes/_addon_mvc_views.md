@@ -182,7 +182,7 @@ The router helper, `$view['router']`, works as explained in the [Router](#router
 <h1><?php echo $view['translator']->trans('addon.helloworld.worlds', array('%world%', 'Mars'); ?></h1>
 ```
 
-The translation helper, `$view['translator']` works as explained in the [Translator](#translator) section.
+The translation helper, `$view['translator']`, works as explained in the [Translator](#translator) section.
 
 <div class="clear-right"></div>
 #####Date Helper
@@ -217,6 +217,15 @@ $fullDateTime = $view['date']->toFull($datetime, 'Y-m-d H:i:s', 'UTC');
 The date helper can be used to format dates based on system and/or user settings. 
 
 The first argument to the various methods can either be a date/time string or a \DateTime object. If a string, it is expected to be formatted as 'Y-m-d H:i:s' and already in the user's and/or system's local time. If it is not, pass the format as the second argument and the timezone (string) as the third.
+
+<div class="clear-right"></div>
+#####Form Helper
+
+```php
+<?php echo $view['form']->form($form); ?>
+```
+
+The form helper, `$view['form']`, works as explained in the [Form](#form-template-helper) section.
 
 <div class="clear-right"></div>
 ####View Helper Templates

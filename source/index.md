@@ -12,6 +12,7 @@ includes:
   - introduction
   - addon_intro
   - addon_structure
+  - addon_install  
   - addon_config
   - addon_translations  
   - addon_mvc
@@ -21,7 +22,6 @@ includes:
   - addon_services
   - addon_database
   - addon_security
-  - addon_install
   - addon_configuration
   - addon_misc
   - addon_misc_flashes
