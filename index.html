@@ -643,7 +643,7 @@ php app/console router:match /blog/my-latest-post
 <td><strong>arguments</strong></td>
 <td>OPTIONAL</td>
 <td>string or array</td>
-<td>String of a single argument to pass to the construct or an array of arguments to pass. Arguments enclosed with %% will be treated as a <a href="#parameters">parameter</a>. To pass a specific string, enclose the argument with double quotations &ldquo;&rdquo;. Anything else that is not a boolean or a namespaced class (string with \ in it) will be treated as the name of another registered service. Often, this will simply be <a href="#mautic-factory">mautic.factory</a>.</td>
+<td>String of a single argument to pass to the construct or an array of arguments to pass. Arguments enclosed with %% will be treated as a <a href="#parameters">parameter</a>. To pass a specific string, enclose the argument with double quotations &ldquo;&rdquo;. Anything else that is not a boolean or a namespaced class (string with \ in it) will be treated as the name of another registered service. Often, this will simply be <a href="#factory-service">mautic.factory</a>.</td>
 </tr>
 <tr>
 <td><strong>alias</strong></td>
@@ -980,7 +980,7 @@ Controller notation is in the format of <code>BundleName:ControllerName:controll
 
 <h5 id="mautic\corebundle\controller\commoncontroller">Mautic\CoreBundle\Controller\CommonController</h5>
 
-<p>Controllers extending this will make <a href="#mautic-factory">MauticFactory</a> available via <code class="prettyprint">$this-&gt;factory</code> and <a href="#request">Request</a> via <code class="prettyprint">$this-&gt;request</code>. </p>
+<p>Controllers extending this will make <a href="#factory-service">MauticFactory</a> available via <code class="prettyprint">$this-&gt;factory</code> and <a href="#request">Request</a> via <code class="prettyprint">$this-&gt;request</code>. </p>
 
 <p>It also provides the following helper methods:</p>
 
@@ -1176,7 +1176,7 @@ Controller notation is in the format of <code>BundleName:ControllerName:controll
 </thead><tbody>
 <tr>
 <td>$this-&gt;factory</td>
-<td><a href="#mautic-factory">Mautic&rsquo;s factory service</a></td>
+<td><a href="#factory-service">Mautic&rsquo;s factory service</a></td>
 </tr>
 <tr>
 <td>$this-&gt;em</td>
@@ -1534,19 +1534,92 @@ $view['slots']->set('mauticContent', 'helloBundleDetails');
 
 <p>Doing so will ensure <code class="prettyprint">Mautic.helloWorldDetailsOnLoad()</code> is also called when there is a page refresh.</p>
 
-          <h2 id="common-services">Common Services</h2>
-
-<h3 id="mautic-factory">Mautic Factory</h3>
+          <h2 id="factory-service">Factory Service</h2>
 
 <p>Mautic&rsquo;s factory service gives quick access to the most commonly used services such as the router, request, translator, database, etc along with providing a few helper methods.</p>
-
-<h4 id="obtaining-the-factory-service">Obtaining the Factory Service</h4>
 
 <p>For <a href="#controllers">controllers</a>, extend either <code class="prettyprint">\Mautic\CoreBundle\Controller\CommonController</code> or <code class="prettyprint">\Mautic\CoreBundle\Controller\FormController</code> and it will be available via <code class="prettyprint">$this-&gt;factory</code> by default. Otherwise, obtain the factory from the service container via <code class="prettyprint">$factory = $this-&gt;container-&gt;get(&#39;mautic.factory&#39;);</code></p>
 
 <p>For <a href="#models">models</a>, it will be available via <code class="prettyprint">$this-&gt;factory</code> by default.</p>
 
 <p>For custom <a href="#services">services</a>, pass &lsquo;mautic.factory&rsquo; as an argument and MauticFactory will be passed into the __construct of the service.</p>
+
+<h3 id="user">User</h3>
+<pre><code class="highlight php"><span class="cp">&lt;?php</span>
+<span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">factory</span><span class="o">-&gt;</span><span class="na">getUser</span><span class="p">();</span>
+
+<span class="nv">$firstName</span> <span class="o">=</span> <span class="nv">$user</span><span class="o">-&gt;</span><span class="na">getFirstname</span><span class="p">();</span>
+<span class="nv">$lastName</span>  <span class="o">=</span> <span class="nv">$user</span><span class="o">-&gt;</span><span class="na">getLastname</span><span class="p">();</span>
+<span class="nv">$email</span>     <span class="o">=</span> <span class="nv">$user</span><span class="o">-&gt;</span><span class="na">getEmail</span><span class="p">();</span>
+<span class="nv">$profile</span>   <span class="o">=</span> <span class="nv">$user</span><span class="o">-&gt;</span><span class="na">getProfile</span><span class="p">();</span>
+
+<span class="nv">$role</span> <span class="o">=</span> <span class="nv">$user</span><span class="o">-&gt;</span><span class="na">getRole</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getName</span><span class="p">();</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$role</span><span class="o">-&gt;</span><span class="na">isAdmin</span><span class="p">())</span> <span class="p">{</span>
+    <span class="c1">// do something
+</span><span class="p">}</span>
+</code></pre>
+
+<p><code class="prettyprint">getUser()</code> will return the <a href="#database">entity</a>, \Mautic\UserBundle\Entity\User that can then be used to get information about the currently logged in user.</p>
+
+<h3 id="security">Security</h3>
+<pre><code class="highlight php"><span class="cp">&lt;?php</span>
+
+<span class="nv">$security</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">factory</span><span class="o">-&gt;</span><span class="na">getSecurity</span><span class="p">();</span>
+
+<span class="c1">// Check if user is granted a single permission
+</span><span class="k">if</span> <span class="p">(</span><span class="nv">$security</span><span class="o">-&gt;</span><span class="na">isGranted</span><span class="p">(</span><span class="s1">'addon:helloWorld:worlds:view'</span><span class="p">))</span> <span class="p">{</span>
+    <span class="c1">// do something
+</span><span class="p">}</span>
+
+<span class="c1">// Check if user is granted multiple permissions (must be granted to all to be true)
+</span><span class="k">if</span> <span class="p">(</span><span class="nv">$security</span><span class="o">-&gt;</span><span class="na">isGranted</span><span class="p">(</span>
+    <span class="k">array</span><span class="p">(</span>
+        <span class="s1">'addon:helloWorld:worlds:view'</span><span class="p">,</span>
+        <span class="s1">'addon:helloWorld:worlds:create'</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="c1">//do something
+</span><span class="p">}</span>
+
+<span class="c1">// Check if user is granted to at least one permission
+</span><span class="k">if</span> <span class="p">(</span><span class="nv">$security</span><span class="o">-&gt;</span><span class="na">isGranted</span><span class="p">(</span>
+    <span class="k">array</span><span class="p">(</span>
+        <span class="s1">'addon:helloWorld:worlds:view'</span><span class="p">,</span>
+        <span class="s1">'addon:helloWorld:worlds:edit'</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="s1">'MATCH_ONE'</span>
+<span class="p">)</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="c1">//do something
+</span><span class="p">}</span>
+
+<span class="c1">// Get an array of user permissions
+</span><span class="nv">$permissions</span> <span class="o">=</span> <span class="nv">$security</span><span class="o">-&gt;</span><span class="na">isGranted</span><span class="p">(</span>
+    <span class="k">array</span><span class="p">(</span>
+        <span class="s1">'addon:helloWorld:worlds:view'</span><span class="p">,</span>
+        <span class="s1">'addon:helloWorld:worlds:edit'</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="s1">'RETURN_ARRAY'</span>
+<span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$permissions</span><span class="p">[</span><span class="s1">'addon:helloWorld:worlds:view'</span><span class="p">])</span> <span class="p">{</span>
+    <span class="c1">// do something
+</span><span class="p">}</span>
+
+<span class="c1">// Check to see if a user is anonymous (not logged in)
+</span><span class="k">if</span> <span class="p">(</span><span class="nv">$security</span><span class="o">-&gt;</span><span class="na">isAnonymous</span><span class="p">())</span> <span class="p">{</span>
+    <span class="c1">// do something
+</span><span class="p">}</span>
+
+<span class="c1">// Get object of currently logged in user
+</span><span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">factory</span><span class="o">-&gt;</span><span class="na">getUser</span><span class="p">();</span>
+</code></pre>
+
+<p>Obtain the security service from <a href="#factory-service">Mautic&rsquo;s factory service</a> via <code class="prettyprint">$this-&gt;factory-&gt;getSecurity()</code>.</p>
+
+<p>Using the service to check permissions is explained more in <a href="#using-permissions">Using Permissions</a>.</p>
 
 <h3 id="translator">Translator</h3>
 <pre><code class="highlight php"><span class="cp">&lt;?php</span> 
@@ -1576,7 +1649,7 @@ $view['slots']->set('mauticContent', 'helloBundleDetails');
 
 <p>Use the translator service to include translated strings in the code. Depending on where the translation is necessary will determine how to obtain the service.</p>
 
-<p>From controllers, models, and any service that has access to <a href="#mautic-factory">Mautic&rsquo;s factory service</a> (mautic.factory), simply use <code class="prettyprint">$translator = $this-&gt;factory-&gt;getTranslator();</code>.</p>
+<p>From controllers, models, and any service that has access to <a href="#factory-service">Mautic&rsquo;s factory service</a> (mautic.factory), simply use <code class="prettyprint">$translator = $this-&gt;factory-&gt;getTranslator();</code>.</p>
 
 <p>To use the template service in view templates, simply use the <a href="#translation-helper">template helper</a>, <code class="prettyprint">$view[&#39;translator&#39;]</code>.</p>
 
@@ -1615,7 +1688,7 @@ $view['slots']->set('mauticContent', 'helloBundleDetails');
 
 </code></pre>
 
-<p>For controllers, models, and services with <a href="#mautic-factory">Mautic&rsquo;s factory service</a> set as an argument, the router service can be easily obtained from using <code class="prettyprint">$this-&gt;factory-&gt;getRouter()</code>.</p>
+<p>For controllers, models, and services with <a href="#factory-service">Mautic&rsquo;s factory service</a> set as an argument, the router service can be easily obtained from using <code class="prettyprint">$this-&gt;factory-&gt;getRouter()</code>.</p>
 
 <p>For views, use the <code class="prettyprint">$view[&#39;router&#39;]</code> helper. The difference with the <a href="#router-helper">template helper</a> is that <code class="prettyprint">generate()</code> is used instead of <code class="prettyprint">generateUrl</code>.</p>
 
@@ -1659,7 +1732,7 @@ $view['slots']->set('mauticContent', 'helloBundleDetails');
 
 <p>If the controller is extending one of <a href="#controllers">Mautic&rsquo;s controllers</a>, it is already available via <code class="prettyprint">$this-&gt;request</code>.</p>
 
-<p>Otherwise, if from with a model or a service with access to <a href="#mautic-factory">Mautic&rsquo;s factory service</a>, use <code class="prettyprint">$this-&gt;factory-&gt;getRequest()</code>.</p>
+<p>Otherwise, if from with a model or a service with access to <a href="#factory-service">Mautic&rsquo;s factory service</a>, use <code class="prettyprint">$this-&gt;factory-&gt;getRequest()</code>.</p>
 
 <p>From within a view, use <code class="prettyprint">$app-&gt;getRequest()</code>.</p>
 
@@ -1689,9 +1762,11 @@ $view['slots']->set('mauticContent', 'helloBundleDetails');
 </span><span class="nv">$session</span><span class="o">-&gt;</span><span class="na">clear</span><span class="p">();</span>
 </code></pre>
 
-<p>To obtain the session service from a controller, model, or a service with access to <a href="#mautic-factory">Mautic&rsquo;s factory service</a>, use <code class="prettyprint">$this-&gt;factory-&gt;getSession()</code>.</p>
+<p>To obtain the session service from a controller, model, or a service with access to <a href="#factory-service">Mautic&rsquo;s factory service</a>, use <code class="prettyprint">$this-&gt;factory-&gt;getSession()</code>.</p>
 
 <p>From within a view, use <code class="prettyprint">$app-&gt;getSession()</code>.</p>
+
+<h3 id="entity">Entity</h3>
 
           <h2 id="database">Database</h2>
 
@@ -1699,7 +1774,106 @@ $view['slots']->set('mauticContent', 'helloBundleDetails');
 
           <h2 id="roles-and-permissions">Roles and Permissions</h2>
 
-<p>Mautic provides a means of defining custom permissions for roles through custom Permission objects.</p>
+<p>Mautic provides a means of defining custom permissions for roles through Permission objects.</p>
+
+<h3 id="how-permissions-work">How Permissions Work</h3>
+
+<p>Permissions are calculated based on bits assigned to an addon&rsquo;s level and permission.</p>
+
+<p>For example, let&rsquo;s say HelloWorldBundle needs to manage access to user&rsquo;s Worlds entity. A permission set for <code class="prettyprint">addon:helloWorld:worlds</code> might look like</p>
+
+<table><thead>
+<tr>
+<th>Permission</th>
+<th>Bit</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>view</td>
+<td>1</td>
+</tr>
+<tr>
+<td>edit</td>
+<td>2</td>
+</tr>
+<tr>
+<td>create</td>
+<td>4</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>8</td>
+</tr>
+<tr>
+<td>full</td>
+<td>16</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+<code>addon:helloWorld:worlds:view</code> is a typically notation for requesting permission in Mautic. The notation tells Mautic to check for the `view` permission for the addon, HelloWorldBundle, within the `worlds` level. Levels allow addon&rsquo;s to set permissions for multiple areas.
+</aside>
+
+<p>Mautic will take the summation of the bits for the permissions given to a role and store it in the database. For example, if a role is given view and edit access, the stored bit is 3. If given view and create access, the stored bit is 5.</p>
+
+<p>When a permission check is required, e.g. <code class="prettyprint">addon:helloWorld:worlds:create</code>, Mautic will check if bit of 4 is set in the role&rsquo;s generated bit for <code class="prettyprint">addon:helloWorld:worlds</code>. If so, permission is granted.</p>
+
+<aside class="notice">
+The permission <code>full</code> is reserved to grant access to all previous permissions within the level and thus should always be the highest bit.
+</aside>
+
+<h3 id="using-permissions">Using Permissions</h3>
+<pre><code class="highlight php"><span class="cp">&lt;?php</span>
+
+<span class="nv">$security</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">factory</span><span class="o">-&gt;</span><span class="na">getSecurity</span><span class="p">();</span>
+
+<span class="c1">// Check if user is granted a single permission
+</span><span class="k">if</span> <span class="p">(</span><span class="nv">$security</span><span class="o">-&gt;</span><span class="na">isGranted</span><span class="p">(</span><span class="s1">'addon:helloWorld:worlds:view'</span><span class="p">))</span> <span class="p">{</span>
+    <span class="c1">// do something
+</span><span class="p">}</span>
+
+<span class="c1">// Check if user is granted multiple permissions (must be granted to all to be true)
+</span><span class="k">if</span> <span class="p">(</span><span class="nv">$security</span><span class="o">-&gt;</span><span class="na">isGranted</span><span class="p">(</span>
+    <span class="k">array</span><span class="p">(</span>
+        <span class="s1">'addon:helloWorld:worlds:view'</span><span class="p">,</span>
+        <span class="s1">'addon:helloWorld:worlds:create'</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="c1">//do something
+</span><span class="p">}</span>
+
+<span class="c1">// Check if user is granted to at least one permission
+</span><span class="k">if</span> <span class="p">(</span><span class="nv">$security</span><span class="o">-&gt;</span><span class="na">isGranted</span><span class="p">(</span>
+    <span class="k">array</span><span class="p">(</span>
+        <span class="s1">'addon:helloWorld:worlds:view'</span><span class="p">,</span>
+        <span class="s1">'addon:helloWorld:worlds:edit'</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="s1">'MATCH_ONE'</span>
+<span class="p">)</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="c1">//do something
+</span><span class="p">}</span>
+
+<span class="c1">// Get an array of user permissions
+</span><span class="nv">$permissions</span> <span class="o">=</span> <span class="nv">$security</span><span class="o">-&gt;</span><span class="na">isGranted</span><span class="p">(</span>
+    <span class="k">array</span><span class="p">(</span>
+        <span class="s1">'addon:helloWorld:worlds:view'</span><span class="p">,</span>
+        <span class="s1">'addon:helloWorld:worlds:edit'</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="s1">'RETURN_ARRAY'</span>
+<span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$permissions</span><span class="p">[</span><span class="s1">'addon:helloWorld:worlds:view'</span><span class="p">])</span> <span class="p">{</span>
+    <span class="c1">// do something
+</span><span class="p">}</span>
+</code></pre>
+
+<p>To determine if a user has a specific permission, use Mautic&rsquo;s security service which can be obtained from the <a href="#factory-service">factory service</a> via <code class="prettyprint">$this-&gt;factory-&gt;getSecurity()</code>.</p>
+
+<p>As suggested above, Mautic uses a special permission notation to refer to a specific permission. For core bundles, <code class="prettyprint">bundleName:permissionLevel:permission</code> is used.  For addons, append <code class="prettyprint">addon:</code>, i.e. <code class="prettyprint">addon:bundleName:permissionLevel:permission</code>. <code class="prettyprint">addon:</code> tells Mautic to look for the permission class from the addons/ directory. </p>
+
+<p>The&hellip;</p>
 
           <h2 id="custom-config-params">Custom Config Params</h2>
 
