@@ -235,6 +235,45 @@ Mautic addons are located in the addons/ directory and must be namespaced with M
 
 <p>Each of the other directories and files are explained elsewhere in the document. </p>
 
+          <h2 id="install/upgrade">Install/Upgrade</h2>
+<pre><code class="highlight php"><span class="cp">&lt;?php</span>
+<span class="c1">// addons/HelloWorldBundle/HelloWorldBundle.php
+</span>
+<span class="k">namespace</span> <span class="nx">MauticAddon\HelloWorldBundle</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Mautic\AddonBundle\Bundle\AddonBundleBase</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Mautic\AddonBundle\Entity\Addon</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Mautic\CoreBundle\Factory\MauticFactory</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">HelloWorldBundle</span> <span class="k">extends</span> <span class="nx">AddonBundleBase</span>
+<span class="p">{</span>
+
+    <span class="sd">/**
+     * Called by AddonController::reloadAction when adding a new addon that's not already installed
+     *
+     * @param MauticFactory $factory
+     */</span>
+    <span class="k">static</span> <span class="k">public</span> <span class="k">function</span> <span class="nf">onInstall</span><span class="p">(</span><span class="nx">MauticFactory</span> <span class="nv">$factory</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Execute install stuff such as installing database schema
+</span>    <span class="p">}</span>
+
+    <span class="sd">/**
+     * Called by AddonController::reloadAction when the addon version does not match what's installed
+     *
+     * @param Addon         $addon
+     * @param MauticFactory $factory
+     */</span>
+    <span class="k">static</span> <span class="k">public</span> <span class="k">function</span> <span class="nf">onUpdate</span><span class="p">(</span><span class="nx">Addon</span> <span class="nv">$addon</span><span class="p">,</span> <span class="nx">MauticFactory</span> <span class="nv">$factory</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Execute update stuff such as upgrading the database schema
+</span>        <span class="c1">// $addon is the Addon entity with details of what was installed previously
+</span>    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Currently, addons are installed by uploading the addon to the addons folder. Then, the admin must click the Install/Upgrade Addons button. When that happens, new addons found will have the static method <code class="prettyprint">onInstall()</code> called from the <a href="#addon-directory-structure">addon&rsquo;s bundle file</a>. If the addon has already been installed, and the version has changed, then <code class="prettyprint">onUpdate()</code> is called.</p>
+
           <h2 id="addon-config-file">Addon Config File</h2>
 
 <p>Mautic leverages a simple array config file that will register routes, menu items, services and custom configuration parameters.</p>
@@ -1364,7 +1403,7 @@ It may help to note that extended templates are rendered inside out. So if <code
 <pre><code class="highlight php"><span class="nt">&lt;h1&gt;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$view</span><span class="p">[</span><span class="s1">'translator'</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">trans</span><span class="p">(</span><span class="s1">'addon.helloworld.worlds'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'%world%'</span><span class="p">,</span> <span class="s1">'Mars'</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="nt">&lt;/h1&gt;</span>
 </code></pre>
 
-<p>The translation helper, <code class="prettyprint">$view[&#39;translator&#39;]</code> works as explained in the <a href="#translator">Translator</a> section.</p>
+<p>The translation helper, <code class="prettyprint">$view[&#39;translator&#39;]</code>, works as explained in the <a href="#translator">Translator</a> section.</p>
 
 <div class="clear-right"></div>
 
@@ -1399,6 +1438,14 @@ It may help to note that extended templates are rendered inside out. So if <code
 <p>The date helper can be used to format dates based on system and/or user settings. </p>
 
 <p>The first argument to the various methods can either be a date/time string or a \DateTime object. If a string, it is expected to be formatted as &lsquo;Y-m-d H:i:s&rsquo; and already in the user&rsquo;s and/or system&rsquo;s local time. If it is not, pass the format as the second argument and the timezone (string) as the third.</p>
+
+<div class="clear-right"></div>
+
+<h5 id="form-helper">Form Helper</h5>
+<pre><code class="highlight php"><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$view</span><span class="p">[</span><span class="s1">'form'</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">form</span><span class="p">(</span><span class="nv">$form</span><span class="p">);</span> <span class="cp">?&gt;</span>
+</code></pre>
+
+<p>The form helper, <code class="prettyprint">$view[&#39;form&#39;]</code>, works as explained in the <a href="#form-template-helper">Form</a> section.</p>
 
 <div class="clear-right"></div>
 
@@ -1650,48 +1697,9 @@ $view['slots']->set('mauticContent', 'helloBundleDetails');
 
 <p>@todo</p>
 
-          <h2 id="security">Security</h2>
+          <h2 id="roles-and-permissions">Roles and Permissions</h2>
 
-<p>@todo</p>
-
-          <h2 id="install/upgrade">Install/Upgrade</h2>
-<pre><code class="highlight php"><span class="cp">&lt;?php</span>
-<span class="c1">// addons/HelloWorldBundle/HelloWorldBundle.php
-</span>
-<span class="k">namespace</span> <span class="nx">MauticAddon\HelloWorldBundle</span><span class="p">;</span>
-
-<span class="k">use</span> <span class="nx">Mautic\AddonBundle\Bundle\AddonBundleBase</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">Mautic\AddonBundle\Entity\Addon</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">Mautic\CoreBundle\Factory\MauticFactory</span><span class="p">;</span>
-
-<span class="k">class</span> <span class="nc">HelloWorldBundle</span> <span class="k">extends</span> <span class="nx">AddonBundleBase</span>
-<span class="p">{</span>
-
-    <span class="sd">/**
-     * Called by AddonController::reloadAction when adding a new addon that's not already installed
-     *
-     * @param MauticFactory $factory
-     */</span>
-    <span class="k">static</span> <span class="k">public</span> <span class="k">function</span> <span class="nf">onInstall</span><span class="p">(</span><span class="nx">MauticFactory</span> <span class="nv">$factory</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">// Execute install stuff such as installing database schema
-</span>    <span class="p">}</span>
-
-    <span class="sd">/**
-     * Called by AddonController::reloadAction when the addon version does not match what's installed
-     *
-     * @param Addon         $addon
-     * @param MauticFactory $factory
-     */</span>
-    <span class="k">static</span> <span class="k">public</span> <span class="k">function</span> <span class="nf">onUpdate</span><span class="p">(</span><span class="nx">Addon</span> <span class="nv">$addon</span><span class="p">,</span> <span class="nx">MauticFactory</span> <span class="nv">$factory</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">// Execute update stuff such as upgrading the database schema
-</span>        <span class="c1">// $addon is the Addon entity with details of what was installed previously
-</span>    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre>
-
-<p>Currently, addons are installed by uploading the addon to the addons folder. Then, the admin must click the Install/Upgrade Addons button. When that happens, new addons found will have the static method <code class="prettyprint">onInstall()</code> called from the <a href="#addon-directory-structure">addon&rsquo;s bundle file</a>. If the addon has already been installed, and the version has changed, then <code class="prettyprint">onUpdate()</code> is called.</p>
+<p>Mautic provides a means of defining custom permissions for roles through custom Permission objects.</p>
 
           <h2 id="custom-config-params">Custom Config Params</h2>
 
@@ -1873,6 +1881,8 @@ To translate the addon&rsquo;s tab in the configuration form, be sure to include
 
           <h3 id="flash-messages">Flash Messages</h3>
 
+<h3 id="notifications">Notifications</h3>
+
           <h3 id="helpers">Helpers</h3>
 
 <h4 id="input-helper">Input Helper</h4>
@@ -1885,7 +1895,13 @@ To translate the addon&rsquo;s tab in the configuration form, be sure to include
 
           <h3 id="forms">Forms</h3>
 
+<h4 id="form-types">Form Types</h4>
+
 <h4 id="validation">Validation</h4>
+
+<h4 id="form-themes">Form Themes</h4>
+
+<h4 id="form-template-helper">Form Template Helper</h4>
 
           <h3 id="events">Events</h3>
 
