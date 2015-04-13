@@ -25,8 +25,8 @@ under the License.
 ////////////////////
 $nav-bg: #1d232b;
 $examples-bg: #212831;
-$code-bg: #292929;
-$code-annotation-bg: #1c1c1c;
+$code-bg: #1d232b;
+$code-annotation-bg: #1d232b;
 $nav-subitem-bg: #212831;
 $nav-active-bg: transparent;
 $lang-select-border: #000;
@@ -37,6 +37,7 @@ $main-bg: rgb(255, 255, 255);
 $aside-notice-bg: rgb(78, 93, 157);
 $aside-warning-bg: rgb(252, 248, 227);
 $aside-success-bg: rgb(223, 240, 216);
+$aside-bg: #eee;
 $search-notice-bg: #FBB843;
 $h1-bg: #fbfbfb;
 
@@ -51,11 +52,12 @@ $lang-select-pressed-text: rgba(255, 255, 255, 0.8); // color of language tab te
 $aside-notice-text: rgb(255, 255, 255);
 $aside-warning-text: rgb(138, 109, 59);
 $aside-success-text: rgb(60, 118, 61);
+$aside-text: inherit;
 
 // SIZES
 ////////////////////
 $nav-width: 230px; // width of the navbar
-$examples-width: 40%; // portion of the screen taken up by code examples
+$examples-width: 50%; // portion of the screen taken up by code examples
 $logo-margin: 20px; // margin between nav items and logo, ignored if search is active
 $main-padding: 28px; // padding to left and right of content & examples
 $nav-padding: 15px; // padding to left and right of navbar
@@ -71,7 +73,7 @@ $phone-width: $tablet-width - $nav-width; // min width before reverting to mobil
 ////////////////////
 %default-font {
   font-family: "Open Sans", Helvetica, Arial, sans-serif;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 %header-font {

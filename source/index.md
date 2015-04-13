@@ -15,18 +15,25 @@ includes:
   - addon_config
   - addon_translations  
   - addon_mvc
-  - addon_routing
-  - addon_menu
-  - addon_database  
+  - addon_mvc_controllers
+  - addon_mvc_models
+  - addon_mvc_views      
+  - addon_services
+  - addon_database
   - addon_security
   - addon_install
-  - addon_helpers
-  - addon_events_intro
-  - addon_events_custom
-  - addon_events_list
+  - addon_configuration
+  - addon_misc
+  - addon_misc_flashes
+  - addon_misc_helpers
+  - addon_misc_forms
+  - addon_misc_events
+  - addon_misc_events_list
+  - addon_misc_js_helpers
   - addon_extending_intro  
   - addon_extending_api  
   - addon_extending_campaigns
+  - addon_extending_categories
   - addon_extending_emails
   - addon_extending_forms
   - addon_extending_integrations

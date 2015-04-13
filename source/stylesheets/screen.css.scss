@@ -4,6 +4,7 @@
 @import 'variables';
 @import 'syntax';
 @import 'icon-font';
+@import 'font-awesome.min.css';
 
 /*
 Copyright 2008-2013 Concur Technologies, Inc.
@@ -35,6 +36,17 @@ html, body {
   background-color: $main-bg;
   height: 100%;
   -webkit-text-size-adjust: none; /* Never autoresize text */
+}
+
+.content a {
+  color: #6978b5;
+  text-decoration: none;
+}
+
+.content a:hover,
+.content a:focus {
+  color: #4e5d9d;
+  text-decoration: underline;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -221,6 +233,7 @@ html, body {
         }
       }
     }
+
     .tocify-subheader {
         .tocify-item>a {
             padding-left: $nav-padding + $nav-indent + $nav-indent;
@@ -392,9 +405,16 @@ html, body {
     clear:both;
   }
 
+  h1, h2, h3, h4, h5, h6 {
+    &a:hover {
+      text-decoration: none;
+    }
+    margin-left: 3px;
+  }
+
   h1 {
     @extend %header-font;
-    font-size: 30px;
+    font-size: 40px;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     margin-bottom: $h1-margin-bottom;
@@ -410,7 +430,7 @@ html, body {
 
   h2 {
     @extend %header-font;
-    font-size: 20px;
+    font-size: 30px;
     margin-top: 4em;
     margin-bottom: 0;
     border-top: 1px solid #ccc;
@@ -430,14 +450,30 @@ html, body {
 
   h3, h4, h5, h6 {
     @extend %header-font;
-    font-size: 13px;
     margin-top: 2.5em;
     margin-bottom: 0.8em;
+  }
+
+
+  h3 {
+    font-size: 25px;
     text-transform: uppercase;
   }
 
-  h4, h5, h6 {
-    font-size: 11px;
+  h4 {
+    font-size: 20px;
+  }
+
+  h5 {
+    font-size: 18px;
+  }
+
+  h6 {
+    font-size: 16px;
+  }
+
+  .clear-right {
+    clear: right;
   }
 
   hr {
@@ -511,12 +547,18 @@ html, body {
   aside {
     padding-top: 1em;
     padding-bottom: 1em;
-    @include text-shadow(0 1px 0 lighten($aside-notice-bg, 15%));
     margin-top: 1.5em;
     margin-bottom: 1.5em;
-    color: $aside-notice-text;
-    background: $aside-notice-bg;
     line-height: 1.6;
+    @include text-shadow(0 1px 0 lighten($aside-bg, 15%));
+    color: $aside-text;
+    background: $aside-bg;
+
+    &.notice {
+      @include text-shadow(0 1px 0 lighten($aside-notice-bg, 15%));
+      color: $aside-notice-text;
+      background: $aside-notice-bg;
+    }
 
     &.warning {
       background-color: $aside-warning-bg;
@@ -568,8 +610,8 @@ html, body {
     background-color: $code-bg;
     color: #fff;
 
-    padding: 2em $main-padding;
-    margin: 0;
+    padding: 1.1em $main-padding;
+    margin: 10px 0;
     width: $examples-width;
 
     float:right;
@@ -586,6 +628,16 @@ html, body {
       color: #fff;
       text-decoration: none;
       border-bottom: dashed 1px #ccc;
+    }
+
+    &.inline {
+      float: none;
+      clear: none;
+
+      background-color: $aside-bg;
+      color: $aside-text;
+      text-shadow: none;
+      margin-bottom: 10px;
     }
   }
 
