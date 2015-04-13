@@ -88,7 +88,7 @@ The `ConfigEvents::CONFIG_PRE_SAVE` is called before the values from the form ar
 
 Remember that the subscriber must be registered through the addon's config in the `services[events]` [section](#services).
 
-### Config Form
+###Config Form
 
 ```php
 <?php
@@ -136,3 +136,31 @@ class ConfigType extends AbstractType
 The form type is used to generate the form fields in the main configuration form. Refer to [Forms](#forms) for more information on using form types.
 
 Remember that the form type must be registered through the addon's config in the `services[forms]` [section](#services).
+
+###Config Template
+
+```php
+<?php
+// addons/HelloWorldBundle/Views/FormTheme/Config/_config_helloworld_config_widget.html.php
+
+?>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title"><?php echo $view['translator']->trans('mautic.config.tab.helloworld_config'); ?></h3>
+    </div>
+    <div class="panel-body">
+        <?php foreach ($form->children as $f): ?>
+            <div class="row">
+                <div class="col-md-6">
+                    <?php echo $view['form']->row($f); ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+```
+
+Registering a formTheme as `HelloWorldBundle:FormTheme\Config` in the event listener told the ConfigBundle to look in the HelloWorldBundle's Views/FormTheme/Config folder for templates. Specifically, it will look for a template named `_config_{formAlias}_widget.html.php` where `{formAlias}` is the same as `formAlias` set in the addon's `ConfigEvents::CONFIG_ON_GENERATE` event listener.
+
+The template should be in a panel format to match the rest of the config UI.
