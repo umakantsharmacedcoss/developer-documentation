@@ -236,7 +236,7 @@ Each key within the service types array is the name of the service and must be u
 Array Key|Required|Type|Description
 ---------|--------|----|-----------
 **class**|REQUIRED|string|Namespace to the service class (not that it does not start with a backslash)
-**arguments**|OPTIONAL|string or array|String of a single argument to pass to the construct or an array of arguments to pass. Arguments enclosed with %% will be treated as a [parameter](#parameters). To pass a specific string, enclose the argument with double quotations "". Anything else that is not a boolean or a namespaced class (string with \ in it) will be treated as the name of another registered service. Often, this will simply be [mautic.factory](#mautic-factory).
+**arguments**|OPTIONAL|string or array|String of a single argument to pass to the construct or an array of arguments to pass. Arguments enclosed with %% will be treated as a [parameter](#parameters). To pass a specific string, enclose the argument with double quotations "". Anything else that is not a boolean or a namespaced class (string with \ in it) will be treated as the name of another registered service. Often, this will simply be [mautic.factory](#factory-service).
 **alias**|OPTIONAL|string|Sets the alias used by the service. For example, the key for the template helpers, $view, array or the string to retrieve a specific form type.
 **tag**|OPTIONAL|string|[Tags](http://symfony.com/doc/2.5/components/dependency_injection/tags.html) the service used by bundles to get a list of specific services (for example form types and event subscribers).
 **tags**|OPTIONAL|array|Array of of tags 

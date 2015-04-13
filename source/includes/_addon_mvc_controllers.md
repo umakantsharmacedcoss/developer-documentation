@@ -178,7 +178,7 @@ Mautic has several controllers that provide some helper functions.
 
 #####Mautic\CoreBundle\Controller\CommonController
 
-Controllers extending this will make [MauticFactory](#mautic-factory) available via `$this->factory` and [Request](#request) via `$this->request`. 
+Controllers extending this will make [MauticFactory](#factory-service) available via `$this->factory` and [Request](#request) via `$this->request`. 
 
 It also provides the following helper methods:
 

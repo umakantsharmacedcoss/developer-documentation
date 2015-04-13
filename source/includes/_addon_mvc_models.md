@@ -49,7 +49,7 @@ This is the basic model that mainly provides access to services frequently used 
 
 Property|Service
 --------|-------
-$this->factory | [Mautic's factory service](#mautic-factory)
+$this->factory | [Mautic's factory service](#factory-service)
 $this->em | [Entity manager service](#database)
 $this->security | [Mautic's security service](#security)
 $this->dispatcher | [Event dispatcher service](#events)

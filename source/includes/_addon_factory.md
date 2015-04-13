@@ -1,16 +1,93 @@
-## Common Services
-
-### Mautic Factory
+## Factory Service
 
 Mautic's factory service gives quick access to the most commonly used services such as the router, request, translator, database, etc along with providing a few helper methods.
-
-#### Obtaining the Factory Service
 
 For [controllers](#controllers), extend either `\Mautic\CoreBundle\Controller\CommonController` or `\Mautic\CoreBundle\Controller\FormController` and it will be available via `$this->factory` by default. Otherwise, obtain the factory from the service container via `$factory = $this->container->get('mautic.factory');`
   
 For [models](#models), it will be available via `$this->factory` by default.
   
 For custom [services](#services), pass 'mautic.factory' as an argument and MauticFactory will be passed into the __construct of the service.
+
+###User
+
+```php
+<?php
+$user = $this->factory->getUser();
+
+$firstName = $user->getFirstname();
+$lastName  = $user->getLastname();
+$email     = $user->getEmail();
+$profile   = $user->getProfile();
+
+$role = $user->getRole()->getName();
+
+if ($role->isAdmin()) {
+    // do something
+}
+```
+
+`getUser()` will return the [entity](#database), \Mautic\UserBundle\Entity\User that can then be used to get information about the currently logged in user.
+
+### Security
+
+```php
+<?php
+
+$security = $this->factory->getSecurity();
+
+// Check if user is granted a single permission
+if ($security->isGranted('addon:helloWorld:worlds:view')) {
+    // do something
+}
+
+// Check if user is granted multiple permissions (must be granted to all to be true)
+if ($security->isGranted(
+    array(
+        'addon:helloWorld:worlds:view',
+        'addon:helloWorld:worlds:create',
+    )
+)
+) {
+    //do something
+}
+
+// Check if user is granted to at least one permission
+if ($security->isGranted(
+    array(
+        'addon:helloWorld:worlds:view',
+        'addon:helloWorld:worlds:edit',
+    ),
+    'MATCH_ONE'
+)
+) {
+    //do something
+}
+
+// Get an array of user permissions
+$permissions = $security->isGranted(
+    array(
+        'addon:helloWorld:worlds:view',
+        'addon:helloWorld:worlds:edit',
+    ),
+    'RETURN_ARRAY'
+);
+
+if ($permissions['addon:helloWorld:worlds:view']) {
+    // do something
+}
+
+// Check to see if a user is anonymous (not logged in)
+if ($security->isAnonymous()) {
+    // do something
+}
+
+// Get object of currently logged in user
+$user = $this->factory->getUser();
+```
+
+Obtain the security service from [Mautic's factory service](#factory-service) via `$this->factory->getSecurity()`.
+
+Using the service to check permissions is explained more in [Using Permissions](#using-permissions).
 
 ### Translator
 
@@ -42,7 +119,7 @@ echo $translator->transConditional('addon.helloworld.planets.' . $planet, 'addon
 
 Use the translator service to include translated strings in the code. Depending on where the translation is necessary will determine how to obtain the service.
 
-From controllers, models, and any service that has access to [Mautic's factory service](#mautic-factory) (mautic.factory), simply use `$translator = $this->factory->getTranslator();`.
+From controllers, models, and any service that has access to [Mautic's factory service](#factory-service) (mautic.factory), simply use `$translator = $this->factory->getTranslator();`.
  
 To use the template service in view templates, simply use the [template helper](#translation-helper), `$view['translator']`.
 
@@ -85,7 +162,7 @@ $url = $view['router']->generate('addon_helloworld_admin');
 
 ```
 
-For controllers, models, and services with [Mautic's factory service](#mautic-factory) set as an argument, the router service can be easily obtained from using `$this->factory->getRouter()`.
+For controllers, models, and services with [Mautic's factory service](#factory-service) set as an argument, the router service can be easily obtained from using `$this->factory->getRouter()`.
  
 For views, use the `$view['router']` helper. The difference with the [template helper](#router-helper) is that `generate()` is used instead of `generateUrl`.
 
@@ -131,7 +208,7 @@ There are multiple ways to obtain the request service.
  
 If the controller is extending one of [Mautic's controllers](#controllers), it is already available via `$this->request`.
 
-Otherwise, if from with a model or a service with access to [Mautic's factory service](#mautic-factory), use `$this->factory->getRequest()`.
+Otherwise, if from with a model or a service with access to [Mautic's factory service](#factory-service), use `$this->factory->getRequest()`.
 
 From within a view, use `$app->getRequest()`.
 
@@ -163,6 +240,8 @@ $session->remove('helloworld.world');
 $session->clear();
 ```
 
-To obtain the session service from a controller, model, or a service with access to [Mautic's factory service](#mautic-factory), use `$this->factory->getSession()`.
+To obtain the session service from a controller, model, or a service with access to [Mautic's factory service](#factory-service), use `$this->factory->getSession()`.
 
 From within a view, use `$app->getSession()`.
+
+### Entity 

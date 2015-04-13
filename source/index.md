@@ -19,9 +19,9 @@ includes:
   - addon_mvc_controllers
   - addon_mvc_models
   - addon_mvc_views      
-  - addon_services
+  - addon_factory
   - addon_database
-  - addon_security
+  - addon_permissions
   - addon_configuration
   - addon_misc
   - addon_misc_flashes
