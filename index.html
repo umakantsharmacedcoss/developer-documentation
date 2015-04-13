@@ -1843,6 +1843,32 @@ To translate the addon&rsquo;s tab in the configuration form, be sure to include
 
 <p>Remember that the form type must be registered through the addon&rsquo;s config in the <code class="prettyprint">services[forms]</code> <a href="#services">section</a>.</p>
 
+<h3 id="config-template">Config Template</h3>
+<pre><code class="highlight php"><span class="cp">&lt;?php</span>
+<span class="c1">// addons/HelloWorldBundle/Views/FormTheme/Config/_config_helloworld_config_widget.html.php
+</span>
+<span class="cp">?&gt;</span>
+
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"panel panel-primary"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"panel-heading"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;h3</span> <span class="na">class=</span><span class="s">"panel-title"</span><span class="nt">&gt;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$view</span><span class="p">[</span><span class="s1">'translator'</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">trans</span><span class="p">(</span><span class="s1">'mautic.config.tab.helloworld_config'</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="nt">&lt;/h3&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"panel-body"</span><span class="nt">&gt;</span>
+        <span class="cp">&lt;?php</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$form</span><span class="o">-&gt;</span><span class="na">children</span> <span class="k">as</span> <span class="nv">$f</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"row"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-md-6"</span><span class="nt">&gt;</span>
+                    <span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$view</span><span class="p">[</span><span class="s1">'form'</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">row</span><span class="p">(</span><span class="nv">$f</span><span class="p">);</span> <span class="cp">?&gt;</span>
+                <span class="nt">&lt;/div&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+        <span class="cp">&lt;?php</span> <span class="k">endforeach</span><span class="p">;</span> <span class="cp">?&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre>
+
+<p>Registering a formTheme as <code class="prettyprint">HelloWorldBundle:FormTheme\Config</code> in the event listener told the ConfigBundle to look in the HelloWorldBundle&rsquo;s Views/FormTheme/Config folder for templates. Specifically, it will look for a template named <code class="prettyprint">_config_{formAlias}_widget.html.php</code> where <code class="prettyprint">{formAlias}</code> is the same as <code class="prettyprint">formAlias</code> set in the addon&rsquo;s <code class="prettyprint">ConfigEvents::CONFIG_ON_GENERATE</code> event listener.</p>
+
+<p>The template should be in a panel format to match the rest of the config UI.</p>
+
           <h2 id="miscellaneous">Miscellaneous</h2>
 
           <h3 id="flash-messages">Flash Messages</h3>
