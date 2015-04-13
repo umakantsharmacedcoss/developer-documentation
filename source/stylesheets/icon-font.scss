@@ -1,0 +1,50 @@
+%icon {
+  font-family: 'FontAwesome';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+}
+
+%icon-exclamation-sign {
+  @extend %icon;
+  content: "\f12a";
+}
+%icon-question-sign {
+  @extend %icon;
+  content: "\f128";
+}
+%icon-info-sign {
+  @extend %icon;
+  content: "\f129";
+}
+%icon-remove-sign {
+  @extend %icon;
+  content: "\f00d";
+}
+%icon-plus-sign {
+  @extend %icon;
+  content: "\f067";
+}
+%icon-minus-sign {
+  @extend %icon;
+  content: "\f068";
+}
+%icon-ok-sign {
+  @extend %icon;
+  content: "\f00c";
+}
+%icon-search {
+  @extend %icon;
+  content: "\f002";
+}
+%icon-open {
+  @extend %icon;
+  content: "\f0da";
+}
+%icon-close {
+  @extend %icon;
+  content: "\f0d7";
+}
