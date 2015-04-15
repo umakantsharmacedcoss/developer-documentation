@@ -285,4 +285,12 @@ For example, `parent::getSynonym()` will recognize `editown` as `edit` if `edito
      }
 ```
 
-Addon's can adjust permissions based on other selected permissions in order to prevent 'user error.' For example, if a user has permission to `edit`, then the user also needs permission to `view` whether that was selected in the Role form or not. Thus the method `analyzePermissions()` which gives opportunity to the addon to modify permissions based on other selections before persisting to the database. 
+Addon's can adjust permissions based on other selected permissions in order to prevent 'user error.' For example, if a user has permission to `edit`, then the user also needs permission to `view` whether that was selected in the Role form or not. The method `analyzePermissions()`  can be be used for this which gives opportunity to the addon to modify permissions based on other selections before persisting to the database. 
+
+Sometimes, it may be necessary to re-adjust based on a permission that is outside the addon's control. In this case, `analyzePermissions()` can return true and it will be called again after all the permissions have been analyzed by the other bundles and addons. In this case, the argument `$isSecondRound` will be true.
+
+#### Advanced isGranted Logic
+If it is necessary to perform some logic other than simply comparing bits, the permission class can override the parent's `public function isGranted($userPermissions, $name, $level)` and do whatever is necessary for it's own permission levels and individual permissions.
+
+#### Advanced isSupported Logic
+The same can be applied for the method `isSupported()` which is used to determine if a bundle or addon includes the requested permission and permission level. This can also be used to provide BC support.
