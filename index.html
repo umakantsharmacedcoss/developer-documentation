@@ -1770,7 +1770,17 @@ $view['slots']->set('mauticContent', 'helloBundleDetails');
 
           <h2 id="database">Database</h2>
 
-<p>@todo</p>
+<p><strong>@todo - refer to <a href="http://symfony.com/doc/current/book/doctrine.html">Symfony&rsquo;s</a> and <a href="http://doctrine-orm.readthedocs.org/en/latest">Doctrine&rsquo;s</a> until this section is complete.</strong> </p>
+
+<p>Mautic uses <a href="#http://doctrine-orm.readthedocs.org/en/latest/">Doctrine</a>, a database object relational mapper (ORM) and database abstraction layer (DBAL) library.</p>
+
+<p>Most of Mautic use entity and repository classes to define the schema and interact with the database. </p>
+
+<h3 id="metadata">Metadata</h3>
+
+<p>In 1.0.x, Mautic uses <a href="#http://doctrine-orm.readthedocs.org/en/latest/reference/basic-mapping.html">Doctrine annotations driver </a> to map entity metadata.</p>
+
+<p>A problem with this method for many shared hosts is the number of cache files it generates (can be 800+ files). Thus in 1.1, metadata mapping will be switched to using the Doctrine&rsquo;s <a href="#http://doctrine-orm.readthedocs.org/en/latest/reference/php-mapping.html#static-function">PHP driver</a> by leveraging the entity&rsquo;s static <code class="prettyprint">loadMetadata()</code> function.  </p>
 
           <h2 id="roles-and-permissions">Roles and Permissions</h2>
 
@@ -1778,7 +1788,7 @@ $view['slots']->set('mauticContent', 'helloBundleDetails');
 
 <h3 id="how-permissions-work">How Permissions Work</h3>
 
-<p>Permissions are calculated based on bits assigned to an addon&rsquo;s level and permission.</p>
+<p>Permissions are calculated based on bits assigned to an addon&rsquo;s level and permission. Bits are integers that increase by doubling the value. 1, 2, 4, 8, 16, 32, 64, 128, 512, 1024, and so forth. The bits should never be assigned numbers in between such as 3 or 5 as the permission will not be correctly calculated in such cases.</p>
 
 <p>For example, let&rsquo;s say HelloWorldBundle needs to manage access to user&rsquo;s Worlds entity. A permission set for <code class="prettyprint">addon:helloWorld:worlds</code> might look like</p>
 
@@ -1867,13 +1877,242 @@ The permission <code>full</code> is reserved to grant access to all previous per
 <span class="k">if</span> <span class="p">(</span><span class="nv">$permissions</span><span class="p">[</span><span class="s1">'addon:helloWorld:worlds:view'</span><span class="p">])</span> <span class="p">{</span>
     <span class="c1">// do something
 </span><span class="p">}</span>
+
+<span class="c1">// Check if user has access to view leads
+</span><span class="k">if</span> <span class="p">(</span><span class="nv">$security</span><span class="o">-&gt;</span><span class="na">isGranted</span><span class="p">(</span><span class="s1">'lead:leads:viewother'</span><span class="p">))</span> <span class="p">{</span>
+    <span class="c1">// do something
+</span><span class="p">}</span>
 </code></pre>
 
 <p>To determine if a user has a specific permission, use Mautic&rsquo;s security service which can be obtained from the <a href="#factory-service">factory service</a> via <code class="prettyprint">$this-&gt;factory-&gt;getSecurity()</code>.</p>
 
-<p>As suggested above, Mautic uses a special permission notation to refer to a specific permission. For core bundles, <code class="prettyprint">bundleName:permissionLevel:permission</code> is used.  For addons, append <code class="prettyprint">addon:</code>, i.e. <code class="prettyprint">addon:bundleName:permissionLevel:permission</code>. <code class="prettyprint">addon:</code> tells Mautic to look for the permission class from the addons/ directory. </p>
+<p>As suggested above, Mautic uses a special permission notation to refer to a specific permission. For core bundles, <code class="prettyprint">bundleName:permissionLevel:permission</code> is used.  For addons, append <code class="prettyprint">addon:</code>, i.e. <code class="prettyprint">addon:bundleName:permissionLevel:permission</code>. <code class="prettyprint">addon:</code> tells Mautic to look for the permission class in the addons/ directory and <code class="prettyprint">MauticAddons</code> namespace. </p>
 
-<p>The&hellip;</p>
+<p>The permission level and permissions are set by the core bundle or addon. For example, Mautic&rsquo;s core UserBundle has <code class="prettyprint">users</code> and <code class="prettyprint">roles</code> levels with <code class="prettyprint">view</code>, <code class="prettyprint">edit</code>, <code class="prettyprint">create</code>, <code class="prettyprint">delete</code> and <code class="prettyprint">full</code> permissions for each. </p>
+
+<p>To check if a user has permission to edit roles, use <code class="prettyprint">$this-&gt;factory-&gt;getSecurity()-&gt;isGranted(&#39;user:roles:edit&#39;);</code></p>
+
+<h3 id="creating-custom-permissions">Creating Custom Permissions</h3>
+<pre><code class="highlight php"><span class="cp">&lt;?php</span>
+<span class="c1">// addons/HelloWorldBundle/Security/Permissions/HelloWorldPermissions.php
+</span>
+<span class="k">namespace</span> <span class="nx">MauticAddons\HelloWorldBundle\Security\Permissions</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Symfony\Component\Form\FormBuilderInterface</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Mautic\CoreBundle\Security\Permissions\AbstractPermissions</span><span class="p">;</span>
+
+<span class="sd">/**
+ * Class HelloWorldPermissions
+ */</span>
+<span class="k">class</span> <span class="nc">HelloWorldPermissions</span> <span class="k">extends</span> <span class="nx">AbstractPermissions</span>
+<span class="p">{</span>
+
+    <span class="sd">/**
+     * Define available permissions
+     *
+     * @param $params
+     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$params</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">(</span><span class="nv">$params</span><span class="p">);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">permissions</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+
+            <span class="c1">// Custom level
+</span>            <span class="s1">'worlds'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+
+                <span class="c1">// Custom permissions
+</span>                <span class="s1">'use_telescope'</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s1">'send_probe'</span>    <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="s1">'visit'</span>         <span class="o">=&gt;</span> <span class="mi">4</span><span class="p">,</span>
+                <span class="c1">// Full will almost always be included and should be significantly higher than the
+</span>                <span class="c1">// others in case new permissions need to be added later 
+</span>                <span class="s1">'full'</span>          <span class="o">=&gt;</span> <span class="mi">1024</span>
+            <span class="p">)</span>
+        <span class="p">);</span>
+
+        <span class="c1">// Add standard category permissions
+</span>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addStandardPermissions</span><span class="p">(</span><span class="s1">'categories'</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**
+     * Append the permission form fields to the Role form
+     *
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     * @param array                $data
+     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">buildForm</span><span class="p">(</span><span class="nx">FormBuilderInterface</span> <span class="o">&amp;</span><span class="nv">$builder</span><span class="p">,</span> <span class="k">array</span> <span class="nv">$options</span><span class="p">,</span> <span class="k">array</span> <span class="nv">$data</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Add standard category form fields
+</span>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addStandardFormFields</span><span class="p">(</span><span class="s1">'helloWorld'</span><span class="p">,</span> <span class="s1">'categories'</span><span class="p">,</span> <span class="nv">$builder</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+
+        <span class="c1">// Add custom 'worlds' level form fields
+</span>        <span class="nv">$builder</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span>
+
+            <span class="c1">// Form element name should be bundleName:permissionLevel
+</span>            <span class="s1">'helloWorld:worlds'</span><span class="p">,</span>
+
+            <span class="c1">// Should always be permissionlist type
+</span>            <span class="s1">'permissionlist'</span><span class="p">,</span>
+            <span class="k">array</span><span class="p">(</span>
+                <span class="s1">'choices'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                    <span class="s1">'use_telescope'</span> <span class="o">=&gt;</span> <span class="s1">'addon.helloworld.permissions.use_telescope'</span><span class="p">,</span>
+                    <span class="s1">'send_probe'</span>    <span class="o">=&gt;</span> <span class="s1">'addon.helloworld.permissions.send_probe'</span><span class="p">,</span>
+                    <span class="s1">'visit'</span>         <span class="o">=&gt;</span> <span class="s1">'addon.helloworld.permissions.visit'</span><span class="p">,</span>
+                    <span class="s1">'full'</span>          <span class="o">=&gt;</span> <span class="s1">'mautic.core.permissions.full'</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="s1">'label'</span>   <span class="o">=&gt;</span> <span class="s1">'addon.helloworld.permissions'</span><span class="p">,</span>
+
+                <span class="c1">// Set existing data
+</span>                <span class="s1">'data'</span>    <span class="o">=&gt;</span> <span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$data</span><span class="p">[</span><span class="s1">'worlds'</span><span class="p">])</span> <span class="o">?</span> <span class="nv">$data</span><span class="p">[</span><span class="s1">'worlds'</span><span class="p">]</span> <span class="o">:</span> <span class="k">array</span><span class="p">()),</span>
+
+                <span class="c1">// Bundle name (used to build frontend form)
+</span>                <span class="s1">'bundle'</span>  <span class="o">=&gt;</span> <span class="s1">'helloWorld'</span><span class="p">,</span>
+
+                <span class="c1">// Permission level (used to build frontend form)
+</span>                <span class="s1">'level'</span>   <span class="o">=&gt;</span> <span class="s1">'worlds'</span>
+            <span class="p">)</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**
+     * Permission set identifier; should be bundleName
+     * 
+     * @return string
+     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getName</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="s1">'helloWorld'</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>An addon can create it&rsquo;s own set of permissions by creating a Permission class. See the code example for a skeleton outline of what the class will look like.</p>
+
+<p>Each permission class should extend <code class="prettyprint">Mautic\CoreBundle\Security\Permissions\AbstractPermissions</code>.</p>
+
+<p>Then, for most permission classes, three methods are needed: <code class="prettyprint">__construct()</code>, <code class="prettyprint">buildForm()</code> and <code class="prettyprint">getName()</code>.</p>
+
+<p><strong>__construct()</strong></p>
+
+<p>The construct method should do two things. It should call <code class="prettyprint">parent::__construct($params)</code> or it should set <code class="prettyprint">$this-&gt;params = $params;</code>. </p>
+
+<p>Then it should define <code class="prettyprint">$this-&gt;permissions</code>. <code class="prettyprint">$this-&gt;permissions</code> is an array of permission levels that are each arrays with permissions assigned to bits.  For example, in the code block, a custom permission level of <code class="prettyprint">worlds</code> is defined with the permissions of <code class="prettyprint">use_telescope</code>, <code class="prettyprint">send_probe</code>, <code class="prettyprint">visit</code> and <code class="prettyprint">full</code>. To check to see if a user has permission to the level <code class="prettyprint">worlds</code> and permission <code class="prettyprint">send_probe</code>, <code class="prettyprint">$this-&gt;factory-&gt;getSecurity()-&gt;isGranted(&#39;addon:helloWorld:worlds:send_probe&#39;)</code> would be used.</p>
+
+<p>Mautic provides a few helper methods for common permission sets:</p>
+
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>addStandardPermissions()</td>
+<td>Set view, edit, create, delete, publish (with option to exclude), and full permissions.</td>
+</tr>
+<tr>
+<td>addExtendedPermissions()</td>
+<td>Set creator level restrictions: viewown, viewother, editown, editother, create, deleteown, deleteother, publishown (with option to exclude), publishother (with option to exclude), and full</td>
+</tr>
+<tr>
+<td>addManagePermission</td>
+<td>Set single manage permission</td>
+</tr>
+</tbody></table>
+
+<p><strong>buildForm()</strong></p>
+
+<p>The buildForm method will append the permission toggles to the Role&rsquo;s form (see <a href="#forms">Forms</a> for details on form builders). Review the comments in the code sample.</p>
+
+<p>There are complimentary helper methods for the common permission sets:</p>
+
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>addStandardFormFields()</td>
+<td>Appends the standard permission sets to the form</td>
+</tr>
+<tr>
+<td>addExtendedFormFields()</td>
+<td>Appends the extended, aka creator restricted, permissions to the form</td>
+</tr>
+<tr>
+<td>addManageFormFields()</td>
+<td>Appends the single manager element to the form</td>
+</tr>
+</tbody></table>
+
+<p><strong>getName()</strong>
+This method is absolutely required and should match both the bundleName and the name of the file. For example, if <code class="prettyprint">HelloWorldBundle</code> is the bundle&rsquo;s name, then this would be <code class="prettyprint">helloWorld</code> with a filename of <code class="prettyprint">HelloWorldPermissions.php</code>.</p>
+
+<div class="clear-right"></div> 
+
+<h4 id="permission-aliases">Permission Aliases</h4>
+<pre><code class="highlight php"><span class="cp">&lt;?php</span>
+
+    <span class="k">protected</span> <span class="k">function</span> <span class="nf">getSynonym</span><span class="p">(</span><span class="nv">$name</span><span class="p">,</span> <span class="nv">$level</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$name</span> <span class="o">==</span> <span class="s1">'send_satellite'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// Set real permission name
+</span>            <span class="nv">$name</span> <span class="o">=</span> <span class="s1">'send_probe'</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="k">array</span><span class="p">(</span><span class="nv">$name</span><span class="p">,</span> <span class="nv">$level</span><span class="p">);</span>
+    <span class="p">}</span>
+</code></pre>
+
+<p>To add a permission alias, use the <code class="prettyprint">getSynonym()</code> method. Basically this method is called before each requested permission is determined giving opportunity to change the permission level or name as needed.</p>
+
+<p>For example, <code class="prettyprint">parent::getSynonym()</code> will recognize <code class="prettyprint">editown</code> as <code class="prettyprint">edit</code> if <code class="prettyprint">editown</code> isn&rsquo;t defined in the permission class&rsquo; <code class="prettyprint">$this-&gt;permissions</code> property for the requested level.</p>
+
+<div class="clear-right"></div>
+
+<h4 id="manipulating-permissions-before-saving">Manipulating Permissions before Saving</h4>
+<pre><code class="highlight php"> <span class="cp">&lt;?php</span>
+
+     <span class="sd">/**
+      * @param array $permissions     Addon specific permissions
+      * @param       $allPermissions  All role permissions
+      * @param bool  $isSecondRound   Is round two after permissions have been updated by all permission classes 
+      *
+      * @return bool Return true if a second round is required; default false
+      */</span>
+     <span class="k">public</span> <span class="k">function</span> <span class="nf">analyzePermissions</span><span class="p">(</span><span class="k">array</span> <span class="o">&amp;</span><span class="nv">$permissions</span><span class="p">,</span> <span class="nv">$allPermissions</span><span class="p">,</span> <span class="nv">$isSecondRound</span> <span class="o">=</span> <span class="kc">false</span><span class="p">)</span>
+     <span class="p">{</span>
+         <span class="k">foreach</span> <span class="p">(</span><span class="nv">$permissions</span> <span class="k">as</span> <span class="nv">$level</span> <span class="o">=&gt;</span> <span class="o">&amp;</span><span class="nv">$perms</span><span class="p">)</span> <span class="p">{</span>
+             <span class="k">foreach</span> <span class="p">(</span><span class="nv">$perms</span> <span class="k">as</span> <span class="nv">$perm</span><span class="p">)</span> <span class="p">{</span>
+                 <span class="nv">$include</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+                 <span class="k">switch</span> <span class="p">(</span><span class="nv">$perm</span><span class="p">)</span> <span class="p">{</span>
+                     <span class="k">case</span> <span class="s1">'send_probe'</span><span class="o">:</span>
+                         <span class="nv">$include</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">'use_telescope'</span><span class="p">);</span>
+                         <span class="k">break</span><span class="p">;</span>
+                     <span class="k">case</span> <span class="s1">'visit'</span><span class="o">:</span>
+                         <span class="nv">$include</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">'use_telescope'</span><span class="p">,</span> <span class="s1">'send_probe'</span><span class="p">);</span>
+                         <span class="k">break</span><span class="p">;</span>
+                 <span class="p">}</span>
+                 <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$include</span><span class="p">))</span> <span class="p">{</span>
+                     <span class="k">foreach</span> <span class="p">(</span><span class="nv">$include</span> <span class="k">as</span> <span class="nv">$r</span><span class="p">)</span> <span class="p">{</span>
+                         <span class="k">list</span><span class="p">(</span><span class="nv">$ignore</span><span class="p">,</span> <span class="nv">$r</span><span class="p">)</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getSynonym</span><span class="p">(</span><span class="nv">$level</span><span class="p">,</span> <span class="nv">$r</span><span class="p">);</span>
+                         <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">isSupported</span><span class="p">(</span><span class="nv">$level</span><span class="p">,</span> <span class="nv">$r</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$r</span><span class="p">,</span> <span class="nv">$perms</span><span class="p">))</span> <span class="p">{</span>
+                             <span class="nv">$perms</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$r</span><span class="p">;</span>
+                         <span class="p">}</span>
+                     <span class="p">}</span>
+                 <span class="p">}</span>
+             <span class="p">}</span>
+         <span class="p">}</span>
+
+         <span class="c1">// Return true if this method needs a second round after all the other bundles have adjusted permissions
+</span>         <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+     <span class="p">}</span>
+</code></pre>
+
+<p>Addon&rsquo;s can adjust permissions based on other selected permissions in order to prevent &lsquo;user error.&rsquo; For example, if a user has permission to <code class="prettyprint">edit</code>, then the user also needs permission to <code class="prettyprint">view</code> whether that was selected in the Role form or not. Thus the method <code class="prettyprint">analyzePermissions()</code> which gives opportunity to the addon to modify permissions based on other selections before persisting to the database. </p>
 
           <h2 id="custom-config-params">Custom Config Params</h2>
 
