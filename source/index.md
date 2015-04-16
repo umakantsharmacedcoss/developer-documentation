@@ -37,9 +37,10 @@ includes:
   - addon_extending_emails
   - addon_extending_forms
   - addon_extending_integrations
-  - addon_extending_leads
   - addon_extending_pages
   - addon_extending_points
+  - addon_extending_reports  
+  - addon_extending_leads
   - themes_intro
   - themes_structure
   - themes_config
