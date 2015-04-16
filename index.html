@@ -2112,7 +2112,17 @@ This method is absolutely required and should match both the bundleName and the 
      <span class="p">}</span>
 </code></pre>
 
-<p>Addon&rsquo;s can adjust permissions based on other selected permissions in order to prevent &lsquo;user error.&rsquo; For example, if a user has permission to <code class="prettyprint">edit</code>, then the user also needs permission to <code class="prettyprint">view</code> whether that was selected in the Role form or not. Thus the method <code class="prettyprint">analyzePermissions()</code> which gives opportunity to the addon to modify permissions based on other selections before persisting to the database. </p>
+<p>Addon&rsquo;s can adjust permissions based on other selected permissions in order to prevent &lsquo;user error.&rsquo; For example, if a user has permission to <code class="prettyprint">edit</code>, then the user also needs permission to <code class="prettyprint">view</code> whether that was selected in the Role form or not. The method <code class="prettyprint">analyzePermissions()</code>  can be be used for this which gives opportunity to the addon to modify permissions based on other selections before persisting to the database. </p>
+
+<p>Sometimes, it may be necessary to re-adjust based on a permission that is outside the addon&rsquo;s control. In this case, <code class="prettyprint">analyzePermissions()</code> can return true and it will be called again after all the permissions have been analyzed by the other bundles and addons. In this case, the argument <code class="prettyprint">$isSecondRound</code> will be true.</p>
+
+<h4 id="advanced-isgranted-logic">Advanced isGranted Logic</h4>
+
+<p>If it is necessary to perform some logic other than simply comparing bits, the permission class can override the parent&rsquo;s <code class="prettyprint">public function isGranted($userPermissions, $name, $level)</code> and do whatever is necessary for it&rsquo;s own permission levels and individual permissions.</p>
+
+<h4 id="advanced-issupported-logic">Advanced isSupported Logic</h4>
+
+<p>The same can be applied for the method <code class="prettyprint">isSupported()</code> which is used to determine if a bundle or addon includes the requested permission and permission level. This can also be used to provide BC support.</p>
 
           <h2 id="custom-config-params">Custom Config Params</h2>
 
@@ -2328,33 +2338,962 @@ To translate the addon&rsquo;s tab in the configuration form, be sure to include
 
           <h2 id="extending-mautic">Extending Mautic</h2>
 
-          <h3 id="api-endpoints">API Endpoints</h3>
+          <h3 id="extending-api">Extending API</h3>
+<pre><code class="highlight php"><span class="cp">&lt;?php</span>
+<span class="c1">// addons/HelloWorldBundle/Config/config.php
+</span>
+<span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+    <span class="c1">// ...
+</span>
+    <span class="s1">'routes'</span>   <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
 
-          <h3 id="campaign-actions">Campaign Actions</h3>
+        <span class="c1">// ...
+</span>
+        <span class="s1">'api'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">'addon_helloworld_api'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">'path'</span>       <span class="o">=&gt;</span> <span class="s1">'/hello/worlds'</span><span class="p">,</span>
+                <span class="s1">'controller'</span> <span class="o">=&gt;</span> <span class="s1">'HelloWorldBundle:Api:worlds'</span><span class="p">,</span>
+                <span class="s1">'method'</span>     <span class="o">=&gt;</span> <span class="s1">'GET'</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
 
-<h3 id="campaign-decisions">Campaign Decisions</h3>
+    <span class="c1">// ...
+</span><span class="p">);</span>
+</code></pre>
+<pre><code class="highlight php"><span class="cp">&lt;?php</span>
+<span class="c1">// addons/HelloWorldBundle/Controller/ApiController.php
+</span>
+<span class="k">namespace</span> <span class="nx">Mautic\LeadBundle\Controller\Api</span><span class="p">;</span>
 
-          <h3 id="categories">Categories</h3>
+<span class="k">use</span> <span class="nx">FOS\RestBundle\Util\Codes</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Mautic\ApiBundle\Controller\CommonApiController</span><span class="p">;</span>
 
-          <h3 id="email-a/b-test-winner-criteria">Email A/B Test Winner Criteria</h3>
+<span class="k">class</span> <span class="nc">ApiController</span> <span class="k">extends</span> <span class="nx">CommonApiController</span>
+<span class="p">{</span>
 
-<h3 id="email-tokens">Email Tokens</h3>
+    <span class="sd">/**
+     * Get a list of worlds
+     * 
+     * @return \Symfony\Component\HttpFoundation\Response
+     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getWorldsAction</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">factory</span><span class="o">-&gt;</span><span class="na">getSecurity</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">isGranted</span><span class="p">(</span><span class="s1">'addon:helloWorld:worlds:view'</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">accessDenied</span><span class="p">();</span>
+        <span class="p">}</span>
 
-          <h3 id="form-fields">Form Fields</h3>
+        <span class="nv">$filter</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">query</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'filter'</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
+        <span class="nv">$limit</span>   <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">query</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'limit'</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
+        <span class="nv">$start</span>   <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">query</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'start'</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
 
-<h3 id="form-submit-actions">Form Submit Actions</h3>
+        <span class="sd">/** @var \MauticAddons\HelloWorldBundle\Model\WorldsModel $model */</span>
+        <span class="nv">$model</span>   <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">factory</span><span class="o">-&gt;</span><span class="na">getModel</span><span class="p">(</span><span class="s1">'addon.helloWorld.worlds'</span><span class="p">);</span>
 
-          <h3 id="integrations">Integrations</h3>
+        <span class="nv">$worlds</span>  <span class="o">=</span> <span class="nv">$model</span><span class="o">-&gt;</span><span class="na">getWorlds</span><span class="p">(</span><span class="nv">$filter</span><span class="p">,</span> <span class="nv">$limit</span><span class="p">,</span> <span class="nv">$start</span><span class="p">);</span>
+        <span class="nv">$worlds</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="nv">$worlds</span><span class="p">,</span> <span class="nx">Codes</span><span class="o">::</span><span class="na">HTTP_OK</span><span class="p">);</span>
 
-          <h3 id="leads">Leads</h3>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">handleView</span><span class="p">(</span><span class="nv">$worlds</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
 
-          <h3 id="page-a/b-test-winner-criteria">Page A/B Test Winner Criteria</h3>
+<p>To add custom API endpoints, simply define the routes under the API firewall in the <a href="#routes">addon&rsquo;s config file</a>. This will place the route behind /api which will only be accessible if the requester has been authorized via OAuth.</p>
 
-<h3 id="page-tokens">Page Tokens</h3>
+<p>The api controller(s), should extend <code class="prettyprint">Mautic\ApiBundle\Controller\CommonApiController</code> to leverage the helper methods provided and to utilize the REST views.</p>
 
-          <h3 id="point-actions">Point Actions</h3>
+          <h3 id="extending-campaigns">Extending Campaigns</h3>
+<pre><code class="highlight php"><span class="cp">&lt;?php</span>
+<span class="c1">// addons/HelloWorldBundle/EventListener/CampaignSubscriber.php
+</span>
+<span class="k">namespace</span> <span class="nx">MauticAddons\HelloWorldBundle\Events</span><span class="p">;</span>
 
-<h3 id="point-triggers">Point Triggers</h3>
+<span class="k">use</span> <span class="nx">Mautic\CoreBundle\EventListener\CommonSubscriber</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Mautic\CampaignBundle\Event</span> <span class="k">as</span> <span class="nx">Events</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Mautic\CampaignBundle\CampaignEvents</span><span class="p">;</span>
+
+<span class="sd">/**
+* Class CampaignSubscriber
+*/</span>
+<span class="k">class</span> <span class="nc">CampaignSubscriber</span> <span class="k">extends</span> <span class="nx">CommonSubscriber</span>
+<span class="p">{</span>
+
+    <span class="sd">/**
+     * @return array
+     */</span>
+    <span class="k">static</span> <span class="k">public</span> <span class="k">function</span> <span class="nf">getSubscribedEvents</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+            <span class="nx">CampaignEvents</span><span class="o">::</span><span class="na">CAMPAIGN_ON_BUILD</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'onCampaignBuild'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**
+     * Add campaign decision and actions
+     *
+     * @param Events\CampaignBuilderEvent $event
+     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">onCampaignBuild</span><span class="p">(</span><span class="nx">Events\CampaignBuilderEvent</span> <span class="nv">$event</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Register custom action
+</span>        <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">addAction</span><span class="p">(</span>
+            <span class="s1">'helloworld.send_offworld'</span><span class="p">,</span>
+            <span class="k">array</span><span class="p">(</span>
+                <span class="s1">'label'</span>           <span class="o">=&gt;</span> <span class="s1">'addon.helloworld.campaign.send_offworld'</span><span class="p">,</span>
+                <span class="s1">'description'</span>     <span class="o">=&gt;</span> <span class="s1">'addon.helloworld.campaign.send_offworld_descr'</span><span class="p">,</span>
+                <span class="c1">// Set custom parameters to configure the decision
+</span>                <span class="s1">'formType'</span>        <span class="o">=&gt;</span> <span class="s1">'helloworld_worlds'</span><span class="p">,</span>
+                <span class="c1">// Set a custom formTheme to customize the layout of elements in formType
+</span>                <span class="s1">'formTheme'</span>       <span class="o">=&gt;</span> <span class="s1">'HelloWorldBundle:FormTheme\SubmitAction'</span>
+                <span class="c1">// Set custom options to pass to the form type, if applicable 
+</span>                <span class="s1">'formTypeOptions'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                    <span class="s1">'world'</span> <span class="o">=&gt;</span> <span class="s1">'mars'</span>
+                <span class="p">),</span>
+                <span class="c1">// Static callback function to execute this action
+</span>                <span class="s1">'callback'</span>        <span class="o">=&gt;</span> <span class="s1">'\MauticAddons\HelloWorldBundle\Helper\CampaignEventHelper::sendLeadOffworld'</span>
+            <span class="p">)</span>
+        <span class="p">);</span>
+
+        <span class="c1">// Register custom decision (executes when a lead "makes a decision" i.e. executes some direct action 
+</span>        <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">addLeadDecision</span><span class="p">(</span>
+            <span class="s1">'helloworld.visits_mars'</span><span class="p">,</span>
+            <span class="k">array</span><span class="p">(</span>
+                <span class="s1">'label'</span>           <span class="o">=&gt;</span> <span class="s1">'addon.helloworld.campaign.visits_mars'</span><span class="p">,</span>
+                <span class="s1">'description'</span>     <span class="o">=&gt;</span> <span class="s1">'addon.helloworld.campaign.visits_mars_descr'</span><span class="p">,</span>
+                <span class="c1">// Same as registering an action
+</span>                <span class="s1">'formType'</span>        <span class="o">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+                <span class="s1">'formTypeOptions'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
+                <span class="c1">// Optional static callback function to validate whether the decision should be executed or not 
+</span>                <span class="s1">'callback'</span>        <span class="o">=&gt;</span> <span class="s1">'\MauticAddons\HelloWorldBundle\Helper\CampaignEventHelper::validateVisitation'</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Addons can add their own campaign actions and decisions by listening to the <code class="prettyprint">\Mautic\CampaignBundle\CampaignEvents::CAMPAIGN_ON_BUILD</code> event.  Read more about <a href="#events">listeners and subscribers</a>. </p>
+
+<h4 id="campaign-actions">Campaign Actions</h4>
+
+<p>To add an action, use the <code class="prettyprint">$event-&gt;addAction($identifier, $parameters)</code> method. <code class="prettyprint">$identifier</code> must be something unique. The <code class="prettyprint">$parameters</code> array can contain the following elements:</p>
+
+<table><thead>
+<tr>
+<th>Key</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>label</strong></td>
+<td>REQUIRED</td>
+<td>string</td>
+<td>The language string to use for the draggable&rsquo;s label</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>OPTIONAL</td>
+<td>string</td>
+<td>The language string to use for the draggable&rsquo;s tooltip</td>
+</tr>
+<tr>
+<td><strong>callback</strong></td>
+<td>REQUIRED</td>
+<td>mixed</td>
+<td>Static callback function that will be called for the action and should contain the logic to execute the custom action</td>
+</tr>
+<tr>
+<td><strong>formType</strong></td>
+<td>OPTIONAL</td>
+<td>string</td>
+<td>The alias of a custom form type used to set config options for the decision</td>
+</tr>
+<tr>
+<td><strong>formTypeOptions</strong></td>
+<td>OPTIONAL</td>
+<td>array</td>
+<td>Array of options to include into the formType&rsquo;s $options argument</td>
+</tr>
+<tr>
+<td><strong>formTypeCleanMasks</strong></td>
+<td>OPTIONAL</td>
+<td>array</td>
+<td>Array of input masks to clean a values from formType</td>
+</tr>
+<tr>
+<td><strong>formTypeTheme</strong></td>
+<td>OPTIONAL</td>
+<td>string</td>
+<td>Theme to customize elements for formType</td>
+</tr>
+</tbody></table>
+
+<p>The action&rsquo;s callback can accept the following variables (determined via ReflectionMethod::invokeArgs()):</p>
+
+<table><thead>
+<tr>
+<th>Variable</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>config</strong></td>
+<td>array</td>
+<td>Options configured by user for the custom formType</td>
+</tr>
+<tr>
+<td><strong>event</strong></td>
+<td>array</td>
+<td>Details of the current event executed</td>
+</tr>
+<tr>
+<td><strong>lead</strong></td>
+<td>\Mautic\LeadBundle\Entity\Lead</td>
+<td>The lead executing the event</td>
+</tr>
+<tr>
+<td><strong>factory</strong></td>
+<td>\Mautic\CoreBundle\Factory\MauticFactory</td>
+<td><a href="#factory-service">Mautic&rsquo;s factory service</a></td>
+</tr>
+<tr>
+<td><strong>eventDetails</strong></td>
+<td>mixed</td>
+<td>Whatever the triggering decision passes into the triggerEvent method. It could be the Email entity that was opened, an array, null, etc.</td>
+</tr>
+<tr>
+<td><strong>systemTriggered</strong></td>
+<td>boolean</td>
+<td>Notes if the action was executed directly by the lead (false) or by the system (true)</td>
+</tr>
+</tbody></table>
+
+<h4 id="campaign-decisions">Campaign Decisions</h4>
+<pre><code class="highlight php"> <span class="cp">&lt;?php</span>
+ <span class="c1">// Trigger configured 'helloworld.visits_mars' decisions
+</span>
+ <span class="sd">/** @var \Mautic\CampaignBundle\Model\CampaignModel $campaignModel */</span>
+ <span class="nv">$campaignModel</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">factory</span><span class="o">-&gt;</span><span class="na">getModel</span><span class="p">(</span><span class="s1">'campaign.event'</span><span class="p">);</span>
+
+ <span class="c1">// Can be anything and passed into action callbacks as $eventDetails
+</span> <span class="nv">$customPassthrough</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+
+ <span class="c1">// Some optional unique identifier for this specific trigger that is used mainly for debug logging; for example, can be a concatenation of the decision name + lead ID
+</span> <span class="nv">$uniqueTriggerId</span>   <span class="o">=</span> <span class="s1">'something_something'</span><span class="p">;</span>
+
+ <span class="nv">$campaignModel</span><span class="o">-&gt;</span><span class="na">triggerEvent</span><span class="p">(</span><span class="s1">'helloworld.visits_mars'</span><span class="p">,</span> <span class="nv">$customPassthroughToActions</span><span class="p">,</span> <span class="nv">$uniqueTriggerId</span><span class="p">);</span>
+</code></pre>
+
+<p>Campaign decisions are registered exactly as a campaign action except it uses the <code class="prettyprint">$event-&gt;addLeadDecision($identifier, $parameters)</code> method. The only difference in the <code class="prettyprint">$parameters</code> arguments is that the function defined in the <code class="prettyprint">callback</code> element is used to validate the decision rather than execute some action. For example, if the decision is configured to only apply to a specific ID chosen by the user (defined in the <code class="prettyprint">formType</code>), the callback function may could compare the decision&rsquo;s <code class="prettyprint">$eventDetails[&#39;id&#39;]</code> (see below) with the event&rsquo;s<code class="prettyprint">$config[&#39;id&#39;]</code>. If the decision should execue the actions associated with it, return <code class="prettyprint">true</code>.  Otherwise return <code class="prettyprint">false</code> and nothing will be executed or logged.</p>
+
+<p>For custom decisions to work, there must be a trigger executed when the lead makes the decision. Thus, where ever is appropriate in the addon&rsquo;s code logic, add something similar to what&rsquo;s in the example code block. </p>
+
+<p>The <code class="prettyprint">triggerEvent()</code> method will pull all the triggered decisions (<code class="prettyprint">helloworld.visits_mars</code> in the code example) for published campaigns the lead is in, execute the decisions callback (if configured) for validation, then execute the associated actions if appropriate.</p>
+
+          <h3 id="extending-categories">Extending Categories</h3>
+
+<p>Mautic has a CategoryBundle that can be leveraged to incorporate categories into an addon.</p>
+
+<h4 id="configuring-categories-for-menu">Configuring Categories for Menu</h4>
+
+<p>To add a category menu item for the addon, simply add the following to <code class="prettyprint">menu</code> <a href="#menu">config</a> for whichever menu the item should appear (<code class="prettyprint">main</code> or <code class="prettyprint">admin</code>):</p>
+
+<pre class="inline">
+    'mautic.category.menu.index' => array(
+        'bundle' => 'addon:helloWorld'
+    )
+</pre>
+
+<p>The <code class="prettyprint">bundle</code> value needs be prefixed with <code class="prettyprint">addon:</code> as it is used in determining permissions to manage categories. The <code class="prettyprint">helloWorld</code> should be the bundle name of the addon.</p>
+
+<h4 id="configuring-categories-for-routes">Configuring Categories for Routes</h4>
+
+<p>There is no need to add custom routes for categories. However, when <a href="#router">generating a URL</a> to the addon&rsquo;s category list, use</p>
+
+<pre class="inline">
+$categoryUrl = $router->generateUrl('mautic_category_index', array('bundle' => 'addon:helloWorld'));
+</pre>
+
+<h4 id="including-category-in-forms">Including Category in Forms</h4>
+
+<p>To add a category select list to a <a href="#forms">form</a>, use <code class="prettyprint">category</code> as the form type and pass <code class="prettyprint">bundle</code> as an option:</p>
+
+<pre class="inline">
+    //add category
+    $builder->add('category', 'category', array(
+        'bundle' => 'addon:helloWorld'
+    ));
+</pre>
+
+<h4 id="restricting-category-management">Restricting Category Management</h4>
+
+<p>To restrict access to catgories, use the following in the addon&rsquo;s <a href="#roles-and-permissions">Permission class</a>.</p>
+
+<p>In <code class="prettyprint">__construct()</code> add <code class="prettyprint">$this-&gt;addStandardPermissions(&#39;categories&#39;);</code> then in <code class="prettyprint">buildForm()</code>, add <code class="prettyprint">$this-&gt;addStandardFormFields(&#39;helloWorld&#39;, &#39;categories&#39;, $builder, $data);</code>.</p>
+
+<p>See a code example in <a href="#roles-and-permissions">Roles and Permissions</a>.</p>
+
+<p>The two standard helper methods will add the permissions of <code class="prettyprint">view</code>, <code class="prettyprint">edit</code>, <code class="prettyprint">create</code>, <code class="prettyprint">delete</code>, <code class="prettyprint">publish</code>, and <code class="prettyprint">full</code> for categories.</p>
+
+          <h3 id="extending-emails">Extending Emails</h3>
+<pre><code class="highlight php"><span class="cp">&lt;?php</span>
+<span class="c1">// addons/HelloWorldBundle/EventListener/EmailSubscriber.php
+</span>
+<span class="k">namespace</span> <span class="nx">MauticAddons\HelloWorldBundle\EventListener</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Mautic\CoreBundle\EventListener\CommonSubscriber</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Mautic\EmailBundle\EmailEvents</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Mautic\EmailBundle\Event\EmailBuilderEvent</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Mautic\EmailBundle\Event\EmailSendEvent</span><span class="p">;</span>
+
+<span class="sd">/**
+ * Class EmailSubscriber
+ */</span>
+<span class="k">class</span> <span class="nc">EmailSubscriber</span> <span class="k">extends</span> <span class="nx">CommonSubscriber</span>
+<span class="p">{</span>
+
+    <span class="sd">/**
+     * @return array
+     */</span>
+    <span class="k">static</span> <span class="k">public</span> <span class="k">function</span> <span class="nf">getSubscribedEvents</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+            <span class="nx">EmailEvents</span><span class="o">::</span><span class="na">EMAIL_ON_BUILD</span>   <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'onEmailBuild'</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="nx">EmailEvents</span><span class="o">::</span><span class="na">EMAIL_ON_SEND</span>    <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'onEmailGenerate'</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="nx">EmailEvents</span><span class="o">::</span><span class="na">EMAIL_ON_DISPLAY</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'onEmailGenerate'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**
+     * Register the tokens and a custom A/B test winner
+     *
+     * @param EmailBuilderEvent $event
+     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">onEmailBuild</span><span class="p">(</span><span class="nx">EmailBuilderEvent</span> <span class="nv">$event</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Add email tokens
+</span>        <span class="nv">$content</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">templating</span><span class="o">-&gt;</span><span class="na">render</span><span class="p">(</span><span class="s1">'HelloWorldBundle:SubscribedEvents\EmailToken:token.html.php'</span><span class="p">);</span>
+        <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">addTokenSection</span><span class="p">(</span><span class="s1">'helloworld.token'</span><span class="p">,</span> <span class="s1">'addon.helloworld.header'</span><span class="p">,</span> <span class="nv">$content</span><span class="p">);</span>
+
+        <span class="c1">// Add AB Test Winner Criteria
+</span>        <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">addAbTestWinnerCriteria</span><span class="p">(</span>
+            <span class="s1">'helloworld.planetvisits'</span><span class="p">,</span>
+            <span class="k">array</span><span class="p">(</span>
+                <span class="c1">// Label to group by
+</span>                <span class="s1">'group'</span>    <span class="o">=&gt;</span> <span class="s1">'addon.helloworld.header'</span><span class="p">,</span>
+
+                <span class="c1">// Label for this specific a/b test winning criteria
+</span>                <span class="s1">'label'</span>    <span class="o">=&gt;</span> <span class="s1">'addon.helloworld.emailtokens.'</span><span class="p">,</span>
+
+                <span class="c1">// Static callback function that will be used to determine the winner
+</span>                <span class="s1">'callback'</span> <span class="o">=&gt;</span> <span class="s1">'\MauticAddons\HelloWorldBundle\Helper\AbTestHelper::determinePlanetVisitWinner'</span>
+            <span class="p">)</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**
+     * Search and replace tokens with content
+     *
+     * @param EmailSendEvent $event
+     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">onEmailGenerate</span><span class="p">(</span><span class="nx">EmailSendEvent</span> <span class="nv">$event</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Get content
+</span>        <span class="nv">$content</span> <span class="o">=</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">getContent</span><span class="p">();</span>
+
+        <span class="c1">// Search and replace tokens
+</span>        <span class="nv">$content</span> <span class="o">=</span> <span class="nb">str_replace</span><span class="p">(</span><span class="s1">'{hello}'</span><span class="p">,</span> <span class="s1">'world!'</span><span class="p">,</span> <span class="nv">$content</span><span class="p">);</span>
+
+        <span class="c1">// Set updated content
+</span>        <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">setContent</span><span class="p">(</span><span class="nv">$content</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>There are two way to extend emails: email tokens used to insert dynamic content into an email and a/b test winning criteria . Both leverage the <code class="prettyprint">\Mautic\EmailBundle\EmailEvents::EMAIL_ON_BUILD</code> event. Read more about <a href="#events">listeners and subscribers</a>.</p>
+
+<h4 id="email-tokens">Email Tokens</h4>
+
+<p>Email tokens are placeholders that are inserted into an email that can be replaced by dynamic content when the email is sent or viewed in the browser.</p>
+
+<p><code class="prettyprint">$event-&gt;addTokenSection($uniqueId, $headerTranslationKey, $htmlContent)</code> is used to generate the section for drag and drop tokens in the email builder.  </p>
+
+<p><code class="prettyprint">$uniqueId</code> must be unique. </p>
+
+<p><code class="prettyprint">$headerTranslationKey</code> is the translation key that will be used to create the section&rsquo;s header.</p>
+
+<p><code class="prettyprint">$htmlContent</code> is the HTML that will be inserted into the builder&rsquo;s token list for this token&rsquo;s section. <code class="prettyprint">$this-&gt;templating-&gt;render()</code> can be used to render a specific view&rsquo;s content (using <a href="#views">view notation</a>. There is free reign as to what the HTML will look like but the important part is that the elements representing the tokens must have the attribute <code class="prettyprint">data-token=&quot;{token_text}&quot;</code> in order for the builder to recognize them.</p>
+
+<p>For example, <code class="prettyprint">&lt;a href=&quot;#&quot; data-token=&quot;{hello}&quot; class=&quot;btn btn-default btn-block&quot;&gt;Translated Token Text&lt;/a&gt;</code></p>
+
+<h5 id="custom-token-handling">Custom Token Handling</h5>
+
+<p>To convert the token into a link while requesting what the links text should be, use the attributes <code class="prettyprint">data-token=&#39;&lt;a href=&quot;%url={hello}%&quot;&gt;%text%&lt;/a&gt;&#39; data-drop=&quot;showBuilderLinkModal&quot;</code> (replacing <code class="prettyprint">hello</code> with the addon&rsquo;s custom token).</p>
+
+<p>To request simple feedback from the user and inject it into the token, use the attributes <code class="prettyprint">data-token=&#39;{hello=%world%}&#39; data-drop=&quot;showBuilderFeedbackModal&quot;</code>. A modal will appear with a simple input box. Whatever the user inputs will replace <code class="prettyprint">%world%</code>.</p>
+
+<p>If you need more control or more customization, create and define a custom JS function within the Mautic namespace (i.e. <code class="prettyprint">Mautic.customFunction</code> and use the attribute <code class="prettyprint">data-drop=&quot;customFunction&quot;</code>. When a user drops the token, <code class="prettyprint">Mautic.customFunction()</code> passing the arguments event (jQuery Event), ui (jQuery UI object with draggable, helper, etc), editorId (ID of the inline CkEditor).</p>
+
+<pre class="inline">
+Mautic.customFunction = function (event, ui, editorId) {
+    var token  = mQuery(ui.draggable).data('token');
+    
+    // Do something fancy then insert token
+        
+    Mautic.insertBuilderEditorToken(editorId, token);
+};
+</pre>
+
+<h4 id="email-a/b-test-winner-criteria">Email A/B Test Winner Criteria</h4>
+
+<p>To add a custom an a/b test winner criteria, i.e. a test to compare specific aspects of an email to determine what made it more successful over it&rsquo;s variants, use <code class="prettyprint">$event-&gt;addAbTestWinnerCriteria($uniqueId, $parameters)</code>.</p>
+
+<p><code class="prettyprint">$parameters</code> can have the following elements:</p>
+
+<table><thead>
+<tr>
+<th>Key</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>group</strong></td>
+<td>REQUIRED</td>
+<td>string</td>
+<td>Translation string to group criteria by in the dropdown select list</td>
+</tr>
+<tr>
+<td><strong>label</strong></td>
+<td>OPTIONAL</td>
+<td>string</td>
+<td>Label for this option in the drop down list</td>
+</tr>
+<tr>
+<td><strong>callback</strong></td>
+<td>REQUIRED</td>
+<td>mixed</td>
+<td>Static callback function that will be called to determine the winner when the email detail page is viewed</td>
+</tr>
+<tr>
+<td><strong>formType</strong></td>
+<td>OPTIONAL</td>
+<td>string</td>
+<td>The alias of a custom form type used to set config options for the decision</td>
+</tr>
+<tr>
+<td><strong>formTypeOptions</strong></td>
+<td>OPTIONAL</td>
+<td>array</td>
+<td>Array of options to include into the formType&rsquo;s $options argument</td>
+</tr>
+<tr>
+<td><strong>formTypeCleanMasks</strong></td>
+<td>OPTIONAL</td>
+<td>array</td>
+<td>Array of input masks to clean a values from formType</td>
+</tr>
+<tr>
+<td><strong>formTypeTheme</strong></td>
+<td>OPTIONAL</td>
+<td>string</td>
+<td>Theme to customize elements for formType</td>
+</tr>
+</tbody></table>
+
+<p>The callback can accept the following variables (determined via ReflectionMethod::invokeArgs()):</p>
+
+<table><thead>
+<tr>
+<th>Variable</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>$properties</strong></td>
+<td>array</td>
+<td>Array of elements saved from the configured formType; keyed by email ID in the case of multiple variants</td>
+</tr>
+<tr>
+<td><strong>$factory</strong></td>
+<td>Mautic\CoreBundle\Factory\MauticFactory</td>
+<td><a href="#factory-service">Mautic&rsquo;s factory service</a></td>
+</tr>
+<tr>
+<td><strong>$email</strong></td>
+<td>Mautic\EmailBundle\Entity\Email</td>
+<td>Email entity for the displayed email</td>
+</tr>
+<tr>
+<td><strong>$parent</strong></td>
+<td>Mautic\EmailBundle\Entity\Email</td>
+<td>Email entity for the parent of the email entity</td>
+</tr>
+<tr>
+<td><strong>$children</strong></td>
+<td>Doctrine\Common\Collections\ArrayCollection</td>
+<td>All variants of the parent email</td>
+</tr>
+</tbody></table>
+
+<p>The callback function should return an array keyed with the following elements:</p>
+
+<table><thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>winners</strong></td>
+<td>array</td>
+<td>Array of IDs of the winners (array in case of a tie)</td>
+</tr>
+<tr>
+<td><strong>support</strong></td>
+<td>mixed</td>
+<td>Passed to the view defined by supportTemplate below in order to render visual support for the winners (such as a graph, etc)</td>
+</tr>
+<tr>
+<td><strong>supportTemplate</strong></td>
+<td>string</td>
+<td>View notation to render content for the A/B stats modal. For example, <code class="prettyprint">HelloWorldBundle:SubscribedEvents\AbTest:graph.html.php</code></td>
+</tr>
+</tbody></table>
+
+<pre class="inline">
+return array(
+   'winners'         => $winners,
+   'support'         => $support,
+   'supportTemplate' => 'HelloWorldBundle:SubscribedEvents\AbTest:graph.html.php'
+);
+</pre>
+
+          <h3 id="extending-forms">Extending Forms</h3>
+<pre><code class="highlight php"><span class="cp">&lt;?php</span>
+<span class="c1">// addons/HelloWorldBundle/EventListener/FormSubscriber.php
+</span>
+<span class="k">namespace</span> <span class="nx">MauticAddon\HelloWorldBundle\EventListener</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Mautic\CoreBundle\EventListener\CommonSubscriber</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Mautic\FormBundle\Event</span> <span class="k">as</span> <span class="nx">Events</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Mautic\FormBundle\FormEvents</span><span class="p">;</span>
+
+<span class="sd">/**
+ * Class FormSubscriber
+ */</span>
+<span class="k">class</span> <span class="nc">FormSubscriber</span> <span class="k">extends</span> <span class="nx">CommonSubscriber</span>
+<span class="p">{</span>
+
+    <span class="sd">/**
+     * {@inheritdoc}
+     */</span>
+    <span class="k">static</span> <span class="k">public</span> <span class="k">function</span> <span class="nf">getSubscribedEvents</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+            <span class="nx">FormEvents</span><span class="o">::</span><span class="na">FORM_ON_BUILD</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'onFormBuilder'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**
+     * Add a simple email form
+     *
+     * @param FormBuilderEvent $event
+     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">onFormBuilder</span><span class="p">(</span><span class="nx">Events\FormBuilderEvent</span> <span class="nv">$event</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Register a form submit actions
+</span>        <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">addSubmitAction</span><span class="p">(</span>
+            <span class="s1">'helloworld.sendemail'</span><span class="p">,</span>
+            <span class="k">array</span><span class="p">(</span>
+                <span class="c1">// Label to group by in the dropdown
+</span>                <span class="s1">'group'</span>       <span class="o">=&gt;</span> <span class="s1">'addon.helloworld.header'</span><span class="p">,</span>
+
+                <span class="c1">// Label to list by in the dropdown
+</span>                <span class="s1">'label'</span>       <span class="o">=&gt;</span> <span class="s1">'addon.helloworld.formaction.send_email'</span><span class="p">,</span>
+                <span class="s1">'description'</span> <span class="o">=&gt;</span> <span class="s1">'addon.helloworld.formaction.send_email_descr'</span><span class="p">,</span>
+
+                <span class="c1">// Form service for custom config options
+</span>                <span class="s1">'formType'</span>    <span class="o">=&gt;</span> <span class="s1">'helloworld_worlds'</span><span class="p">,</span>
+                <span class="s1">'formTheme'</span>   <span class="o">=&gt;</span> <span class="s1">'HelloWorldBundle:FormTheme\SubmitAction'</span><span class="p">,</span>
+
+                <span class="c1">// Custom validation callback
+</span>                <span class="s1">'validator'</span>   <span class="o">=&gt;</span> <span class="s1">'\MauticAddons\HelloWorldBundle\Helper\FormSubmitHelper::validateForm'</span><span class="p">,</span>
+
+                <span class="c1">// Callback method to be executed after the submission 
+</span>                <span class="s1">'callback'</span>    <span class="o">=&gt;</span> <span class="s1">'\MauticAddons\HelloWorldBundle\Helper\FormSubmitHelper::sendEmail'</span>
+            <span class="p">)</span>
+        <span class="p">);</span>
+
+        <span class="c1">// Register a custom form field
+</span>        <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">addFormField</span><span class="p">(</span>
+            <span class="s1">'helloworld.customfield'</span><span class="p">,</span>
+            <span class="k">array</span><span class="p">(</span>
+                <span class="c1">// Field label
+</span>                <span class="s1">'label'</span>    <span class="o">=&gt;</span> <span class="s1">'addon.helloworld.formfield.customfield'</span><span class="p">,</span>
+
+                <span class="c1">// Form service for the field's configuration
+</span>                <span class="s1">'formType'</span> <span class="o">=&gt;</span> <span class="s1">'helloworld_worlds'</span><span class="p">,</span>
+
+                <span class="c1">// Template to use to render the formType
+</span>                <span class="s1">'template'</span> <span class="o">=&gt;</span> <span class="s1">'HelloWorldBundle:SubscribedEvents\FormField:customfield.html.php'</span>
+            <span class="p">)</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Forms can be extended by listening to the <code class="prettyprint">\Mautic\FormBundle\FormEvents::FORM_ON_BUILD</code> event.  Read more about <a href="#events">listeners and subscribers</a>. </p>
+
+<h4 id="form-fields">Form Fields</h4>
+
+<p>To add a custom form field, use the <code class="prettyprint">$event-&gt;addFormField($identifier, $parameters)</code> method. <code class="prettyprint">$identifier</code> must be something unique. The <code class="prettyprint">$parameters</code> array can contain the following elements:</p>
+
+<table><thead>
+<tr>
+<th>Key</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>label</strong></td>
+<td>REQUIRED</td>
+<td>string</td>
+<td>The language string for the option in the dropdown</td>
+</tr>
+<tr>
+<td><strong>formType</strong></td>
+<td>REQUIRED</td>
+<td>string</td>
+<td>The alias of a custom form type used to set config options</td>
+</tr>
+<tr>
+<td><strong>formTypeOptions</strong></td>
+<td>OPTIONAL</td>
+<td>array</td>
+<td>Array of options to include into the formType&rsquo;s $options argument</td>
+</tr>
+<tr>
+<td><strong>formTypeCleanMasks</strong></td>
+<td>OPTIONAL</td>
+<td>array</td>
+<td>Array of input masks to clean a values from formType</td>
+</tr>
+<tr>
+<td><strong>formTypeTheme</strong></td>
+<td>OPTIONAL</td>
+<td>string</td>
+<td>Theme to customize elements for formType</td>
+</tr>
+<tr>
+<td><strong>template</strong></td>
+<td>REQUIRED</td>
+<td>string</td>
+<td>View template used to render the formType</td>
+</tr>
+<tr>
+<td><strong>valueFilter</strong></td>
+<td>OPTIONAL</td>
+<td>mixed</td>
+<td>Filter to use to clean the submitted value as supported by InputHelper or a callback function that accepts the arguments <code class="prettyprint">\Mautic\FormBundle\Entity\Field $field</code> and <code class="prettyprint">$value</code>.</td>
+</tr>
+<tr>
+<td><strong>valueConstraints</strong></td>
+<td>OPTIONAL</td>
+<td>mixed</td>
+<td>Callback function to use to validate the value; the function should accept the arguments <code class="prettyprint">\Mautic\FormBundle\Entity\Field $field</code> and <code class="prettyprint">$filteredValue</code>.</td>
+</tr>
+<tr>
+<td><strong>builderOptions</strong></td>
+<td>OPTIONAL</td>
+<td>array</td>
+<td>Array of boolean options for the form builder: <br />addHelpMessage = true/false<br />addShowLabel = true/false<br />addDefaultValue = true/false<br />addLabelAttributes = true/false<br />addInputAttributes = true/false<br />addIsRequired = true/false</td>
+</tr>
+</tbody></table>
+
+<h4 id="form-submit-actions">Form Submit Actions</h4>
+
+<p>To add an action, use the <code class="prettyprint">$event-&gt;addSubmitAction($identifier, $parameters)</code> method. <code class="prettyprint">$identifier</code> must be something unique. The <code class="prettyprint">$parameters</code> array can contain the following elements:</p>
+
+<table><thead>
+<tr>
+<th>Key</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>label</strong></td>
+<td>REQUIRED</td>
+<td>string</td>
+<td>The language string for the option in the dropdown</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>OPTIONAL</td>
+<td>string</td>
+<td>The language string to use for the option&rsquo;s tooltip</td>
+</tr>
+<tr>
+<td><strong>validator</strong></td>
+<td>OPTIONAL</td>
+<td>mixed</td>
+<td>Static callback function called to validate the form submission</td>
+</tr>
+<tr>
+<td><strong>callback</strong></td>
+<td>REQUIRED</td>
+<td>mixed</td>
+<td>Static callback function called after a submission (submit action logic goes here)</td>
+</tr>
+<tr>
+<td><strong>formType</strong></td>
+<td>OPTIONAL</td>
+<td>string</td>
+<td>The alias of a custom form type used to set config options</td>
+</tr>
+<tr>
+<td><strong>formTypeOptions</strong></td>
+<td>OPTIONAL</td>
+<td>array</td>
+<td>Array of options to include into the formType&rsquo;s $options argument</td>
+</tr>
+<tr>
+<td><strong>formTypeCleanMasks</strong></td>
+<td>OPTIONAL</td>
+<td>array</td>
+<td>Array of input masks to clean a values from formType</td>
+</tr>
+<tr>
+<td><strong>formTypeTheme</strong></td>
+<td>OPTIONAL</td>
+<td>string</td>
+<td>Theme to customize elements for formType</td>
+</tr>
+<tr>
+<td><strong>template</strong></td>
+<td>OPTIONAL</td>
+<td>string</td>
+<td>View template used to render the formType</td>
+</tr>
+</tbody></table>
+
+<p>The <code class="prettyprint">callback</code> and <code class="prettyprint">validator</code> functions can accept the following variables (determined via ReflectionMethod::invokeArgs()):</p>
+
+<table><thead>
+<tr>
+<th>Variable</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>config</strong></td>
+<td>array</td>
+<td>Values saved from the custom config options in <code class="prettyprint">formType</code></td>
+</tr>
+<tr>
+<td><strong>post</strong></td>
+<td>array</td>
+<td>$_POST</td>
+</tr>
+<tr>
+<td><strong>server</strong></td>
+<td>array</td>
+<td>$_SERVER</td>
+</tr>
+<tr>
+<td><strong>factory</strong></td>
+<td>Mautic\CoreBundle\Factory\MauticFactory</td>
+<td><a href="#factory-service">Mautic&rsquo;s factory service</a></td>
+</tr>
+<tr>
+<td><strong>fields</strong></td>
+<td>array</td>
+<td>Array of the form&rsquo;s fields</td>
+</tr>
+<tr>
+<td><strong>form</strong></td>
+<td>Mautic\FormBundle\Entity\Form</td>
+<td>Form entity</td>
+</tr>
+<tr>
+<td><strong>action</strong></td>
+<td>Mautic\FormBundle\Entity\Action</td>
+<td>Action entity</td>
+</tr>
+<tr>
+<td><strong>submission</strong></td>
+<td>Mautic\FormBundle\Entity\Submission</td>
+<td>Submission entity for this submission</td>
+</tr>
+</tbody></table>
+
+          <h3 id="extending-integrations">Extending Integrations</h3>
+
+          <h3 id="extending-landing-pages">Extending Landing Pages</h3>
+<pre><code class="highlight php"><span class="cp">&lt;?php</span>
+<span class="c1">// addons/HelloWorldBundle/EventListener/PageSubscriber.php
+</span>
+<span class="k">namespace</span> <span class="nx">MauticAddons\HelloWorldBundle\EventListener</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Mautic\CoreBundle\EventListener\CommonSubscriber</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Mautic\PageBundle\PageEvents</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Mautic\PageBundle\Event\PageBuilderEvent</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Mautic\PageBundle\Event\PageSendEvent</span><span class="p">;</span>
+
+<span class="sd">/**
+ * Class PageSubscriber
+ */</span>
+<span class="k">class</span> <span class="nc">PageSubscriber</span> <span class="k">extends</span> <span class="nx">CommonSubscriber</span>
+<span class="p">{</span>
+
+    <span class="sd">/**
+     * @return array
+     */</span>
+    <span class="k">static</span> <span class="k">public</span> <span class="k">function</span> <span class="nf">getSubscribedEvents</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+            <span class="nx">PageEvents</span><span class="o">::</span><span class="na">PAGE_ON_BUILD</span>   <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'onPageBuild'</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="nx">PageEvents</span><span class="o">::</span><span class="na">PAGE_ON_DISPLAY</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'onPageDisplay'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**
+     * Register the tokens and a custom A/B test winner
+     *
+     * @param PageBuilderEvent $event
+     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">onPageBuild</span><span class="p">(</span><span class="nx">PageBuilderEvent</span> <span class="nv">$event</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Add page tokens
+</span>        <span class="nv">$content</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">templating</span><span class="o">-&gt;</span><span class="na">render</span><span class="p">(</span><span class="s1">'HelloWorldBundle:SubscribedEvents\PageToken:token.html.php'</span><span class="p">);</span>
+        <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">addTokenSection</span><span class="p">(</span><span class="s1">'helloworld.token'</span><span class="p">,</span> <span class="s1">'addon.helloworld.header'</span><span class="p">,</span> <span class="nv">$content</span><span class="p">);</span>
+
+        <span class="c1">// Add AB Test Winner Criteria
+</span>        <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">addAbTestWinnerCriteria</span><span class="p">(</span>
+            <span class="s1">'helloworld.planetvisits'</span><span class="p">,</span>
+            <span class="k">array</span><span class="p">(</span>
+                <span class="c1">// Label to group by
+</span>                <span class="s1">'group'</span>    <span class="o">=&gt;</span> <span class="s1">'addon.helloworld.header'</span><span class="p">,</span>
+
+                <span class="c1">// Label for this specific a/b test winning criteria
+</span>                <span class="s1">'label'</span>    <span class="o">=&gt;</span> <span class="s1">'addon.helloworld.pagetokens.'</span><span class="p">,</span>
+
+                <span class="c1">// Static callback function that will be used to determine the winner
+</span>                <span class="s1">'callback'</span> <span class="o">=&gt;</span> <span class="s1">'\MauticAddons\HelloWorldBundle\Helper\AbTestHelper::determinePlanetVisitWinner'</span>
+            <span class="p">)</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**
+     * Search and replace tokens with content
+     *
+     * @param PageSendEvent $event
+     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">onPageDisplay</span><span class="p">(</span><span class="nx">PageSendEvent</span> <span class="nv">$event</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Get content
+</span>        <span class="nv">$content</span> <span class="o">=</span> <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">getContent</span><span class="p">();</span>
+
+        <span class="c1">// Search and replace tokens
+</span>        <span class="nv">$content</span> <span class="o">=</span> <span class="nb">str_replace</span><span class="p">(</span><span class="s1">'{hello}'</span><span class="p">,</span> <span class="s1">'world!'</span><span class="p">,</span> <span class="nv">$content</span><span class="p">);</span>
+
+        <span class="c1">// Set updated content
+</span>        <span class="nv">$event</span><span class="o">-&gt;</span><span class="na">setContent</span><span class="p">(</span><span class="nv">$content</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>There are two way to extend pages: page tokens used to insert dynamic content into a page and a/b test winning criteria . Both leverage the <code class="prettyprint">\Mautic\PageBundle\PageEvents::PAGE_ON_BUILD</code> event. Read more about <a href="#events">listeners and subscribers</a>.</p>
+
+<h4 id="page-tokens">Page Tokens</h4>
+
+<p>Page tokens are handled exactly the same as <a href="#page-tokens">Email Tokens</a>.</p>
+
+<h4 id="page-a/b-test-winner-criteria">Page A/B Test Winner Criteria</h4>
+
+<p>Custom landing page A/B test winner criteria is handled exactly the same as <a href="#page-a/b-test-winner-criteria">page A/B test winner criteria</a> with the only differences being that the <code class="prettyprint">callback</code> function is passed <code class="prettyprint">Mautic\PageBundle\Entity\Page $page</code> and <code class="prettyprint">Mautic\PageBundle\Entity\Page $parent</code> instead. Of course <code class="prettyprint">$children</code> is an ArrayCollection of Page entities as well.</p>
+
+          <h3 id="extending-points">Extending Points</h3>
+
+<p>Custom point actions and triggers can be added by listening to their respective on build events. Read more about <a href="#events">listeners and subscribers</a>.</p>
+
+<h4 id="point-actions">Point Actions</h4>
+
+<p>To add a custom point action used to give a lead x points for doing a certain action, add a listener to the <code class="prettyprint">\Mautic\PointBundle\PointEvents::POINT_ON_BUILD</code> event then configure the custom point action with <code class="prettyprint">$event-&gt;addAction($identifier, $parameters)</code> method. <code class="prettyprint">$identifier</code> must be something unique. The <code class="prettyprint">$parameters</code> array can contain the following elements:</p>
+
+<table><thead>
+<tr>
+<th>Key</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>label</strong></td>
+<td>REQUIRED</td>
+<td>string</td>
+<td>The language string for the option in the dropdown</td>
+</tr>
+<tr>
+<td><strong>formType</strong></td>
+<td>OPTIONAL</td>
+<td>string</td>
+<td>The alias of a custom form type used to set config options.</td>
+</tr>
+<tr>
+<td><strong>formTypeOptions</strong></td>
+<td>OPTIONAL</td>
+<td>array</td>
+<td>Array of options to include into the formType&rsquo;s $options argument</td>
+</tr>
+<tr>
+<td><strong>formTypeCleanMasks</strong></td>
+<td>OPTIONAL</td>
+<td>array</td>
+<td>Array of input masks to clean a values from formType</td>
+</tr>
+<tr>
+<td><strong>formTypeTheme</strong></td>
+<td>OPTIONAL</td>
+<td>string</td>
+<td>Theme to customize elements for formType</td>
+</tr>
+<tr>
+<td><strong>template</strong></td>
+<td>OPTIONAL</td>
+<td>string</td>
+<td>View template used to render the formType</td>
+</tr>
+<tr>
+<td><strong>callback</strong></td>
+<td>OPTIONAL</td>
+<td>mixed</td>
+<td>Static callback function used to validate the action. Return true to add the points to the lead.</td>
+</tr>
+</tbody></table>
+
+<p>In order for the custom point action to work, add something like the following in the code logic when the lead executes the custom action:</p>
+
+<p>$this-&gt;factory-&gt;getModel(&lsquo;point&rsquo;)-&gt;triggerAction(&#39;page.hit&rsquo;, $event-&gt;getHit());</p>
+
+<h4 id="point-triggers">Point Triggers</h4>
+
+<p>TRIGGER_ON_BUILD</p>
+
+          <h3 id="extending-reports">Extending Reports</h3>
+
+          <h3 id="manipulating-leads">Manipulating Leads</h3>
 
           <h1 id="themes">Themes</h1>
 
