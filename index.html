@@ -5172,8 +5172,10 @@ Base API Endpoint: <br />
 </code></pre>
 
 <h3 id="get-lead">Get Lead</h3>
-<pre><code class="highlight php">//...
-$lead = $leadApi-&gt;get($id);
+<pre><code class="highlight php"><span class="cp">&lt;?php</span>
+
+<span class="c1">//...
+</span><span class="nv">$lead</span> <span class="o">=</span> <span class="nv">$leadApi</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
 </code></pre>
 <pre><code class="highlight json"><span class="w">    </span><span class="s2">"lead"</span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">47</span><span class="p">,</span><span class="w">
@@ -5354,8 +5356,10 @@ $lead = $leadApi-&gt;get($id);
 </tbody></table>
 
 <h3 id="list-leads">List Leads</h3>
-<pre><code class="highlight php">//...
-$leads = $leadApi-&gt;getList($searchFilter, $start, $limit, $orderBy, $orderByDir);
+<pre><code class="highlight php"><span class="cp">&lt;?php</span>
+
+<span class="c1">//...
+</span><span class="nv">$leads</span> <span class="o">=</span> <span class="nv">$leadApi</span><span class="o">-&gt;</span><span class="na">getList</span><span class="p">(</span><span class="nv">$searchFilter</span><span class="p">,</span> <span class="nv">$start</span><span class="p">,</span> <span class="nv">$limit</span><span class="p">,</span> <span class="nv">$orderBy</span><span class="p">,</span> <span class="nv">$orderByDir</span><span class="p">);</span>
 </code></pre>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
     </span><span class="s2">"total"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
@@ -5497,14 +5501,16 @@ $leads = $leadApi-&gt;getList($searchFilter, $start, $limit, $orderBy, $orderByD
 <p>Same as <a href="#get-lead">Get Lead</a>.</p>
 
 <h3 id="create-lead">Create Lead</h3>
-<pre><code class="highlight php">$data = array(
-    'firstname' =&gt; 'Jim',
-    'lastname'  =&gt; 'Lead',
-    'email'     =&gt; 'jim@his-site.com',
-    'ipAddress' =&gt; $_SERVER['REMOTE_ADDR']
-);
+<pre><code class="highlight php"><span class="cp">&lt;?php</span> 
 
-$lead = $leadApi-&gt;create($data);
+<span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">'firstname'</span> <span class="o">=&gt;</span> <span class="s1">'Jim'</span><span class="p">,</span>
+    <span class="s1">'lastname'</span>  <span class="o">=&gt;</span> <span class="s1">'Lead'</span><span class="p">,</span>
+    <span class="s1">'email'</span>     <span class="o">=&gt;</span> <span class="s1">'jim@his-site.com'</span><span class="p">,</span>
+    <span class="s1">'ipAddress'</span> <span class="o">=&gt;</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">'REMOTE_ADDR'</span><span class="p">]</span>
+<span class="p">);</span>
+
+<span class="nv">$lead</span> <span class="o">=</span> <span class="nv">$leadApi</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
 </code></pre>
 
 <p>Create a new lead.</p>
@@ -5548,16 +5554,18 @@ $lead = $leadApi-&gt;create($data);
 <p>Same as <a href="#get-lead">Get Lead</a>.</p>
 
 <h3 id="edit-lead">Edit Lead</h3>
-<pre><code class="highlight php">$id   = 1;
-$data = array(
-    'email'     =&gt; 'jim-new-address@his-site.com',
-    'ipAddress' =&gt; $_SERVER['REMOTE_ADDR']
-);
+<pre><code class="highlight php"><span class="cp">&lt;?php</span>
 
-// Create new a lead of ID 1 is not found?
-$createIfNotFound = true;
+<span class="nv">$id</span>   <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">'email'</span>     <span class="o">=&gt;</span> <span class="s1">'jim-new-address@his-site.com'</span><span class="p">,</span>
+    <span class="s1">'ipAddress'</span> <span class="o">=&gt;</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">'REMOTE_ADDR'</span><span class="p">]</span>
+<span class="p">);</span>
 
-$lead = $leadApi-&gt;edit($id, $data, $createIfNotFound);
+<span class="c1">// Create new a lead of ID 1 is not found?
+</span><span class="nv">$createIfNotFound</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+<span class="nv">$lead</span> <span class="o">=</span> <span class="nv">$leadApi</span><span class="o">-&gt;</span><span class="na">edit</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="nv">$data</span><span class="p">,</span> <span class="nv">$createIfNotFound</span><span class="p">);</span>
 </code></pre>
 
 <p>Edit a new lead.  Note that this supports PUT or PATCH depending on the desired behavior for when a lead cannot be found based on the ID given.</p>
@@ -5609,7 +5617,9 @@ $lead = $leadApi-&gt;edit($id, $data, $createIfNotFound);
 <p>Same as <a href="#get-lead">Get Lead</a>.</p>
 
 <h3 id="delete-lead">Delete Lead</h3>
-<pre><code class="highlight php">$lead = $leadApi-&gt;delete($id);
+<pre><code class="highlight php"><span class="cp">&lt;?php</span>
+
+<span class="nv">$lead</span> <span class="o">=</span> <span class="nv">$leadApi</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
 </code></pre>
 
 <p>Delete a lead.</p>
@@ -5627,7 +5637,9 @@ $lead = $leadApi-&gt;edit($id, $data, $createIfNotFound);
 <p>Same as <a href="#get-lead">Get Lead</a>.</p>
 
 <h3 id="list-available-owners">List Available Owners</h3>
-<pre><code class="highlight php">$owners = $leadApi-&gt;getOwners();
+<pre><code class="highlight php"><span class="cp">&lt;?php</span>
+
+<span class="nv">$owners</span> <span class="o">=</span> <span class="nv">$leadApi</span><span class="o">-&gt;</span><span class="na">getOwners</span><span class="p">();</span>
 </code></pre>
 <pre><code class="highlight json"><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
@@ -5680,7 +5692,9 @@ $lead = $leadApi-&gt;edit($id, $data, $createIfNotFound);
 </tbody></table>
 
 <h3 id="list-available-fields">List Available Fields</h3>
-<pre><code class="highlight php">$fields = $leadApi-&gt;getFieldList();
+<pre><code class="highlight php"><span class="cp">&lt;?php</span>
+
+<span class="nv">$fields</span> <span class="o">=</span> <span class="nv">$leadApi</span><span class="o">-&gt;</span><span class="na">getFieldList</span><span class="p">();</span>
 </code></pre>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
     </span><span class="s2">"1"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
