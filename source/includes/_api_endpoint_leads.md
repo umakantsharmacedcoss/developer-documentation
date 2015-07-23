@@ -14,6 +14,8 @@ $leadApi  = MauticApi::getContext("leads", $auth, $apiUrl);
 
 ### Get Lead
 ```php
+<?php
+
 //...
 $lead = $leadApi->get($id);
 ```
@@ -135,6 +137,8 @@ fields|array|Array of all lead fields with data grouped by field group. See JSON
 
 ### List Leads
 ```php
+<?php
+
 //...
 $leads = $leadApi->getList($searchFilter, $start, $limit, $orderBy, $orderByDir);
 ```
@@ -256,6 +260,8 @@ Same as [Get Lead](#get-lead).
 
 ### Create Lead
 ```php
+<?php 
+
 $data = array(
     'firstname' => 'Jim',
     'lastname'  => 'Lead',
@@ -290,6 +296,8 @@ Same as [Get Lead](#get-lead).
 
 ### Edit Lead
 ```php
+<?php
+
 $id   = 1;
 $data = array(
     'email'     => 'jim-new-address@his-site.com',
@@ -334,6 +342,8 @@ Same as [Get Lead](#get-lead).
 
 ### Delete Lead
 ```php
+<?php
+
 $lead = $leadApi->delete($id);
 ```
 Delete a lead.
@@ -352,6 +362,8 @@ Same as [Get Lead](#get-lead).
 
 ### List Available Owners
 ```php
+<?php
+
 $owners = $leadApi->getOwners();
 ```
 ```json
@@ -388,6 +400,8 @@ lastName|string|Last name of the Mautic user
 
 ### List Available Fields
 ```php
+<?php
+
 $fields = $leadApi->getFieldList();
 ```
 ```json
