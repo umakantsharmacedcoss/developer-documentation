@@ -140,7 +140,7 @@ $campaigns = $campaignApi->getList($searchFilter, $start, $limit, $orderBy, $ord
                     "description": null,
                     "order": 1,
                     "properties": {
-                      "email": 1
+                        "email": 1
                     },
                     "triggerMode": "immediate",
                     "triggerDate": null,
@@ -158,7 +158,7 @@ $campaigns = $campaignApi->getList($searchFilter, $start, $limit, $orderBy, $ord
                     "description": null,
                     "order": 2,
                     "properties": {
-                      "points": 20
+                        "points": 20
                     },
                     "triggerMode": "immediate",                
                     "triggerDate": null,

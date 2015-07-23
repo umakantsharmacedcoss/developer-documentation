@@ -39,50 +39,50 @@ $form = $formApi->get($id);
         "submissionCount": 10,
         "fields": {
             "26": {
-              "id": 26,
-              "label": "Email",
-              "showLabel": false,
-              "alias": "email",
-              "type": "text",
-              "defaultValue": null,
-              "isRequired": true,
-              "validationMessage": "Email is required",
-              "helpMessage": null,
-              "order": 1,
-              "properties": {
-                "placeholder": "Email address"
-              },
-              "labelAttributes": null,
-              "inputAttributes": null,
-              "containerAttributes": null
+                "id": 26,
+                "label": "Email",
+                "showLabel": false,
+                "alias": "email",
+                "type": "text",
+                "defaultValue": null,
+                "isRequired": true,
+                "validationMessage": "Email is required",
+                "helpMessage": null,
+                "order": 1,
+                "properties": {
+                    "placeholder": "Email address"
+                },
+                "labelAttributes": null,
+                "inputAttributes": null,
+                "containerAttributes": null
             },
             "27": {
-              "id": 27,
-              "label": "Submit",
-              "showLabel": true,
-              "alias": "submit",
-              "type": "button",
-              "defaultValue": null,
-              "isRequired": false,
-              "validationMessage": null,
-              "helpMessage": null,
-              "order": 4,
-              "properties": [],
-              "labelAttributes": null,
-              "inputAttributes": null,
-              "containerAttributes": null
+                "id": 27,
+                "label": "Submit",
+                "showLabel": true,
+                "alias": "submit",
+                "type": "button",
+                "defaultValue": null,
+                "isRequired": false,
+                "validationMessage": null,
+                "helpMessage": null,
+                "order": 4,
+                "properties": [],
+                "labelAttributes": null,
+                "inputAttributes": null,
+                "containerAttributes": null
             }
         },
         "actions": {
             "4": {
-              "id": 4,
-              "type": "email.send.lead",
-              "name": "Send thank you email",
-              "description": null,
-              "order": 1,
-              "properties": {
-                "email": 21
-              }
+                "id": 4,
+                "type": "email.send.lead",
+                "name": "Send thank you email",
+                "description": null,
+                "order": 1,
+                "properties": {
+                    "email": 21
+                }
             }
         }
     }
@@ -184,50 +184,50 @@ $forms = $formApi->getList($searchFilter, $start, $limit, $orderBy, $orderByDir)
             "submissionCount": 10,
             "fields": {
                 "26": {
-                  "id": 26,
-                  "label": "Email",
-                  "showLabel": false,
-                  "alias": "email",
-                  "type": "text",
-                  "defaultValue": null,
-                  "isRequired": true,
-                  "validationMessage": "Email is required",
-                  "helpMessage": null,
-                  "order": 1,
-                  "properties": {
-                    "placeholder": "Email address"
-                  },
-                  "labelAttributes": null,
-                  "inputAttributes": null,
-                  "containerAttributes": null
+                    "id": 26,
+                    "label": "Email",
+                    "showLabel": false,
+                    "alias": "email",
+                    "type": "text",
+                    "defaultValue": null,
+                    "isRequired": true,
+                    "validationMessage": "Email is required",
+                    "helpMessage": null,
+                    "order": 1,
+                    "properties": {
+                        "placeholder": "Email address"
+                    },
+                    "labelAttributes": null,
+                    "inputAttributes": null,
+                    "containerAttributes": null
                 },
                 "27": {
-                  "id": 27,
-                  "label": "Submit",
-                  "showLabel": true,
-                  "alias": "submit",
-                  "type": "button",
-                  "defaultValue": null,
-                  "isRequired": false,
-                  "validationMessage": null,
-                  "helpMessage": null,
-                  "order": 4,
-                  "properties": [],
-                  "labelAttributes": null,
-                  "inputAttributes": null,
-                  "containerAttributes": null
+                    "id": 27,
+                    "label": "Submit",
+                    "showLabel": true,
+                    "alias": "submit",
+                    "type": "button",
+                    "defaultValue": null,
+                    "isRequired": false,
+                    "validationMessage": null,
+                    "helpMessage": null,
+                    "order": 4,
+                    "properties": [],
+                    "labelAttributes": null,
+                    "inputAttributes": null,
+                    "containerAttributes": null
                 }
             },
             "actions": {
                 "4": {
-                  "id": 4,
-                  "type": "email.send.lead",
-                  "name": "Send thank you email",
-                  "description": null,
-                  "order": 1,
-                  "properties": {
-                    "email": 21
-                  }
+                    "id": 4,
+                    "type": "email.send.lead",
+                    "name": "Send thank you email",
+                    "description": null,
+                    "order": 1,
+                    "properties": {
+                        "email": 21
+                    }
                 }
             }
         }
