@@ -1,4 +1,6 @@
 ## Pages
+Use this endpoint to obtain details on Mautic's landing pages.
+
 ```php
 <?php
 use Mautic\MauticApi;

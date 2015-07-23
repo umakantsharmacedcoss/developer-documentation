@@ -1,4 +1,6 @@
 ## Leads
+Use this endpoint to manipulate and obtain details on Mautic's leads.
+
 ```php
 <?php
 use Mautic\MauticApi;

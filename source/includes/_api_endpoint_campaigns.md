@@ -1,4 +1,6 @@
 ## Campaigns
+Use this endpoint to obtain details on Mautic's campaigns.
+
 ```php
 <?php
 use Mautic\MauticApi;

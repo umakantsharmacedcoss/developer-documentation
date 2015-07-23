@@ -1,4 +1,6 @@
 ## Lists
+Use this endpoint to obtain details on Mautic's lead lists or to manipulate lead memberships.
+
 ```php
 <?php
 use Mautic\MauticApi;

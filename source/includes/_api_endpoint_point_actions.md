@@ -1,4 +1,6 @@
 ## Point Actions
+Use this endpoint to obtain details on Mautic's point actions.
+
 ```php
 <?php
 use Mautic\MauticApi;

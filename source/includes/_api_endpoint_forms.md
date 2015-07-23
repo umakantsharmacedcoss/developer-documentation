@@ -1,4 +1,6 @@
 ## Forms
+Use this endpoint to obtain details on Mautic's forms.
+
 ```php
 <?php
 use Mautic\MauticApi;

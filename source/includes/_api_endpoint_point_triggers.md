@@ -1,4 +1,6 @@
 ## Point Triggers
+Use this endpoint to obtain details on Mautic's point triggers.
+
 ```php
 <?php
 use Mautic\MauticApi;

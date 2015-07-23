@@ -1,5 +1,5 @@
 ## Assets
-The assets endpoint allow access to obtain 
+Use this endpoint to obtain details on Mautic's assets. 
 
 ```php
 <?php
