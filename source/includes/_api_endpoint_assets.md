@@ -1,4 +1,6 @@
 ## Assets
+The assets endpoint allow access to obtain 
+
 ```php
 <?php
 use Mautic\MauticApi;
@@ -40,7 +42,8 @@ $asset = $assetApi->get($id);
         "category": "Whitepapers",
         "extension": "pdf",
         "mime": "application/pdf",
-        "size": 269128
+        "size": 269128,
+        "downloadUrl": "https://your-mautic.com/asset/1:whitepaper"
     }
 }
 ```
@@ -81,6 +84,7 @@ category|string/null|Name of the category
 extension|string|Extension of the asset
 mime|string|Mime type of the asset
 size|int|Filesize of the asset in bytes
+downloadUrl|string|Public download URL for the asset
 
 ### List Assets
 ```php
@@ -114,7 +118,8 @@ $assets = $assetApi->getList($searchFilter, $start, $limit, $orderBy, $orderByDi
             "category": "Whitepapers",
             "extension": "pdf",
             "mime": "application/pdf",
-            "size": 269128
+            "size": 269128,
+            "downloadUrl": "https://your-mautic.com/asset/1:whitepaper"
         }
     ]
 }
