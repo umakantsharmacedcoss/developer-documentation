@@ -170,7 +170,7 @@ html, body {
     padding: 0 $nav-padding 0 $nav-padding;
     display: block;
     overflow-x: hidden;
-    white-space: nowrap;
+    /**white-space: nowrap;**/
     text-overflow: ellipsis;
   }
 
@@ -559,6 +559,11 @@ html, body {
       @include text-shadow(0 1px 0 lighten($aside-notice-bg, 15%));
       color: $aside-notice-text;
       background: $aside-notice-bg;
+
+      a {
+        color: #ffffff;
+        text-decoration: underline;
+      }
     }
 
     &.warning {
@@ -639,6 +644,8 @@ html, body {
       color: $aside-text;
       text-shadow: none;
       margin-bottom: 10px;
+
+      width: 60%;
     }
   }
 

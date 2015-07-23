@@ -171,42 +171,44 @@ For views, use the `$view['router']` helper. The difference with the [template h
 ```php
 <?php
 
+$request = $this->factory->getRequest();
+
 // $_GET
-$get = $this->request->query->all();
+$get = $request->query->all();
 
 // $_POST
-$post = $this->request->request->all();
+$post = $request->request->all();
 
 // $_COOKIE
-$cookies = $this->request->cookies->all();
+$cookies = $request->cookies->all();
 
 // $_SERVER
-$server = $this->request->server->all();
+$server = $request->server->all();
 
 // Headers
-$headers = $this->request->headers->all();
+$headers = $request->headers->all();
 
 // Attributes - custom parameters
-$headers = $this->request->attributes->all();
+$headers = $request->attributes->all();
 
 // Check if a parameter exists
-if ($this->request->request->has('hello') {
+if ($request->request->has('hello') {
     // do something
 }
 
 // Retrieve value of a specific parameter setting mars as default
-$world = $this->request->query->get('world', 'mars');
+$world = $request->query->get('world', 'mars');
 
 // Set custom request value
-$this->request->attributes->set('hello', 'world');
+$request->attributes->set('hello', 'world');
 
 // Get the value of a nested array
-$mars = $this->request->request->get('world[mars]', array(), true);
+$mars = $request->request->get('world[mars]', array(), true);
 ```
 
 There are multiple ways to obtain the request service.
  
-If the controller is extending one of [Mautic's controllers](#controllers), it is already available via `$this->request`.
+If the controller is extending one of [Mautic's controllers](#controllers), it is already available via `$request`.
 
 Otherwise, if from with a model or a service with access to [Mautic's factory service](#factory-service), use `$this->factory->getRequest()`.
 
@@ -217,7 +219,7 @@ From within a view, use `$app->getRequest()`.
 ```php
 <?php
 
-$session = $this->getSession();
+$session = $this->factory->getSession();
 
 // Get all session parameters
 $all = $session->all();
@@ -244,4 +246,20 @@ To obtain the session service from a controller, model, or a service with access
 
 From within a view, use `$app->getSession()`.
 
-### Entity 
+### Database/Entity Manager
+ 
+```php
+<?php
+$em         = $this->factory->getEntityManager();
+$repository = $em->getRepository('HelloWorldBundle:World');
+$worlds     = $repository->getEntities();
+
+/** @var \MauticAddon\HelloWorldBundle\Entity\World $world */
+foreach ($worlds as $world) {
+    $world->upVisitCount();
+}
+
+$repository->saveEntities($worlds);
+```
+
+The entity manager can be used to interact with the bundle's repositories and entities. See [Database](##database) for more info. 

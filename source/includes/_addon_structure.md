@@ -32,9 +32,9 @@ A typical MVC addon may look something like:
 
 HelloWorldBundle/<br />
 - - - [Assets/](#asset-helper)<br />
-- - - - - - images/
-- - - - - - - - - earth.png
-- - - - - - - - - mars.png
+- - - - - - images/ <br />
+- - - - - - - - - earth.png<br />
+- - - - - - - - - mars.png<br />
 - - - - - - helloworld.js<br />
 - - - - - - helloworld.css<br />
 - - - [Config/](#addon-config-file)<br />

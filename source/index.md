@@ -3,6 +3,7 @@ title: Mautic Developer Documentation
 
 language_tabs:
   - php
+  - json
 
 toc_footers:
   - <a href='https://github.com/mautic/mautic'>Download Mautic source</a>
@@ -28,8 +29,6 @@ includes:
   - addon_misc_helpers
   - addon_misc_forms
   - addon_misc_events
-  - addon_misc_events_list
-  - addon_misc_js_helpers
   - addon_extending_intro  
   - addon_extending_api  
   - addon_extending_campaigns
@@ -41,19 +40,21 @@ includes:
   - addon_extending_points
   - addon_extending_reports  
   - addon_extending_leads
-  - themes_intro
-  - themes_structure
-  - themes_config
-  - themes_feature_files
+  - themes
   - api_intro
-  - api_authentication
+  - api_authorization
+  - api_authorization_oauth1a
+  - api_authorization_oauth2
+  - api_libraries
+  - api_endpoints
+  - api_endpoint_leads  
   - api_endpoint_assets
   - api_endpoint_campaigns
   - api_endpoint_forms
-  - api_endpoint_leads
   - api_endpoint_lists
   - api_endpoint_pages
-  - api_endpoint_points
+  - api_endpoint_point_actions
+  - api_endpoint_point_triggers
   
 search: true
 ---

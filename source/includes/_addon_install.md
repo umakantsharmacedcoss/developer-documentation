@@ -21,6 +21,11 @@ class HelloWorldBundle extends AddonBundleBase
     static public function onInstall(MauticFactory $factory)
     {
         // Execute install stuff such as installing database schema
+        
+        $db     = $factory->getDatabase();
+        $schema = $db->getSchemaManager();
+        
+        // Do stuff with $schema
     }
 
     /**
@@ -33,6 +38,13 @@ class HelloWorldBundle extends AddonBundleBase
     {
         // Execute update stuff such as upgrading the database schema
         // $addon is the Addon entity with details of what was installed previously
+        
+        $oldVersion = $addon->getVersion();
+        
+        $db     = $factory->getDatabase();
+        $schema = $db->getSchemaManager();
+                
+        // Do stuff with $schema
     }
 }
 ```
