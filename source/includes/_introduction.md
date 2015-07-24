@@ -1,6 +1,6 @@
 # Introduction
 
-Welcome to the Mautic Developer Documentation. This documentation will go over how to build a Mautic Addon that extends the features of Mautic and how to integrate applications outside of Mautic using its REST API. 
+Welcome to the Mautic Developer Documentation. This documentation will go over how to build a Mautic Addon that extends the features of Mautic, how to build custom themes, and and how to integrate applications outside of Mautic using its REST API. 
 
 ## Submitting Code to Mautic
 
