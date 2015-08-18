@@ -173,5 +173,4 @@ You can refer to the model for more documentation on the <code>QueueWebhooks</co
 In short you want to pass the event entities that this payload is being queued against
 The payload, which is an array, and finally the serializer groups for formatting the JSON.
 
-
-This should complete the set up registering and executing custom webhook events and payloads.
+This should complete the set up, registering and executing custom webhook events and payloads.
