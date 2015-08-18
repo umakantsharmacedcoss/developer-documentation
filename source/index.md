@@ -40,6 +40,7 @@ includes:
   - addon_extending_points
   - addon_extending_reports  
   - addon_extending_leads
+  - addon_extending_webhooks
   - themes
   - api_intro
   - api_authorization
