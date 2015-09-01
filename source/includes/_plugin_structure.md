@@ -1,21 +1,21 @@
-## Addon Directory Structure
+## Plugin Directory Structure
 
 ```php
 <?php
-// addons/HelloWorldBundle/HelloWorldBundle.php
+// plugins/HelloWorldBundle/HelloWorldBundle.php
 
-namespace MauticAddon\HelloWorldBundle;
+namespace MauticPlugin\HelloWorldBundle;
 
-use Mautic\AddonBundle\Bundle\AddonBundleBase;
+use Mautic\PluginBundle\Bundle\PluginBundleBase;
 
-class HelloWorldBundle extends AddonBundleBase
+class HelloWorldBundle extends PluginBundleBase
 {
     // Nothing more required
 }
 
 ```
 
-The directory structure of an addon will vary based on the features implemented. 
+The directory structure of an plugin will vary based on the features implemented. 
 
 At a minimum, the following structure is required:
 
@@ -24,11 +24,11 @@ HelloWorldBundle/<br />
 - - - - - config.php<br />
 - - - HelloWorldBundle.php
 
-Read more about the [config file](#addon-config-file).
+Read more about the [config file](#plugin-config-file).
 
 The HelloWorldBundle.php file registers the bundle with Symfony. See the code block for the minimum required code.
 
-A typical MVC addon may look something like:
+A typical MVC plugin may look something like:
 
 HelloWorldBundle/<br />
 - - - [Assets/](#asset-helper)<br />
@@ -37,7 +37,7 @@ HelloWorldBundle/<br />
 - - - - - - - - - mars.png<br />
 - - - - - - helloworld.js<br />
 - - - - - - helloworld.css<br />
-- - - [Config/](#addon-config-file)<br />
+- - - [Config/](#plugin-config-file)<br />
 - - - - - - config.php<br />
 - - - [Controller/](#controllers)<br />
 - - - - - - DefaultController.php<br />

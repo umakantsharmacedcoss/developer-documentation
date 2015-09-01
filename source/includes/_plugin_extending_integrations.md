@@ -3,13 +3,13 @@
 ```php
 <?php
 <?php
-// addons\HelloWorldBundle\Integration\MarsIntegration
+// plugins\HelloWorldBundle\Integration\MarsIntegration
 
-namespace MauticAddon\HelloWorldBundle\Integration;
+namespace MauticPlugin\HelloWorldBundle\Integration;
 
-use Mautic\AddonBundle\Entity\Integration;
-use Mautic\AddonBundle\Integration\AbstractIntegration;
-use Mautic\AddonBundle\Helper\oAuthHelper;
+use Mautic\PluginBundle\Entity\Integration;
+use Mautic\PluginBundle\Integration\AbstractIntegration;
+use Mautic\PluginBundle\Helper\oAuthHelper;
 
 /**
  * Class MarsIntegration
@@ -77,15 +77,15 @@ class MarsIntegration extends AbstractIntegration
 }
 ```
 
-Integrating 3rd party services in Mautic can be done by defining an Integration class for the service. For example, the MauticSocialBundle has several social media service classes defined in \Addons\MauticSocialBundle\Integration.  Each integration class handles the authorization process, integration configuration, etc.
+Integrating 3rd party services in Mautic can be done by defining an Integration class for the service. For example, the MauticSocialBundle has several social media service classes defined in \Plugins\MauticSocialBundle\Integration.  Each integration class handles the authorization process, integration configuration, etc.
  
 #### Integration Class
  
- Each addon can have multiple integrations by defining each as it's own Integration class in the bundle's Integration folder. The class should extend `\Mautic\AddonBundle\Integration\AbstractIntegration`. It defines the integration and provides a number of helper functions including OAuth authorization/request signing functions.
+ Each plugin can have multiple integrations by defining each as it's own Integration class in the bundle's Integration folder. The class should extend `\Mautic\PluginBundle\Integration\AbstractIntegration`. It defines the integration and provides a number of helper functions including OAuth authorization/request signing functions.
  
 #### Integration Image
  
- Each integration is displayed on a "card" in the Manage Addons area. To set an image for the integration, include an image in the bundle's Assets\img.  It should be 128x128px, be in a png, and have the same name as returned by `getName()` as lower case. For example, `\MauticAddon\HelloWorldBundle\Integration\MarsIntegration` should have an image `addons\HelloWorldBundle\Assets\img\mars.png`.  
+ Each integration is displayed on a "card" in the Manage Plugins area. To set an image for the integration, include an image in the bundle's Assets\img.  It should be 128x128px, be in a png, and have the same name as returned by `getName()` as lower case. For example, `\MauticPlugin\HelloWorldBundle\Integration\MarsIntegration` should have an image `plugins\HelloWorldBundle\Assets\img\mars.png`.  
   
 #### Authorization
 

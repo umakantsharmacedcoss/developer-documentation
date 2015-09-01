@@ -1,7 +1,7 @@
 ### Extending API
 ```php
 <?php
-// addons/HelloWorldBundle/Config/config.php
+// plugins/HelloWorldBundle/Config/config.php
 
 return array(
     // ...
@@ -11,7 +11,7 @@ return array(
         // ...
         
         'api' => array(
-            'addon_helloworld_api' => array(
+            'plugin_helloworld_api' => array(
                 'path'       => '/hello/worlds',
                 'controller' => 'HelloWorldBundle:Api:worlds',
                 'method'     => 'GET'
@@ -25,7 +25,7 @@ return array(
 
 ```php
 <?php
-// addons/HelloWorldBundle/Controller/ApiController.php
+// plugins/HelloWorldBundle/Controller/ApiController.php
 
 namespace Mautic\LeadBundle\Controller\Api;
 
@@ -42,7 +42,7 @@ class ApiController extends CommonApiController
      */
     public function getWorldsAction()
     {
-        if (!$this->factory->getSecurity()->isGranted('addon:helloWorld:worlds:view')) {
+        if (!$this->factory->getSecurity()->isGranted('plugin:helloWorld:worlds:view')) {
             return $this->accessDenied();
         }
 
@@ -50,8 +50,8 @@ class ApiController extends CommonApiController
         $limit   = $this->request->query->get('limit', null);
         $start   = $this->request->query->get('start', null);
         
-        /** @var \MauticAddons\HelloWorldBundle\Model\WorldsModel $model */
-        $model   = $this->factory->getModel('addon.helloWorld.worlds');
+        /** @var \MauticPlugin\HelloWorldBundle\Model\WorldsModel $model */
+        $model   = $this->factory->getModel('plugin.helloworld.worlds');
 
         $worlds  = $model->getWorlds($filter, $limit, $start);
         $worlds  = $this->view($worlds, Codes::HTTP_OK);
@@ -61,6 +61,6 @@ class ApiController extends CommonApiController
 }
 ```
 
-To add custom API endpoints, simply define the routes under the API firewall in the [addon's config file](#routes). This will place the route behind /api which will only be accessible if the requester has been authorized via OAuth.
+To add custom API endpoints, simply define the routes under the API firewall in the [plugin's config file](#routes). This will place the route behind /api which will only be accessible if the requester has been authorized via OAuth.
  
 The api controller(s), should extend `Mautic\ApiBundle\Controller\CommonApiController` to leverage the helper methods provided and to utilize the REST views.

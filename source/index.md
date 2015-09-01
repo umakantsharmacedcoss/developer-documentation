@@ -11,36 +11,36 @@ toc_footers:
 
 includes:
   - introduction
-  - addon_intro
-  - addon_structure
-  - addon_install  
-  - addon_config
-  - addon_translations  
-  - addon_mvc
-  - addon_mvc_controllers
-  - addon_mvc_models
-  - addon_mvc_views      
-  - addon_factory
-  - addon_database
-  - addon_permissions
-  - addon_configuration
-  - addon_misc
-  - addon_misc_flashes
-  - addon_misc_helpers
-  - addon_misc_forms
-  - addon_misc_events
-  - addon_extending_intro  
-  - addon_extending_api  
-  - addon_extending_campaigns
-  - addon_extending_categories
-  - addon_extending_emails
-  - addon_extending_forms
-  - addon_extending_integrations
-  - addon_extending_pages
-  - addon_extending_points
-  - addon_extending_reports  
-  - addon_extending_leads
-  - addon_extending_webhooks
+  - plugin_intro
+  - plugin_structure
+  - plugin_install  
+  - plugin_config
+  - plugin_translations  
+  - plugin_mvc
+  - plugin_mvc_controllers
+  - plugin_mvc_models
+  - plugin_mvc_views      
+  - plugin_factory
+  - plugin_database
+  - plugin_permissions
+  - plugin_configuration
+  - plugin_misc
+  - plugin_misc_flashes
+  - plugin_misc_helpers
+  - plugin_misc_forms
+  - plugin_misc_events
+  - plugin_extending_intro  
+  - plugin_extending_api  
+  - plugin_extending_campaigns
+  - plugin_extending_categories
+  - plugin_extending_emails
+  - plugin_extending_forms
+  - plugin_extending_integrations
+  - plugin_extending_pages
+  - plugin_extending_points
+  - plugin_extending_reports  
+  - plugin_extending_leads
+  - plugin_extending_webhooks
   - themes
   - api_intro
   - api_authorization

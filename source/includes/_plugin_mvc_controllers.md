@@ -2,9 +2,9 @@
 
 ```php
 <?php
-// addons/HelloWorldBundle/Controller/DefaultController.php
+// plugins/HelloWorldBundle/Controller/DefaultController.php
 
-namespace MauticAddon\HelloWorldBundle\Controller;
+namespace MauticPlugin\HelloWorldBundle\Controller;
 
 use Mautic\CoreBundle\Controller\FormController;
 
@@ -19,8 +19,8 @@ class DefaultController extends FormController
      */
     public function worldAction($world = 'earth')
     {
-        /** @var \MauticAddon\HelloBundleBundle\Model\WorldModel $model */
-        $model = $this->factory->getModel('addon.helloWorld.world');
+        /** @var \MauticPlugin\HelloBundleBundle\Model\WorldModel $model */
+        $model = $this->factory->getModel('plugin.helloworld.world');
 
         // Retrieve details about the world
         $worldDetails = $model->getWorldDetails($world);
@@ -33,8 +33,8 @@ class DefaultController extends FormController
                 ),
                 'contentTemplate' => 'HelloWorldBundle:World:details.html.php',
                 'passthroughVars' => array(
-                    'activeLink'    => 'addon_helloworld_world',
-                    'route'         => $this->generateUrl('addon_helloworld_world', array('world' => $world)),
+                    'activeLink'    => 'plugin_helloworld_world',
+                    'route'         => $this->generateUrl('plugin_helloworld_world', array('world' => $world)),
                     'mauticContent' => 'helloWorldDetails'
                 )
             )
@@ -61,8 +61,8 @@ class DefaultController extends FormController
                 // isFormValid() will bind the request to the form object and validate the data
                 if ($valid = $this->isFormValid($form)) {
 
-                    /** @var \MauticAddon\HelloBundleBundle\Model\ContactModel $model */
-                    $model = $this->factory->getModel('addon.helloWorld.contact');
+                    /** @var \MauticPlugin\HelloBundleBundle\Model\ContactModel $model */
+                    $model = $this->factory->getModel('plugin.helloworld.contact');
 
                     // Send the email
                     $model->sendContactEmail($form->getData());
@@ -70,7 +70,7 @@ class DefaultController extends FormController
                     // Set success flash message
                     $flashes[] = array(
                         'type'    => 'notice',
-                        'msg'     => 'addon.helloworld.notice.thank_you',
+                        'msg'     => 'plugin.helloworld.notice.thank_you',
                         'msgVars' => array(
                             '%name%' => $form['name']->getData()
                         )
@@ -83,7 +83,7 @@ class DefaultController extends FormController
 
                 return $this->postActionRedirect(
                     array(
-                        'returnUrl'       => $this->generateUrl('addon_helloworld_world'),
+                        'returnUrl'       => $this->generateUrl('plugin_helloworld_world'),
                         'contentTemplate' => 'HelloWorldBundle:Default:world',
                         'flashes'         => $flashes
                     )
@@ -99,8 +99,8 @@ class DefaultController extends FormController
                 ),
                 'contentTemplate' => 'HelloWorldBundle:Contact:form.html.php',
                 'passthroughVars' => array(
-                    'activeLink' => 'addon_helloworld_contact',
-                    'route'      => $this->generateUrl('addon_helloworld_contact')
+                    'activeLink' => 'plugin_helloworld_contact',
+                    'route'      => $this->generateUrl('plugin_helloworld_contact')
                 )
             )
         );
@@ -112,7 +112,7 @@ class DefaultController extends FormController
 The controller method called is determined by the [route defined in the config](#routes). Take this example,
 
 <pre class="inline">
-addon_helloworld_admin' => array(
+plugin_helloworld_admin' => array(
     'path'       => '/hello/admin',
     'controller' => 'HelloWorldBundle:Default:admin'
  ),
@@ -123,7 +123,7 @@ The controller is noted as `HelloWorldBundle:Default:admin`. Broken down, that w
 <table>
 <tr>
     <td>HelloWorldBundle</td>
-    <td>\MauticAddons\HelloWorldBundle\Controller</td>
+    <td>\MauticPlugin\HelloWorldBundle\Controller</td>
 </tr>
 <tr>
     <td>Default</td>
@@ -139,12 +139,12 @@ The controller is noted as `HelloWorldBundle:Default:admin`. Broken down, that w
 Controller notation is in the format of <code>BundleName:ControllerName:controllerMethod</code>. To use a controller within a subfolder of Controller, use <code>BundleName:Subdirectory\ControllerName:controllerMethod</code>.
 </aside>
 
-Thus when a browser calls up `/hello/admin`, `\MauticAddons\HelloWorldBundle\Controller\DefaultController\adminAction()` will be called.
+Thus when a browser calls up `/hello/admin`, `\MauticPlugin\HelloWorldBundle\Controller\DefaultController\adminAction()` will be called.
 
 What about route placeholders? Symfony is super smart and will pass those into the controller's method as arguments (the method's arguments must be the same as the route's placeholders to be matched up).
 
 <pre class="inline">
-'addon_helloworld_world' => array(
+'plugin_helloworld_world' => array(
     'path'       => '/hello/{world}',
     'controller' => 'HelloWorldBundle:Default:world',
     'defaults'    => array(
@@ -161,7 +161,7 @@ The matching method for that route will look be `public function worldAction($wo
 Notice that because the route defines a default for `name`, the controller method must also set the same default. If the route looked like this instead:
 
 <pre class="inline">
-'addon_helloworld_world' => array(
+'plugin_helloworld_world' => array(
     'path'       => '/hello/{world}',
     'controller' => 'HelloWorldBundle:Default:world',
     'requirements' => array(
@@ -192,7 +192,7 @@ Key|Required|Type|Description
 ---|--------|----|-----------
 contentTemplate|REQUIRED|string|Defines the view template to load. This should be in view notation of BundleName:ViewName:template.html.php. Refer to [views](#views) for more information.
 viewParameters|OPTIONAL|array|Array of variables with values made available to the template. Each key will be a variable available to the template.
-passthroughVars|OPTIONAL|array|Array of variables returned as part of the ajax response used by Mautic and/or the addon's onLoad JS callback. 
+passthroughVars|OPTIONAL|array|Array of variables returned as part of the ajax response used by Mautic and/or the plugin's onLoad JS callback. 
 
 Due to the use of ajax, there are some elements of the `passthroughVars` array that Mautic will use internally to manipulate the user interface. For responses that include main content, i.e. routes a user would click to, should set at least `activeLink` and `route`.
 

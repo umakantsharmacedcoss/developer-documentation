@@ -2,9 +2,9 @@
 
 ```php
 <?php
-// addons/HelloWorldBundle/Entity/World.php
+// plugins/HelloWorldBundle/Entity/World.php
 
-namespace MauticAddon\HelloWorldBundle\Entity;
+namespace MauticPlugin\HelloWorldBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Mautic\CategoryBundle\Entity\Category;
@@ -13,7 +13,7 @@ use Mautic\CoreBundle\Entity\CommonEntity;
 /**
  * Class World
  * @ORM\Table(name="worlds")
- * @ORM\Entity(repositoryClass="MauticAddon\HelloWorldBundle\Entity\WorldRepository")
+ * @ORM\Entity(repositoryClass="MauticPlugin\HelloWorldBundle\Entity\WorldRepository")
  */
 class World extends CommonEntity
 {
@@ -146,9 +146,9 @@ class World extends CommonEntity
 
 ```php
 <?php
-// addons/HelloWorldBundle/Entity/WorldRepository.php
+// plugins/HelloWorldBundle/Entity/WorldRepository.php
 
-namespace MauticAddon\HelloWorldBundle\Entity;
+namespace MauticPlugin\HelloWorldBundle\Entity;
 
 use Mautic\CoreBundle\Entity\CommonRepository;
 
@@ -186,7 +186,7 @@ A problem with this method for many shared hosts is the number of cache files it
 </aside>
 
 #### Installing/Updating Schema
-When an addon is installed or updated, the bundle's onInstall or onUpgrade functions are called.  These functions can be used to manipulate the database schema. See [Install/Upgrade](#install/upgrade).
+When an plugin is installed or updated, the bundle's onInstall or onUpgrade functions are called.  These functions can be used to manipulate the database schema. See [Install/Upgrade](#install/upgrade).
 
 #### Table Prefix
 Mautic allows custom table prefixes.  If using ORM, there is no need to include the prefix as Mautic will automatically handle it.  However, if there is a need to use Doctrine's DBAL layer directly, the contstant `MAUTIC_TABLE_PREFIX` can be used in conjuction with the table name.

@@ -36,15 +36,15 @@ if ($role->isAdmin()) {
 $security = $this->factory->getSecurity();
 
 // Check if user is granted a single permission
-if ($security->isGranted('addon:helloWorld:worlds:view')) {
+if ($security->isGranted('plugin:helloWorld:worlds:view')) {
     // do something
 }
 
 // Check if user is granted multiple permissions (must be granted to all to be true)
 if ($security->isGranted(
     array(
-        'addon:helloWorld:worlds:view',
-        'addon:helloWorld:worlds:create',
+        'plugin:helloWorld:worlds:view',
+        'plugin:helloWorld:worlds:create',
     )
 )
 ) {
@@ -54,8 +54,8 @@ if ($security->isGranted(
 // Check if user is granted to at least one permission
 if ($security->isGranted(
     array(
-        'addon:helloWorld:worlds:view',
-        'addon:helloWorld:worlds:edit',
+        'plugin:helloWorld:worlds:view',
+        'plugin:helloWorld:worlds:edit',
     ),
     'MATCH_ONE'
 )
@@ -66,13 +66,13 @@ if ($security->isGranted(
 // Get an array of user permissions
 $permissions = $security->isGranted(
     array(
-        'addon:helloWorld:worlds:view',
-        'addon:helloWorld:worlds:edit',
+        'plugin:helloWorld:worlds:view',
+        'plugin:helloWorld:worlds:edit',
     ),
     'RETURN_ARRAY'
 );
 
-if ($permissions['addon:helloWorld:worlds:view']) {
+if ($permissions['plugin:helloWorld:worlds:view']) {
     // do something
 }
 
@@ -94,27 +94,27 @@ Using the service to check permissions is explained more in [Using Permissions](
 ```php
 <?php 
 // Simple string
-echo $translator->trans('addon.helloworld.goodbye');
+echo $translator->trans('plugin.helloworld.goodbye');
 
 // Simple string with placeholders
-echo $translator->trans('addon.helloworld.greeting', array('%name%' => $name));
+echo $translator->trans('plugin.helloworld.greeting', array('%name%' => $name));
 
 // String from a domain other than messages (will use planets.ini)
-echo $translator->trans('addon.helloworld.worlds', array('%world%' => $world), 'planets');
+echo $translator->trans('plugin.helloworld.worlds', array('%world%' => $world), 'planets');
 
 // Plural translations
 $planetCount = 3;
-echo $translator->transChoice('addon.helloworld.number_of_planets', $planetCount, array('%planets%' => $planetCount));
+echo $translator->transChoice('plugin.helloworld.number_of_planets', $planetCount, array('%planets%' => $planetCount));
 
 // Check to see if a translation key exists
-if ($translator->hasId('addon.helloworld.goodbye')) {
-    echo $translator->trans('addon.helloworld.goodbye');
+if ($translator->hasId('plugin.helloworld.goodbye')) {
+    echo $translator->trans('plugin.helloworld.goodbye');
 } else {
     // other logic
 }
 
 // Use the first key if it exists, otherwise use the second (helpful to prevent managing duplicate keys with the same string)
-echo $translator->transConditional('addon.helloworld.planets.' . $planet, 'addon.helloworld.dwarf_planets. ' . $planet);
+echo $translator->transConditional('plugin.helloworld.planets.' . $planet, 'plugin.helloworld.dwarf_planets. ' . $planet);
 ```
 
 Use the translator service to include translated strings in the code. Depending on where the translation is necessary will determine how to obtain the service.
@@ -145,20 +145,20 @@ The translator service has the following functions to help with translating stri
 $router = $this->factory->getRouter();
 
 // Relative URL
-$url = $router->generateUrl('addon_helloworld_admin');
+$url = $router->generateUrl('plugin_helloworld_admin');
 
 // URL with placeholders
-$url = $router->generateUrl('addon_helloworld_world', array('%world%', 'mars'));
+$url = $router->generateUrl('plugin_helloworld_world', array('%world%', 'mars'));
 
 // Absolute URL
-$absoluteUrl = $router->generateUrl('addon_helloworld_admin', array(), true);
+$absoluteUrl = $router->generateUrl('plugin_helloworld_admin', array(), true);
 ```
 
 ```php
 <?php 
 
 // Generate a URL in a view template
-$url = $view['router']->generate('addon_helloworld_admin');
+$url = $view['router']->generate('plugin_helloworld_admin');
 
 ```
 
@@ -254,7 +254,7 @@ $em         = $this->factory->getEntityManager();
 $repository = $em->getRepository('HelloWorldBundle:World');
 $worlds     = $repository->getEntities();
 
-/** @var \MauticAddon\HelloWorldBundle\Entity\World $world */
+/** @var \MauticPlugin\HelloWorldBundle\Entity\World $world */
 foreach ($worlds as $world) {
     $world->upVisitCount();
 }

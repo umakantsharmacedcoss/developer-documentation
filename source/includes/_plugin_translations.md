@@ -8,7 +8,7 @@ HelloWorldBundle/<br />
 - - - - - - - - - messages.ini
 
 <aside class="notice">
-All addons should include strings for the United States English locale (en_US) as it is the default for the system. 
+All plugins should include strings for the United States English locale (en_US) as it is the default for the system. 
 </aside>
 
 The directory structure for translations should be `Translations/locale/domain.ini`.
@@ -16,7 +16,7 @@ The directory structure for translations should be `Translations/locale/domain.i
  
 ### Domains
 
-Language strings can be organized into domains. Each domain should be its own file in the addon's language locale folder(s). The addon can use any domain it wants but Mautic makes consistent use of three domains:
+Language strings can be organized into domains. Each domain should be its own file in the plugin's language locale folder(s). The plugin can use any domain it wants but Mautic makes consistent use of three domains:
 
 Domain | Description
 -------|------------
@@ -29,24 +29,24 @@ validators | Domain for [form validation](#validation) messages
 > Sample INI files
 
 ```
-; addons/HelloWorldBundle/Translations/en_US/messages.ini
+; plugins/HelloWorldBundle/Translations/en_US/messages.ini
 
-addon.helloworld.contact_us="Contact Us"
-addon.helloworld.goodbye="Goodbye and have a good day!"
-addon.helloworld.greeting="Hello %name%!"
-addon.helloworld.index="Hello World"
-addon.helloworld.manage_worlds="Manage Worlds"
-addon.helloworld.number_of_planets="{0}0 planets|{1}1 planet|]1,Inf[%planets% planets"
-addon.helloworld.world="World"
-addon.helloworld.worlds="%world% Description"
+plugin.helloworld.contact_us="Contact Us"
+plugin.helloworld.goodbye="Goodbye and have a good day!"
+plugin.helloworld.greeting="Hello %name%!"
+plugin.helloworld.index="Hello World"
+plugin.helloworld.manage_worlds="Manage Worlds"
+plugin.helloworld.number_of_planets="{0}0 planets|{1}1 planet|]1,Inf[%planets% planets"
+plugin.helloworld.world="World"
+plugin.helloworld.worlds="%world% Description"
 ```
 
 ```
-; addons/HelloWorldBundle/Translations/en_US/flashes.ini
+; plugins/HelloWorldBundle/Translations/en_US/flashes.ini
 
-addon.helloworld.notice.thank_you="Thank you %name% for your interest! We will be in contact soon." 
-addon.helloworld.notice.planet_demoted="%planet% has been demoted to a dwarf planet." 
-addon.helloworld.error.planet_demotion_failed="%planet% could not be demoted because the scientists say so."
+plugin.helloworld.notice.thank_you="Thank you %name% for your interest! We will be in contact soon." 
+plugin.helloworld.notice.planet_demoted="%planet% has been demoted to a dwarf planet." 
+plugin.helloworld.error.planet_demotion_failed="%planet% could not be demoted because the scientists say so."
 ```
 
 General guidelines for the translation keys:

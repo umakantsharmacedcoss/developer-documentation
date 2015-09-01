@@ -2,9 +2,9 @@
 
 ```php
 <?php
-// addons/HelloWorldBundle/EventListener/EmailSubscriber.php
+// plugins/HelloWorldBundle/EventListener/EmailSubscriber.php
 
-namespace MauticAddon\HelloWorldBundle\EventListener;
+namespace MauticPlugin\HelloWorldBundle\EventListener;
 
 use Mautic\CoreBundle\EventListener\CommonSubscriber;
 use Mautic\EmailBundle\EmailEvents;
@@ -38,20 +38,20 @@ class EmailSubscriber extends CommonSubscriber
     {
         // Add email tokens
         $content = $this->templating->render('HelloWorldBundle:SubscribedEvents\EmailToken:token.html.php');
-        $event->addTokenSection('helloworld.token', 'addon.helloworld.header', $content);
+        $event->addTokenSection('helloworld.token', 'plugin.helloworld.header', $content);
 
         // Add AB Test Winner Criteria
         $event->addAbTestWinnerCriteria(
             'helloworld.planetvisits',
             array(
                 // Label to group by
-                'group'    => 'addon.helloworld.header',
+                'group'    => 'plugin.helloworld.header',
                 
                 // Label for this specific a/b test winning criteria
-                'label'    => 'addon.helloworld.emailtokens.',
+                'label'    => 'plugin.helloworld.emailtokens.',
                 
                 // Static callback function that will be used to determine the winner
-                'callback' => '\MauticAddons\HelloWorldBundle\Helper\AbTestHelper::determinePlanetVisitWinner'
+                'callback' => '\MauticPlugin\HelloWorldBundle\Helper\AbTestHelper::determinePlanetVisitWinner'
             )
         );
     }
@@ -92,7 +92,7 @@ For example, `<a href="#" data-token="{hello}" class="btn btn-default btn-block"
 
 ##### Custom Token Handling
  
-To convert the token into a link while requesting what the links text should be, use the attributes `data-token='<a href="%url={hello}%">%text%</a>' data-drop="showBuilderLinkModal"` (replacing `hello` with the addon's custom token).
+To convert the token into a link while requesting what the links text should be, use the attributes `data-token='<a href="%url={hello}%">%text%</a>' data-drop="showBuilderLinkModal"` (replacing `hello` with the plugin's custom token).
 
 To request simple feedback from the user and inject it into the token, use the attributes `data-token='{hello=%world%}' data-drop="showBuilderFeedbackModal"`. A modal will appear with a simple input box. Whatever the user inputs will replace `%world%`.
   

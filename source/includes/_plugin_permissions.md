@@ -3,9 +3,9 @@
 Mautic provides a means of defining custom permissions for roles through Permission objects.
 
 ### How Permissions Work
-Permissions are calculated based on bits assigned to an addon's level and permission. Bits are integers that increase by doubling the value. 1, 2, 4, 8, 16, 32, 64, 128, 512, 1024, and so forth. The bits should never be assigned numbers in between such as 3 or 5 as the permission will not be correctly calculated in such cases.
+Permissions are calculated based on bits assigned to an plugin's level and permission. Bits are integers that increase by doubling the value. 1, 2, 4, 8, 16, 32, 64, 128, 512, 1024, and so forth. The bits should never be assigned numbers in between such as 3 or 5 as the permission will not be correctly calculated in such cases.
  
-For example, let's say HelloWorldBundle needs to manage access to user's Worlds entity. A permission set for `addon:helloWorld:worlds` might look like
+For example, let's say HelloWorldBundle needs to manage access to user's Worlds entity. A permission set for `plugin:helloWorld:worlds` might look like
 
 Permission|Bit
 ----------|---
@@ -16,12 +16,12 @@ delete|8
 full|16
 
 <aside class="notice">
-<code>addon:helloWorld:worlds:view</code> is a typically notation for requesting permission in Mautic. The notation tells Mautic to check for the `view` permission for the addon, HelloWorldBundle, within the `worlds` level. Levels allow addon's to set permissions for multiple areas.
+<code>plugin:helloWorld:worlds:view</code> is a typically notation for requesting permission in Mautic. The notation tells Mautic to check for the `view` permission for the plugin, HelloWorldBundle, within the `worlds` level. Levels allow plugin's to set permissions for multiple areas.
 </aside>
 
 Mautic will take the summation of the bits for the permissions given to a role and store it in the database. For example, if a role is given view and edit access, the stored bit is 3. If given view and create access, the stored bit is 5.
 
-When a permission check is required, e.g. `addon:helloWorld:worlds:create`, Mautic will check if bit of 4 is set in the role's generated bit for `addon:helloWorld:worlds`. If so, permission is granted.
+When a permission check is required, e.g. `plugin:helloWorld:worlds:create`, Mautic will check if bit of 4 is set in the role's generated bit for `plugin:helloWorld:worlds`. If so, permission is granted.
 
 <aside class="notice">
 The permission <code>full</code> is reserved to grant access to all previous permissions within the level and thus should always be the highest bit.
@@ -35,15 +35,15 @@ The permission <code>full</code> is reserved to grant access to all previous per
 $security = $this->factory->getSecurity();
 
 // Check if user is granted a single permission
-if ($security->isGranted('addon:helloWorld:worlds:view')) {
+if ($security->isGranted('plugin:helloWorld:worlds:view')) {
     // do something
 }
 
 // Check if user is granted multiple permissions (must be granted to all to be true)
 if ($security->isGranted(
     array(
-        'addon:helloWorld:worlds:view',
-        'addon:helloWorld:worlds:create',
+        'plugin:helloWorld:worlds:view',
+        'plugin:helloWorld:worlds:create',
     )
 )
 ) {
@@ -53,8 +53,8 @@ if ($security->isGranted(
 // Check if user is granted to at least one permission
 if ($security->isGranted(
     array(
-        'addon:helloWorld:worlds:view',
-        'addon:helloWorld:worlds:edit',
+        'plugin:helloWorld:worlds:view',
+        'plugin:helloWorld:worlds:edit',
     ),
     'MATCH_ONE'
 )
@@ -65,13 +65,13 @@ if ($security->isGranted(
 // Get an array of user permissions
 $permissions = $security->isGranted(
     array(
-        'addon:helloWorld:worlds:view',
-        'addon:helloWorld:worlds:edit',
+        'plugin:helloWorld:worlds:view',
+        'plugin:helloWorld:worlds:edit',
     ),
     'RETURN_ARRAY'
 );
 
-if ($permissions['addon:helloWorld:worlds:view']) {
+if ($permissions['plugin:helloWorld:worlds:view']) {
     // do something
 }
 
@@ -83,9 +83,9 @@ if ($security->isGranted('lead:leads:viewother')) {
 
 To determine if a user has a specific permission, use Mautic's security service which can be obtained from the [factory service](#factory-service) via `$this->factory->getSecurity()`.
 
-As suggested above, Mautic uses a special permission notation to refer to a specific permission. For core bundles, `bundleName:permissionLevel:permission` is used.  For addons, append `addon:`, i.e. `addon:bundleName:permissionLevel:permission`. `addon:` tells Mautic to look for the permission class in the addons/ directory and `MauticAddons` namespace. 
+As suggested above, Mautic uses a special permission notation to refer to a specific permission. For core bundles, `bundleName:permissionLevel:permission` is used.  For plugins, append `plugin:`, i.e. `plugin:bundleName:permissionLevel:permission`. `plugin:` tells Mautic to look for the permission class in the plugins/ directory and `MauticPlugin` namespace. 
 
-The permission level and permissions are set by the core bundle or addon. For example, Mautic's core UserBundle has `users` and `roles` levels with `view`, `edit`, `create`, `delete` and `full` permissions for each. 
+The permission level and permissions are set by the core bundle or plugin. For example, Mautic's core UserBundle has `users` and `roles` levels with `view`, `edit`, `create`, `delete` and `full` permissions for each. 
  
  To check if a user has permission to edit roles, use `$this->factory->getSecurity()->isGranted('user:roles:edit');`
  
@@ -93,9 +93,9 @@ The permission level and permissions are set by the core bundle or addon. For ex
 
 ```php
 <?php
-// addons/HelloWorldBundle/Security/Permissions/HelloWorldPermissions.php
+// plugins/HelloWorldBundle/Security/Permissions/HelloWorldPermissions.php
 
-namespace MauticAddon\HelloWorldBundle\Security\Permissions;
+namespace MauticPlugin\HelloWorldBundle\Security\Permissions;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Mautic\CoreBundle\Security\Permissions\AbstractPermissions;
@@ -156,12 +156,12 @@ class HelloWorldPermissions extends AbstractPermissions
             'permissionlist',
             array(
                 'choices' => array(
-                    'use_telescope' => 'addon.helloworld.permissions.use_telescope',
-                    'send_probe'    => 'addon.helloworld.permissions.send_probe',
-                    'visit'         => 'addon.helloworld.permissions.visit',
+                    'use_telescope' => 'plugin.helloworld.permissions.use_telescope',
+                    'send_probe'    => 'plugin.helloworld.permissions.send_probe',
+                    'visit'         => 'plugin.helloworld.permissions.visit',
                     'full'          => 'mautic.core.permissions.full',
                 ),
-                'label'   => 'addon.helloworld.permissions',
+                'label'   => 'plugin.helloworld.permissions',
             
                 // Set existing data
                 'data'    => (!empty($data['worlds']) ? $data['worlds'] : array()),
@@ -187,7 +187,7 @@ class HelloWorldPermissions extends AbstractPermissions
 }
 ```
 
-An addon can create it's own set of permissions by creating a Permission class. See the code example for a skeleton outline of what the class will look like.
+An plugin can create it's own set of permissions by creating a Permission class. See the code example for a skeleton outline of what the class will look like.
 
 Each permission class should extend `Mautic\CoreBundle\Security\Permissions\AbstractPermissions`.
 
@@ -197,7 +197,7 @@ Then, for most permission classes, three methods are needed: `__construct()`, `b
 
 The construct method should do two things. It should call `parent::__construct($params)` or it should set `$this->params = $params;`. 
 
-Then it should define `$this->permissions`. `$this->permissions` is an array of permission levels that are each arrays with permissions assigned to bits.  For example, in the code block, a custom permission level of `worlds` is defined with the permissions of `use_telescope`, `send_probe`, `visit` and `full`. To check to see if a user has permission to the level `worlds` and permission `send_probe`, `$this->factory->getSecurity()->isGranted('addon:helloWorld:worlds:send_probe')` would be used.
+Then it should define `$this->permissions`. `$this->permissions` is an array of permission levels that are each arrays with permissions assigned to bits.  For example, in the code block, a custom permission level of `worlds` is defined with the permissions of `use_telescope`, `send_probe`, `visit` and `full`. To check to see if a user has permission to the level `worlds` and permission `send_probe`, `$this->factory->getSecurity()->isGranted('plugin:helloWorld:worlds:send_probe')` would be used.
 
 Mautic provides a few helper methods for common permission sets:
 
@@ -250,7 +250,7 @@ For example, `parent::getSynonym()` will recognize `editown` as `edit` if `edito
  <?php
  
      /**
-      * @param array $permissions     Addon specific permissions
+      * @param array $permissions     Plugin specific permissions
       * @param       $allPermissions  All role permissions
       * @param bool  $isSecondRound   Is round two after permissions have been updated by all permission classes 
       *
@@ -285,12 +285,12 @@ For example, `parent::getSynonym()` will recognize `editown` as `edit` if `edito
      }
 ```
 
-Addon's can adjust permissions based on other selected permissions in order to prevent 'user error.' For example, if a user has permission to `edit`, then the user also needs permission to `view` whether that was selected in the Role form or not. The method `analyzePermissions()`  can be be used for this which gives opportunity to the addon to modify permissions based on other selections before persisting to the database. 
+Plugin's can adjust permissions based on other selected permissions in order to prevent 'user error.' For example, if a user has permission to `edit`, then the user also needs permission to `view` whether that was selected in the Role form or not. The method `analyzePermissions()`  can be be used for this which gives opportunity to the plugin to modify permissions based on other selections before persisting to the database. 
 
-Sometimes, it may be necessary to re-adjust based on a permission that is outside the addon's control. In this case, `analyzePermissions()` can return true and it will be called again after all the permissions have been analyzed by the other bundles and addons. In this case, the argument `$isSecondRound` will be true.
+Sometimes, it may be necessary to re-adjust based on a permission that is outside the plugin's control. In this case, `analyzePermissions()` can return true and it will be called again after all the permissions have been analyzed by the other bundles and plugins. In this case, the argument `$isSecondRound` will be true.
 
 #### Advanced isGranted Logic
 If it is necessary to perform some logic other than simply comparing bits, the permission class can override the parent's `public function isGranted($userPermissions, $name, $level)` and do whatever is necessary for it's own permission levels and individual permissions.
 
 #### Advanced isSupported Logic
-The same can be applied for the method `isSupported()` which is used to determine if a bundle or addon includes the requested permission and permission level. This can also be used to provide BC support.
+The same can be applied for the method `isSupported()` which is used to determine if a bundle or plugin includes the requested permission and permission level. This can also be used to provide BC support.

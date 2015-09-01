@@ -2,9 +2,9 @@
 
 ```php
 <?php
-// addons\HelloWorldBundle\EventListener\ReportSubscriber
+// plugins\HelloWorldBundle\EventListener\ReportSubscriber
 
-namespace MauticAddon\HelloWorldBundle\EventListener;
+namespace MauticPlugin\HelloWorldBundle\EventListener;
 
 use Mautic\CoreBundle\EventListener\CommonSubscriber;
 use Mautic\CoreBundle\Helper\GraphHelper;
@@ -148,11 +148,11 @@ Adding and rendering custom reports are done by listening to the `\Mautic\Report
 
 #### Defining the Report
 
-Defining the report is done through the `ReportEvents::REPORT_ON_BUILD` event. This is where the addon will define the context of the report, available columns for table data, and available graphs. See the code example's `onReportBuilder` for details.
+Defining the report is done through the `ReportEvents::REPORT_ON_BUILD` event. This is where the plugin will define the context of the report, available columns for table data, and available graphs. See the code example's `onReportBuilder` for details.
 
 #### Generate the QueryBuilder
 
-The `ReportEvents::REPORT_ON_GENERATE` event is dispatched when a report is to be generated and displayed. In this function, the addon should define the QueryBuilder object used to generate the table data. 
+The `ReportEvents::REPORT_ON_GENERATE` event is dispatched when a report is to be generated and displayed. In this function, the plugin should define the QueryBuilder object used to generate the table data. 
 
 Use `$event->checkContext()` to determine if the report requested is the subscribers report.
 

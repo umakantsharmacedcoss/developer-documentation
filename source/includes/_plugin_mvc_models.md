@@ -2,9 +2,9 @@
 
 ```php
 <?php
-// addons/HelloWorldBundle/Model/ContactModel.php
+// plugins/HelloWorldBundle/Model/ContactModel.php
 
-namespace MauticAddon\HelloWorldBundle\Model;
+namespace MauticPlugin\HelloWorldBundle\Model;
 
 use Mautic\CoreBundle\Model\CommonModel;
 
@@ -37,7 +37,7 @@ class ContactModel extends CommonModel
     }
 }
 ```
-Models are used to retrieve and process data between controllers and views. Models aren't required for addons but, if used, Mautic provides means to easily obtain the model objects and some commonly used methods.
+Models are used to retrieve and process data between controllers and views. Models aren't required for plugins but, if used, Mautic provides means to easily obtain the model objects and some commonly used methods.
 
 #### Model Classes
 
@@ -70,9 +70,9 @@ $leadModel = $this->factory->getModel('lead');
 /** @var \Mautic\LeadBundle\Model\ListModel $leadListModel */
 $leadListModel = $this->factory->getModel('lead.list');
 
-/** @var \MauticAddons\HelloWorldBundle\Model\ContactModel $contactModel */
-$contactModel = $this->factory->getModel('addon.helloWorld.contact');
+/** @var \MauticPlugin\HelloWorldBundle\Model\ContactModel $contactModel */
+$contactModel = $this->factory->getModel('plugin.helloworld.contact');
 ```
 To get a model object, use the MauticFactory's `getModel()` method. 
 
-The `getModel()` method accepts the name of the model in a special notation of `bundleName.modelName` for Mautic core bundles or `addon.bundleName.modelName` for addons. If the `bundleName` and `modelName` happens to be the same, then `bundleName` (core bundles) or `addon.bundleName` (addons) are also accepted.
+The `getModel()` method accepts the name of the model in a special notation of `bundleName.modelName` for Mautic core bundles or `plugin.bundleName.modelName` for plugins. If the `bundleName` and `modelName` happens to be the same, then `bundleName` (core bundles) or `plugin.bundleName` (plugins) are also accepted.
