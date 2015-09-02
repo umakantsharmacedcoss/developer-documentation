@@ -12,6 +12,7 @@ Additional steps that you must take in your own bundle are:
 
 1. Create your own event dispatching for your bundle's custom event and payload
 2. Register your custom event listeners in your bundle's configuration file as a service.
+3. Refer to [receiving webhooks](#receiving-webhook-payloads) section to receive payloads in your application.
 
 ### Webhook Type Listener
 <aside class="notice">
@@ -174,3 +175,22 @@ In short you want to pass the event entities that this payload is being queued a
 The payload, which is an array, and finally the serializer groups for formatting the JSON.
 
 This should complete the set up, registering and executing custom webhook events and payloads.
+
+### Receiving Webhook Payloads
+
+> A sample new lead post payload
+
+```json
+{"mautic.lead_post_save":{"lead":{"id":null,"points":0,"color":null,"fields":{"core":{"title":{"id":1,"group":"core","label":"Title","alias":"title","type":"lookup","value":null},"firstname":{"id":2,"group":"core","label":"First Name","alias":"firstname","type":"text","value":"Hello"},"lastname":{"id":3,"group":"core","label":"Last Name","alias":"lastname","type":"text","value":"World"},"company":{"id":4,"group":"core","label":"Company","alias":"company","type":"lookup","value":null},"position":{"id":5,"group":"core","label":"Position","alias":"position","type":"text","value":null},"email":{"id":6,"group":"core","label":"Email","alias":"email","type":"email","value":"example@email.com"},"phone":{"id":7,"group":"core","label":"Phone","alias":"phone","type":"tel","value":null},"mobile":{"id":8,"group":"core","label":"Mobile","alias":"mobile","type":"tel","value":null},"fax":{"id":9,"group":"core","label":"Fax","alias":"fax","type":"text","value":null},"address1":{"id":10,"group":"core","label":"Address Line 1","alias":"address1","type":"text","value":null},"address2":{"id":11,"group":"core","label":"Address Line 2","alias":"address2","type":"text","value":null},"city":{"id":12,"group":"core","label":"City","alias":"city","type":"lookup","value":null},"state":{"id":13,"group":"core","label":"State","alias":"state","type":"region","value":null},"zipcode":{"id":14,"group":"core","label":"Zipcode","alias":"zipcode","type":"lookup","value":null},"country":{"id":15,"group":"core","label":"Country","alias":"country","type":"country","value":null},"website":{"id":16,"group":"core","label":"Website","alias":"website","type":"text","value":null}},"social":{"twitter":{"id":17,"group":"social","label":"Twitter","alias":"twitter","type":"text","value":null},"facebook":{"id":18,"group":"social","label":"Facebook","alias":"facebook","type":"text","value":null},"googleplus":{"id":19,"group":"social","label":"Google+","alias":"googleplus","type":"text","value":null},"skype":{"id":20,"group":"social","label":"Skype","alias":"skype","type":"text","value":null},"instagram":{"id":21,"group":"social","label":"Instagram","alias":"instagram","type":"text","value":null},"foursquare":{"id":22,"group":"social","label":"Foursquare","alias":"foursquare","type":"text","value":null}},"personal":[],"professional":[]},"lastActive":null,"owner":null,"ipAddresses":[],"dateIdentified":null,"preferredProfileImage":null},"timestamp":"2015-08-18T18:53:33+00:00"}}
+```
+
+<aside class="notice">
+ Click the <code>JSON</code> tab to see a sample lead JSON payload</code>.
+</aside>
+
+
+Webhooks enable Mautic to send data for leads, points, and email opens to outside applications. It does this by taking an outside application's endpoint url, and sending an HTTP post request to that location. In that post we include the relevant data the the event that has been fired.
+
+To listen to the webhook posts, developers should create a publicly accessible endpoint location in their application. That endpoint should be available to receive a POST request from Mautic. The contents of the payload will vary based on the events that the user wishes to include in the payload.
+
+An excellent way of testing to see the data that will be included is using [Requestb.in](http://requestb.in). Requestb.in allows users to view the full contents of the hook payload. Developers can refer to a post to the bin to see the contents and craft the way their application receives that input accordingly.
