@@ -1,4 +1,4 @@
-## Addon Config File
+## Plugin Config File
 
 Mautic leverages a simple array config file that will register routes, menu items, services and custom configuration parameters.
 
@@ -6,18 +6,18 @@ Mautic leverages a simple array config file that will register routes, menu item
 
 ```php
 <?php
-// addons/HelloWorldBundle/Config/config.php
+// plugins/HelloWorldBundle/Config/config.php
 
 return array(
     'name'        => 'Hello World',
-    'description' => 'This is an example config file for a simple Hellow World addon.',
+    'description' => 'This is an example config file for a simple Hellow World plugin.',
     'author'      => 'Marty Mautibot',
     'version'     => '1.0.0',
 ```
 
-The general config options will define what should be listed in the Addon manager.
+The general config options will define what should be listed in the Plugin manager.
  
-The version should be "[PHP-standardized](http://php.net/manual/en/function.version-compare.php)" as the Addon manager will use version_compare() to determine if the [onUpdate callback](#update) should be executed.  
+The version should be "[PHP-standardized](http://php.net/manual/en/function.version-compare.php)" as the Plugin manager will use version_compare() to determine if the [onUpdate callback](#update) should be executed.  
 
 ### Routes
 > If copying, do not copy `<?php //continued` as it is simply used to force sytax highlighting.
@@ -27,7 +27,7 @@ The version should be "[PHP-standardized](http://php.net/manual/en/function.vers
 
     'routes'   => array(
         'main' => array(
-            'addon_helloworld_world' => array(
+            'plugin_helloworld_world' => array(
                 'path'       => '/hello/{world}',
                 'controller' => 'HelloWorldBundle:Default:world',
                 'defaults'    => array(
@@ -37,27 +37,27 @@ The version should be "[PHP-standardized](http://php.net/manual/en/function.vers
                     'world' => 'earth|mars'
                 )
             ),
-            'addon_helloworld_list'  => array(
+            'plugin_helloworld_list'  => array(
                 'path'       => '/hello/{page}',
                 'controller' => 'HelloWorldBundle:Default:index'
              ),
-            'addon_helloworld_admin' => array(
+            'plugin_helloworld_admin' => array(
                 'path'       => '/hello/admin',
                 'controller' => 'HelloWorldBundle:Default:admin'
             ),
         ),
         'public' => array(
-            'addon_helloworld_goodbye' => array(
+            'plugin_helloworld_goodbye' => array(
                 'path'       => '/hello/goodbye',
                 'controller' => 'HelloWorldBundle:Default:goodbye'
             ),
-            'addon_helloworld_contact' => array(
+            'plugin_helloworld_contact' => array(
                 'path'       => '/hello/contact',
                 'controller' => 'HelloWorldBundle:Default:contact'
             )
         ),
         'api' => array(
-            'addon_helloworld_api' => array(
+            'plugin_helloworld_api' => array(
                 'path'       => '/hello',
                 'controller' => 'HelloWorldBundle:Api:howdy',
                 'method'     => 'GET'
@@ -66,7 +66,7 @@ The version should be "[PHP-standardized](http://php.net/manual/en/function.vers
     ),
 ```
 
-Routes define the URL paths that will be used to execute the addon's controller actions. See [Routing](#routing) for specifics on how routes work.
+Routes define the URL paths that will be used to execute the plugin's controller actions. See [Routing](#routing) for specifics on how routes work.
 
 #### Firewalls
 There are three firewalls to define the routes behind.
@@ -86,7 +86,7 @@ Array Key|Required|Type|Description
 **controller**|REQUIRED|string|Defines the controller and function to call when the path is accessed. This should be in Symfony's controller notation of BundleName:ControllerClass:controllerMethod. See [Controllers](#controllers) for more information.
 **method**|OPTIONAL|string|Restricts the route to a specific method, i.e. GET, POST, etc
 **defaults**|OPTIONAL|array|Defines default values for path placeholders. If a default is defined, it is not required in the URL. In the code example, /hello will be the same as /hello/earth and the controller's $world argument will default to 'earth' as well.
-**requirements**|OPTIONAL|array|Defines regex matches placeholders must match in order for the route to be recognized. For example, for addon_helloworld_world in the code example, world is restricted to earth or mars.  Anything else will not be recognized by the route.
+**requirements**|OPTIONAL|array|Defines regex matches placeholders must match in order for the route to be recognized. For example, for plugin_helloworld_world in the code example, world is restricted to earth or mars.  Anything else will not be recognized by the route.
 **format**|OPTIONAL|string|Sets the request format for the Request response, i.e. Content-Type header. The api firewall will automatically set this to json.
 **condition**|OPTIONAL|string|Very flexible expression to set when the route should match. Refer to [Symfony docs](http://symfony.com/doc/2.5/book/routing.html#completely-customized-route-matching-with-conditions).
 
@@ -130,24 +130,24 @@ php app/console router:match /blog/my-latest-post
         'main' => array(
             'priority' => 4,
             'items'    => array(
-                'addon.helloworld.index' => array(
-                    'id'        => 'addon_helloworld_index',
+                'plugin.helloworld.index' => array(
+                    'id'        => 'plugin_helloworld_index',
                     'iconClass' => 'fa-globe',
-                    'access'    => 'addon:helloworld:worlds:view',
+                    'access'    => 'plugin:helloworld:worlds:view',
                     'children'  => array(
-                        'addon.helloworld.manage_worlds'     => array(
-                            'route' => 'addon_helloworld_list'
+                        'plugin.helloworld.manage_worlds'     => array(
+                            'route' => 'plugin_helloworld_list'
                         ),
                         'mautic.category.menu.index' => array(
-                            'bundle' => 'addon:helloWorld'
+                            'bundle' => 'plugin:helloWorld'
                         )
                     )
                 )
             )
         )
         'admin' => array(
-            'addon.helloworld.admin' => array(
-                'route'     => 'addon_helloworld_admin',
+            'plugin.helloworld.admin' => array(
+                'route'     => 'plugin_helloworld_admin',
                 'iconClass' => 'fa-gears',
                 'access'    => 'admin',
                 'checks'    => array(
@@ -188,26 +188,26 @@ Array Key|Required|Type|Description
 
     'services'    => array(
         'events' => array(
-            'addon.helloworld.leadbundle.subscriber' => array(
-                'class' => 'MauticAddon\HelloWorldBundle\EventListener\LeadSubscriber'
+            'plugin.helloworld.leadbundle.subscriber' => array(
+                'class' => 'MauticPlugin\HelloWorldBundle\EventListener\LeadSubscriber'
             )
         ),
         'forms'  => array(
-            'addon.helloworld.form' => array(
-                'class' => 'MauticAddon\HelloWorldBundle\Form\Type\HelloWorldType',
+            'plugin.helloworld.form' => array(
+                'class' => 'MauticPlugin\HelloWorldBundle\Form\Type\HelloWorldType',
                 'alias' => 'helloworld'
             )
         ),
         'helpers' => array(
             'mautic.helper.helloworld' => array(
-                'class'     => 'MauticAddon\HelloWorldBundle\Helper\HelloWorldHelper',
+                'class'     => 'MauticPlugin\HelloWorldBundle\Helper\HelloWorldHelper',
                 'arguments' => 'mautic.factory',
                 'alias'     => 'helloworld'
             )
         ),
         'other'   => array(
-            'addon.helloworld.mars.validator' => array(
-                'class'     => 'MauticAddon\HelloWorldBundle\Form\Validator\Constraints\MarsValidator',
+            'plugin.helloworld.mars.validator' => array(
+                'class'     => 'MauticPlugin\HelloWorldBundle\Form\Validator\Constraints\MarsValidator',
                 'arguments' => 'mautic.factory',
                 'tag'       => 'validator.constraint_validator',
                 'alias'     => 'helloworld_mars'
@@ -257,7 +257,7 @@ Array Key|Required|Type|Description
 );
 ```
 
-The parameters array define and set default values for [custom configuration parameters](#custom-config-params) specific to the addon. 
+The parameters array define and set default values for [custom configuration parameters](#custom-config-params) specific to the plugin. 
 
 <aside class="notice">
 Any parameter to be written to the system's local config file should be defined here.

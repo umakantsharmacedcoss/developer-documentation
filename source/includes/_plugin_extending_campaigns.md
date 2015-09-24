@@ -2,9 +2,9 @@
 
 ```php
 <?php
-// addons/HelloWorldBundle/EventListener/CampaignSubscriber.php
+// plugins/HelloWorldBundle/EventListener/CampaignSubscriber.php
 
-namespace MauticAddons\HelloWorldBundle\Events;
+namespace MauticPlugin\HelloWorldBundle\Events;
 
 use Mautic\CoreBundle\EventListener\CommonSubscriber;
 use Mautic\CampaignBundle\Event as Events;
@@ -37,8 +37,8 @@ class CampaignSubscriber extends CommonSubscriber
         $event->addAction(
             'helloworld.send_offworld',
             array(
-                'label'           => 'addon.helloworld.campaign.send_offworld',
-                'description'     => 'addon.helloworld.campaign.send_offworld_descr',
+                'label'           => 'plugin.helloworld.campaign.send_offworld',
+                'description'     => 'plugin.helloworld.campaign.send_offworld_descr',
                 // Set custom parameters to configure the decision
                 'formType'        => 'helloworld_worlds',
                 // Set a custom formTheme to customize the layout of elements in formType
@@ -48,7 +48,7 @@ class CampaignSubscriber extends CommonSubscriber
                     'world' => 'mars'
                 ),
                 // Static callback function to execute this action
-                'callback'        => '\MauticAddons\HelloWorldBundle\Helper\CampaignEventHelper::sendLeadOffworld'
+                'callback'        => '\MauticPlugin\HelloWorldBundle\Helper\CampaignEventHelper::sendLeadOffworld'
             )
         );
 
@@ -56,20 +56,20 @@ class CampaignSubscriber extends CommonSubscriber
         $event->addLeadDecision(
             'helloworld.visits_mars',
             array(
-                'label'           => 'addon.helloworld.campaign.visits_mars',
-                'description'     => 'addon.helloworld.campaign.visits_mars_descr',
+                'label'           => 'plugin.helloworld.campaign.visits_mars',
+                'description'     => 'plugin.helloworld.campaign.visits_mars_descr',
                 // Same as registering an action
                 'formType'        => false,
                 'formTypeOptions' => array(),
                 // Optional static callback function to validate whether the decision should be executed or not 
-                'callback'        => '\MauticAddons\HelloWorldBundle\Helper\CampaignEventHelper::validateVisitation',
+                'callback'        => '\MauticPlugin\HelloWorldBundle\Helper\CampaignEventHelper::validateVisitation',
             )
         );
     }
 }
 ```
 
-Addons can add their own campaign actions and decisions by listening to the `\Mautic\CampaignBundle\CampaignEvents::CAMPAIGN_ON_BUILD` event.  Read more about [listeners and subscribers](#events). 
+Plugins can add their own campaign actions and decisions by listening to the `\Mautic\CampaignBundle\CampaignEvents::CAMPAIGN_ON_BUILD` event.  Read more about [listeners and subscribers](#events). 
 
 #### Campaign Actions
 
@@ -115,6 +115,6 @@ Variable|Type|Description
  
 Campaign decisions are registered exactly as a campaign action except it uses the `$event->addLeadDecision($identifier, $parameters)` method. The only difference in the `$parameters` arguments is that the function defined in the `callback` element is used to validate the decision rather than execute some action. For example, if the decision is configured to only apply to a specific ID chosen by the user (defined in the `formType`), the callback function may could compare the decision's `$eventDetails['id']` (see below) with the event's`$config['id']`. If the decision should execue the actions associated with it, return `true`.  Otherwise return `false` and nothing will be executed or logged.
   
-For custom decisions to work, there must be a trigger executed when the lead makes the decision. Thus, where ever is appropriate in the addon's code logic, add something similar to what's in the example code block. 
+For custom decisions to work, there must be a trigger executed when the lead makes the decision. Thus, where ever is appropriate in the plugin's code logic, add something similar to what's in the example code block. 
  
  The `triggerEvent()` method will pull all the triggered decisions (`helloworld.visits_mars` in the code example) for published campaigns the lead is in, execute the decisions callback (if configured) for validation, then execute the associated actions if appropriate.

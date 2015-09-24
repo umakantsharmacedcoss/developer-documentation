@@ -1,7 +1,7 @@
 ### Views
 ```php
 <?php
-//addons/HelloWorldBundle/Views/World/details.html.php
+//plugins/HelloWorldBundle/Views/World/details.html.php
 
 // Check if the request is Ajax
 if (!$app->getRequest()->isXmlHttpRequest()) {
@@ -21,7 +21,7 @@ if (!$app->getRequest()->isXmlHttpRequest()) {
 
 ```php
 <?php
-// addons/HelloWorldBundle/Views/World/index.html.php
+// plugins/HelloWorldBundle/Views/World/index.html.php
 
 // Extend the base content
 $view->extend('MauticCoreBundle:Default:content.html.php');
@@ -35,9 +35,9 @@ $view['slots']->set('mauticContent', 'helloWorld'.$tmpl);
 // Set the page and header title
 $header = ($tmpl == 'World')
     ? $view['translator']->trans(
-        'addon.helloworld.worlds',
+        'plugin.helloworld.worlds',
         array('%world%' => ucfirst($world))
-    ) : $view['translator']->trans('addon.helloworld.manage_worlds');
+    ) : $view['translator']->trans('plugin.helloworld.manage_worlds');
 $view['slots']->set('headerTitle', $header);
 ?>
 
@@ -50,7 +50,7 @@ Views take data given it from the controller and displays the content to the use
 
 It was discussed in the Controller's [delegateView() method](#delegateredirect($url)) how to render a view from a controller. Remember that delegateView uses contentTemplate to determine what view to render.
 
-Similar to controller notation, views are noted as `HelloWorldBundle:Contact:form.html.php` which will point to the file `/path/to/mautic/addons/HelloWorldBundle/Views/Contact/form.html.php`. 
+Similar to controller notation, views are noted as `HelloWorldBundle:Contact:form.html.php` which will point to the file `/path/to/mautic/plugins/HelloWorldBundle/Views/Contact/form.html.php`. 
 
 <aside class="notice">
 View notation is in the format of <code>BundleName:ViewName:template.html.php</code>. To use a view that has been nested in Views, use <code>BundleName:ViewName\Subfolder:template.html.php</code>.
@@ -150,13 +150,13 @@ As seen with extending views, the slots helper is used to pass content up throug
 <?php
 
 // Generate relative URL to image
-echo '<img src="' . $view['assets']->getUrl('addons/HelloWorldBundle/assets/images/earth.png') . '" />';
+echo '<img src="' . $view['assets']->getUrl('plugins/HelloWorldBundle/assets/images/earth.png') . '" />';
 
 // Dynamically insert script into head
-$view['assets']->includeScript('addons/HelloWorldBundle/assets/helloworld.js');
+$view['assets']->includeScript('plugins/HelloWorldBundle/assets/helloworld.js');
 
 // Dynamically insert stylesheet into head
-$view['assets']->includeScript('addons/HelloWorldBundle/assets/helloworld.css');
+$view['assets']->includeScript('plugins/HelloWorldBundle/assets/helloworld.css');
 ```
 The asset helper, accessed via `$view['assets']`, is used to load assets into the DOM including images, script and stylesheets. 
 
@@ -170,7 +170,7 @@ The asset helper also provides a way to insert scripts and stylesheets into the 
 #####Router Helper
 
 ```php
-<a href="<?php echo $view['router']->generate('addon_helloworld_world', array('world' => 'mars')); ?>" data-toggle="ajax" />Mars</a>
+<a href="<?php echo $view['router']->generate('plugin_helloworld_world', array('world' => 'mars')); ?>" data-toggle="ajax" />Mars</a>
 ```
 
 The router helper, `$view['router']`, works as explained in the [Router](#router).
@@ -179,7 +179,7 @@ The router helper, `$view['router']`, works as explained in the [Router](#router
 #####Translation Helper
 
 ```php
-<h1><?php echo $view['translator']->trans('addon.helloworld.worlds', array('%world%', 'Mars'); ?></h1>
+<h1><?php echo $view['translator']->trans('plugin.helloworld.worlds', array('%world%', 'Mars'); ?></h1>
 ```
 
 The translation helper, `$view['translator']`, works as explained in the [Translator](#translator) section.
@@ -238,17 +238,17 @@ Mautic provides built in ways to ajaxify links, modals, and forms.
 
 #####Ajax Links
 ```php
-<a href="<?php echo $view['router']->generate('addon_helloworld_world', array('world' => 'mars')); ?>" data-toggle="ajax" />Mars</a>
+<a href="<?php echo $view['router']->generate('plugin_helloworld_world', array('world' => 'mars')); ?>" data-toggle="ajax" />Mars</a>
 ```
 
 To ajaxify a link, set the attribute `data-target="ajax"`
 
 #####Ajax Modals
 ```php
-<a href="<?php echo $view['router']->generate('addon_helloworld_world', array('world' => 'mars')); ?>" 
+<a href="<?php echo $view['router']->generate('plugin_helloworld_world', array('world' => 'mars')); ?>" 
    data-toggle="ajaxmodal"
    data-target="#MauticSharedModal"
-   data-header="<?php echo $view['translator']->trans('addon.helloworld.worlds', array('%world%', 'Mars')); ?>">Mars</a>
+   data-header="<?php echo $view['translator']->trans('plugin.helloworld.worlds', array('%world%', 'Mars')); ?>">Mars</a>
 ```   
 
 Mautic uses Bootstrap modals but Bootstrap lacks an easy way to dynamically retrieve content more than once. Thus, Mautic provides the attribute `data-toggle="ajaxmodal"` to help with this.
@@ -280,8 +280,8 @@ To take advantage of this, utilize the mauticContent element in the passthroughV
  
  <pre class='inline'>
  'passthroughVars' => array(
-     'activeLink'    => 'addon_helloworld_world',
-     'route'         => $this->generateUrl('addon_helloworld_world', array('world' => $world)),
+     'activeLink'    => 'plugin_helloworld_world',
+     'route'         => $this->generateUrl('plugin_helloworld_world', array('world' => $world)),
      'mauticContent' => 'helloWorldDetails'
  )
  </pre>

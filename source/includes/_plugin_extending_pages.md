@@ -2,9 +2,9 @@
 
 ```php
 <?php
-// addons/HelloWorldBundle/EventListener/PageSubscriber.php
+// plugins/HelloWorldBundle/EventListener/PageSubscriber.php
 
-namespace MauticAddons\HelloWorldBundle\EventListener;
+namespace MauticPlugin\HelloWorldBundle\EventListener;
 
 use Mautic\CoreBundle\EventListener\CommonSubscriber;
 use Mautic\PageBundle\PageEvents;
@@ -37,20 +37,20 @@ class PageSubscriber extends CommonSubscriber
     {
         // Add page tokens
         $content = $this->templating->render('HelloWorldBundle:SubscribedEvents\PageToken:token.html.php');
-        $event->addTokenSection('helloworld.token', 'addon.helloworld.header', $content);
+        $event->addTokenSection('helloworld.token', 'plugin.helloworld.header', $content);
 
         // Add AB Test Winner Criteria
         $event->addAbTestWinnerCriteria(
             'helloworld.planetvisits',
             array(
                 // Label to group by
-                'group'    => 'addon.helloworld.header',
+                'group'    => 'plugin.helloworld.header',
                 
                 // Label for this specific a/b test winning criteria
-                'label'    => 'addon.helloworld.pagetokens.',
+                'label'    => 'plugin.helloworld.pagetokens.',
                 
                 // Static callback function that will be used to determine the winner
-                'callback' => '\MauticAddons\HelloWorldBundle\Helper\AbTestHelper::determinePlanetVisitWinner'
+                'callback' => '\MauticPlugin\HelloWorldBundle\Helper\AbTestHelper::determinePlanetVisitWinner'
             )
         );
     }

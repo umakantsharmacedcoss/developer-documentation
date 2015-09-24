@@ -25,7 +25,7 @@ $leadModel->setSystemCurrentLead($lead);
 
 ```
 
-Many addons extending Mautic will be manipulating leads in one way or another. Here is a quick summary of how to obtain the current lead and/or manipulate the leads data.
+Many plugins extending Mautic will be manipulating leads in one way or another. Here is a quick summary of how to obtain the current lead and/or manipulate the leads data.
 
 #### Lead Tracking
 

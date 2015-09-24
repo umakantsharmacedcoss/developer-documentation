@@ -2,9 +2,9 @@
 
 ```php
 <?php
-// addons/HelloWorldBundle/EventListener/FormSubscriber.php
+// plugins/HelloWorldBundle/EventListener/FormSubscriber.php
 
-namespace MauticAddon\HelloWorldBundle\EventListener;
+namespace MauticPlugin\HelloWorldBundle\EventListener;
 
 use Mautic\CoreBundle\EventListener\CommonSubscriber;
 use Mautic\FormBundle\Event as Events;
@@ -38,21 +38,21 @@ class FormSubscriber extends CommonSubscriber
             'helloworld.sendemail',
             array(
                 // Label to group by in the dropdown
-                'group'       => 'addon.helloworld.header',
+                'group'       => 'plugin.helloworld.header',
                 
                 // Label to list by in the dropdown
-                'label'       => 'addon.helloworld.formaction.send_email',
-                'description' => 'addon.helloworld.formaction.send_email_descr',
+                'label'       => 'plugin.helloworld.formaction.send_email',
+                'description' => 'plugin.helloworld.formaction.send_email_descr',
                 
                 // Form service for custom config options
                 'formType'    => 'helloworld_worlds',
                 'formTheme'   => 'HelloWorldBundle:FormTheme\SubmitAction',
                 
                 // Custom validation callback
-                'validator'   => '\MauticAddons\HelloWorldBundle\Helper\FormSubmitHelper::validateForm',
+                'validator'   => '\MauticPlugin\HelloWorldBundle\Helper\FormSubmitHelper::validateForm',
                 
                 // Callback method to be executed after the submission 
-                'callback'    => '\MauticAddons\HelloWorldBundle\Helper\FormSubmitHelper::sendEmail'
+                'callback'    => '\MauticPlugin\HelloWorldBundle\Helper\FormSubmitHelper::sendEmail'
             )
         );
 
@@ -61,7 +61,7 @@ class FormSubscriber extends CommonSubscriber
             'helloworld.customfield',
             array(
                 // Field label
-                'label'    => 'addon.helloworld.formfield.customfield',
+                'label'    => 'plugin.helloworld.formfield.customfield',
                 
                 // Form service for the field's configuration
                 'formType' => 'helloworld_worlds',
