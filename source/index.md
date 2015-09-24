@@ -38,9 +38,9 @@ includes:
   - plugin_extending_integrations
   - plugin_extending_pages
   - plugin_extending_points
-  - plugin_extending_reports  
+  - plugin_extending_reports
+  - plugin_extending_webhooks    
   - plugin_extending_leads
-  - plugin_extending_webhooks
   - themes
   - api_intro
   - api_authorization

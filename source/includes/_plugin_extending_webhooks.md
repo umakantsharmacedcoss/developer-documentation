@@ -1,4 +1,4 @@
-## Extending Webhooks
+### Extending Webhooks
 
 Webhooks allow for Mautic to send data to external services via an endpoint url.
 
@@ -14,7 +14,7 @@ Additional steps that you must take in your own bundle are:
 2. Register your custom event listeners in your bundle's configuration file as a service.
 3. Refer to [receiving webhooks](#receiving-webhook-payloads) section to receive payloads in your application.
 
-### Webhook Type Listener
+#### Webhook Type Listener
 <aside class="notice">
 Use the <code>WebhookEvents::WebhookBuilderEvent</code> to add a webhook type to the webhook interface.
 </aside>
@@ -79,7 +79,7 @@ should be an event registered in your bundle.
 We use the constant to save the type in the database and query for later.
 You will use the same constant later, so its important to be consistent.
 
-### Payload Event Listener
+#### Payload Event Listener
 <aside class="notice">
     Add an event listener which extends the <code>WebhookSubscriberBase</code> class. This event should be dispatched in your bundle when you wish to create a payload.
 </aside>
@@ -176,7 +176,7 @@ The payload, which is an array, and finally the serializer groups for formatting
 
 This should complete the set up, registering and executing custom webhook events and payloads.
 
-### Receiving Webhook Payloads
+#### Receiving Webhook Payloads
 
 > A sample new lead post payload
 
