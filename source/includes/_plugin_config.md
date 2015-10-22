@@ -246,6 +246,17 @@ Array Key|Required|Type|Description
 **factoryMethod**|OPTIONAL|string|Method name in the [factory service](http://symfony.com/doc/2.5/components/dependency_injection/factories.html) called to create the service
 **methodCalls**|OPTIONAL|array|Array of methods to be called after a service is created passing in the array of arguments provided. Should be in the format of 'methodName' => array('service_name', '%parameter%')
  
+### Categories
+
+```php
+<?php // continued
+
+    'categories' => array(
+        'plugin:helloWorld' => 'mautic.helloworld.world.categories'
+    ),
+```
+Defines category types available or the Category manager. See [Extending Categories](#extending_categories).
+
 ### Parameters
 
 ```php

@@ -12,6 +12,7 @@ toc_footers:
 includes:
   - introduction
   - plugin_intro
+  - plugin_addon_migration
   - plugin_structure
   - plugin_install  
   - plugin_config

@@ -1,8 +1,21 @@
 ### Extending Categories
 
-Mautic has a CategoryBundle that can be leveraged to incorporate categories into an plugin.
+Mautic has a CategoryBundle that can be leveraged to incorporate categories into a plugin.
+
+#### Adding categories
+As of Mautic 1.2.1, register categories through the plugin's config.php file by adding the following as a key to the returned config array:
+
+<pre class="inline">
+    'categories' => array(
+        'plugin:helloWorld' => 'mautic.helloworld.world.categories'
+    ),
+</pre>
+
+The category keys need be prefixed with `plugin:` as it is used in determining permissions to manage categories. The `helloWorld` should match the permission class name.
 
 #### Configuring Categories for Menu
+
+It is now recommended to not show the category in the main Menu.
 
 To add a category menu item for the plugin, simply add the following to `menu` [config](#menu) for whichever menu the item should appear (`main` or `admin`):
 
