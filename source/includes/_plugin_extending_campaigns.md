@@ -42,7 +42,7 @@ class CampaignSubscriber extends CommonSubscriber
                 // Set custom parameters to configure the decision
                 'formType'        => 'helloworld_worlds',
                 // Set a custom formTheme to customize the layout of elements in formType
-                'formTheme'       => 'HelloWorldBundle:FormTheme\SubmitAction'
+                'formTheme'       => 'HelloWorldBundle:FormTheme\SubmitAction',
                 // Set custom options to pass to the form type, if applicable 
                 'formTypeOptions' => array(
                     'world' => 'mars'
