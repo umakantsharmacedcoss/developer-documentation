@@ -153,10 +153,10 @@ As seen with extending views, the slots helper is used to pass content up throug
 echo '<img src="' . $view['assets']->getUrl('plugins/HelloWorldBundle/assets/images/earth.png') . '" />';
 
 // Dynamically insert script into head
-$view['assets']->includeScript('plugins/HelloWorldBundle/assets/helloworld.js');
+echo $view['assets']->includeScript('plugins/HelloWorldBundle/assets/helloworld.js');
 
 // Dynamically insert stylesheet into head
-$view['assets']->includeScript('plugins/HelloWorldBundle/assets/helloworld.css');
+echo $view['assets']->includeStylesheet('plugins/HelloWorldBundle/assets/helloworld.css');
 ```
 The asset helper, accessed via `$view['assets']`, is used to load assets into the DOM including images, script and stylesheets. 
 
@@ -164,7 +164,7 @@ The asset helper, accessed via `$view['assets']`, is used to load assets into th
 <code>$view['assets']</code> should always be used to ensure that assets work with Mautic installed in the web root, installed in a subdirectory, ran under the dev environment (index_dev.php), and/or ran under the prod environment.
 </aside>
 
-The asset helper also provides a way to insert scripts and stylesheets into the head for ajax loaded content using `$view['assets']->loadScript()` and `$view['assets']->loadStylesheet()`.
+The asset helper also provides a way to insert scripts and stylesheets into the head for ajax loaded content using `$view['assets']->includeScript()` and `$view['assets']->includeStylesheet()`.
 
 <div class="clear-right"></div>
 #####Router Helper
