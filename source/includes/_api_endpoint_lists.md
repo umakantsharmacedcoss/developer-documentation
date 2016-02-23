@@ -65,7 +65,7 @@ alias|string|Alias of the list
 <?php
 
 //...
-$response = $listApi->addLead($leadId, $listId);
+$response = $listApi->addLead($listId, $leadId);
 if (!isset($response['success'])) {
     // handle error
 }
