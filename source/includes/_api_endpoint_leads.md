@@ -370,7 +370,7 @@ $data = array(
  );
 $leadApi->setPoints(22, 42, $data);
 ```
-Replace the points of lead
+Replace lead points
 
 #### HTTP Request
 
@@ -381,8 +381,8 @@ To edit a lead and return a 404 if the lead is not found:
 ** Data Parameters (optional) **
 Name|Description
 ----|-----------
-eventname|Name of event
-actionname|Name of action
+eventname|Name of the event
+actionname|Name of the action
 
 #### Response
 
@@ -398,7 +398,7 @@ $data = array(
  );
 $leadApi->addPoints(22, 5, $data);
 ```
-Add points to lead
+Add lead points
 
 #### HTTP Request
 
@@ -409,14 +409,14 @@ To edit a lead and return a 404 if the lead is not found:
 ** Data Parameters (optional) **
 Name|Description
 ----|-----------
-eventname|Name of event
-actionname|Name of action
+eventname|Name of the event
+actionname|Name of the action
 
 #### Response
 
 `Expected Response Code: 200`
 
-### Remove Points
+### Subtract  Points
 ```php
 <?php
 
@@ -424,9 +424,9 @@ $data = array(
 	 'eventname' => 'Score via api',
 	 'actionname' => 'Add',
  );
-$leadApi->removePoints(22, 14, $data);
+$leadApi->subtractPoints(22, 14, $data);
 ```
-Remove points to lead
+Subtract lead points
 
 #### HTTP Request
 
@@ -437,8 +437,8 @@ To edit a lead and return a 404 if the lead is not found:
 ** Data Parameters (optional) **
 Name|Description
 ----|-----------
-eventname|Name of event
-actionname|Name of action
+eventname|Name of the event
+actionname|Name of the action
 
 #### Response
 
