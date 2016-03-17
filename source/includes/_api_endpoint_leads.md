@@ -360,6 +360,90 @@ Delete a lead.
 
 Same as [Get Lead](#get-lead).
 
+### Set Points
+```php
+<?php
+
+$data = array(
+	 'eventname' => 'Score via api',
+	 'actionname' => 'Updating',
+ );
+$leadApi->setPoints(22, 42, $data);
+```
+Replace the points of lead
+
+#### HTTP Request
+
+To edit a lead and return a 404 if the lead is not found:
+
+`PATCH /leads/ID/setpoints/POINTS`
+
+** Data Parameters (optional) **
+Name|Description
+----|-----------
+eventname|Name of event
+actionname|Name of action
+
+#### Response
+
+`Expected Response Code: 200`
+
+### Add Points
+```php
+<?php
+
+$data = array(
+	 'eventname' => 'Score via api',
+	 'actionname' => 'Add',
+ );
+$leadApi->addPoints(22, 5, $data);
+```
+Add points to lead
+
+#### HTTP Request
+
+To edit a lead and return a 404 if the lead is not found:
+
+`PATCH /leads/ID/addpoints/POINTS`
+
+** Data Parameters (optional) **
+Name|Description
+----|-----------
+eventname|Name of event
+actionname|Name of action
+
+#### Response
+
+`Expected Response Code: 200`
+
+### Remove Points
+```php
+<?php
+
+$data = array(
+	 'eventname' => 'Score via api',
+	 'actionname' => 'Add',
+ );
+$leadApi->removePoints(22, 14, $data);
+```
+Remove points to lead
+
+#### HTTP Request
+
+To edit a lead and return a 404 if the lead is not found:
+
+`PATCH /leads/ID/removepoints/POINTS`
+
+** Data Parameters (optional) **
+Name|Description
+----|-----------
+eventname|Name of event
+actionname|Name of action
+
+#### Response
+
+`Expected Response Code: 200`
+
 ### List Available Owners
 ```php
 <?php
