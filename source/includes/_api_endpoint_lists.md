@@ -95,7 +95,7 @@ See JSON code example.
 <?php
 
 //...
-$response = $listApi->removeLead($leadId, $listId);
+$response = $listApi->removeLead($llistId, $leadId);
 if (!isset($response['success'])) {
     // handle error
 }
