@@ -370,8 +370,6 @@ $data = array(
  );
 $leadApi->setPoints(22, 42, $data);
 ```
-<<<<<<< Upstream, based on branch 'updating_endpoint_leads-points' of https://github.com/Webmecanik/developer-documentation.git
-<<<<<<< Upstream, based on branch 'updating_endpoint_leads-points' of https://github.com/Webmecanik/developer-documentation.git
 Replace lead points
 
 #### HTTP Request
@@ -441,85 +439,6 @@ Name|Description
 ----|-----------
 eventname|Name of the event
 actionname|Name of the action
-=======
-Replace the points of lead
-=======
-Replace lead points
->>>>>>> 8ebc601 correction + replace removepoints by subtractpoints
-
-#### HTTP Request
-
-To edit a lead and return a 404 if the lead is not found:
-
-`PATCH /leads/ID/setpoints/POINTS`
-
-** Data Parameters (optional) **
-Name|Description
-----|-----------
-eventname|Name of the event
-actionname|Name of the action
-
-#### Response
-
-`Expected Response Code: 200`
-
-### Add Points
-```php
-<?php
-
-$data = array(
-	 'eventname' => 'Score via api',
-	 'actionname' => 'Add',
- );
-$leadApi->addPoints(22, 5, $data);
-```
-Add lead points
-
-#### HTTP Request
-
-To edit a lead and return a 404 if the lead is not found:
-
-`PATCH /leads/ID/addpoints/POINTS`
-
-** Data Parameters (optional) **
-Name|Description
-----|-----------
-eventname|Name of the event
-actionname|Name of the action
-
-#### Response
-
-`Expected Response Code: 200`
-
-### Subtract  Points
-```php
-<?php
-
-$data = array(
-	 'eventname' => 'Score via api',
-	 'actionname' => 'Add',
- );
-$leadApi->subtractPoints(22, 14, $data);
-```
-Subtract lead points
-
-#### HTTP Request
-
-To edit a lead and return a 404 if the lead is not found:
-
-`PATCH /leads/ID/removepoints/POINTS`
-
-** Data Parameters (optional) **
-Name|Description
-----|-----------
-<<<<<<< Upstream, based on branch 'updating_endpoint_leads-points' of https://github.com/Webmecanik/developer-documentation.git
-eventname|Name of event
-actionname|Name of action
->>>>>>> 41de6be updating the doc api to put the new features of the LEAD endpoint on the points of a lead (set, add and remove)
-=======
-eventname|Name of the event
-actionname|Name of the action
->>>>>>> 8ebc601 correction + replace removepoints by subtractpoints
 
 #### Response
 
