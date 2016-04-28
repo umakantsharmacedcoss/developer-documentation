@@ -15,7 +15,7 @@ $dataApi  = MauticApi::getContext("data", $auth, $apiUrl);
 ### Get list of available widget types
 ```php
 <?php
-$data = $dataApi->getDataTypes();
+$data = $dataApi->getList();
 ```
 
 #### HTTP Request
@@ -81,7 +81,7 @@ $data = $dataApi->getDataTypes();
 ### Get an individual widget data by type.
 ```php
 <?php
-$data = $dataApi->getDataType($type, $options);
+$data = $dataApi->get($type, $options);
 ```
 #### HTTP Request
 
