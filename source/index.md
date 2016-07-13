@@ -14,13 +14,13 @@ includes:
   - plugin_intro
   - plugin_addon_migration
   - plugin_structure
-  - plugin_install  
+  - plugin_install
   - plugin_config
-  - plugin_translations  
+  - plugin_translations
   - plugin_mvc
   - plugin_mvc_controllers
   - plugin_mvc_models
-  - plugin_mvc_views      
+  - plugin_mvc_views
   - plugin_factory
   - plugin_database
   - plugin_permissions
@@ -30,17 +30,18 @@ includes:
   - plugin_misc_helpers
   - plugin_misc_forms
   - plugin_misc_events
-  - plugin_extending_intro  
-  - plugin_extending_api  
+  - plugin_extending_intro
+  - plugin_extending_api
   - plugin_extending_campaigns
   - plugin_extending_categories
   - plugin_extending_emails
   - plugin_extending_forms
   - plugin_extending_integrations
+  - plugin_extending_maintenance
   - plugin_extending_pages
   - plugin_extending_points
   - plugin_extending_reports
-  - plugin_extending_webhooks    
+  - plugin_extending_webhooks
   - plugin_extending_leads
   - themes
   - api_intro
@@ -49,7 +50,7 @@ includes:
   - api_authorization_oauth2
   - api_libraries
   - api_endpoints
-  - api_endpoint_leads  
+  - api_endpoint_leads
   - api_endpoint_assets
   - api_endpoint_campaigns
   - api_endpoint_forms
@@ -58,6 +59,6 @@ includes:
   - api_endpoint_point_actions
   - api_endpoint_point_triggers
   - webhooks
-  
+
 search: true
 ---
