@@ -88,7 +88,7 @@ Array Key|Required|Type|Description
 **defaults**|OPTIONAL|array|Defines default values for path placeholders. If a default is defined, it is not required in the URL. In the code example, /hello will be the same as /hello/earth and the controller's $world argument will default to 'earth' as well.
 **requirements**|OPTIONAL|array|Defines regex matches placeholders must match in order for the route to be recognized. For example, for plugin_helloworld_world in the code example, world is restricted to earth or mars.  Anything else will not be recognized by the route.
 **format**|OPTIONAL|string|Sets the request format for the Request response, i.e. Content-Type header. The api firewall will automatically set this to json.
-**condition**|OPTIONAL|string|Very flexible expression to set when the route should match. Refer to [Symfony docs](http://symfony.com/doc/2.5/book/routing.html#completely-customized-route-matching-with-conditions).
+**condition**|OPTIONAL|string|Very flexible expression to set when the route should match. Refer to [Symfony docs](http://symfony.com/doc/2.8/book/routing.html#completely-customized-route-matching-with-conditions).
 
 Note that there are some internally used placeholders that Mautic will set defaults and requirements for (if not overridden by the route)
 
@@ -134,6 +134,7 @@ php app/console router:match /blog/my-latest-post
                     'id'        => 'plugin_helloworld_index',
                     'iconClass' => 'fa-globe',
                     'access'    => 'plugin:helloworld:worlds:view',
+                    'parent'    => 'mautic.core.channels',
                     'children'  => array(
                         'plugin.helloworld.manage_worlds'     => array(
                             'route' => 'plugin_helloworld_list'
@@ -154,19 +155,33 @@ php app/console router:match /blog/my-latest-post
                     'parameters' => array(
                         'helloworld_api_enabled' => true
                     )
-                )
+                ),
+                'priority'  => 60
             )
         )
     ),
 ```
-Menu defines the menu items to display in the main left menu and/or admin menu.
+Menu defines the menu items to display in the different menus.
 
-The main and admin arrays are configured exactly the same.
+#### Menu types
+Mautic 2.0 has four customizable menus. 
+
+Menu Name|Location|
+---------|--------|
+**main**|Main menu on the left
+**admin**|Admin menu accessible through the cogwheel in upper right hand side of Mautic
+**profile**|Profile menu accessible through clicking the username in upper right hand side of Mautic
+**extra**|Displays to the right of the Mautic logo in the upper left hand. Only shows if there are menu items injected.
 
 #### Priority
-To control the placement of the menu items, set an array with 'priority' and 'items' keys. Priority can be negative to position the items lower than others or positive to position them higher. If the menu items are returned without setting priority, like the admin menu in the code example, priority is treated as 9999.
+To control the placement of the menu item set, set an array with 'priority' and 'items' keys. Priority can be negative to position the items lower than others or positive to position them higher. If the menu items are returned without setting priority, like the admin menu in the code example, priority is treated as 9999.
+
+To control the priority of individual menu items, set `priority` it's definition array.
   
-#### Items
+#### Parent
+To place a menu item in another bundles parent menu item, for example Channels or Components, define the `parent` key with the key of the menu item this item should display under. For example, to show an item under the Channels parent menu item, use `'parent'    => 'mautic.core.channels',`.  
+  
+#### Menu item definitions
 The menu item's name should be the [language string key](#translations) that will be displayed as the item's link. 
 
 Item definitions:
@@ -175,11 +190,13 @@ Array Key|Required|Type|Description
 ---------|--------|----|-----------
 **route**|OPTIONAL|string|The route name as defined in [routes](#routes). Do not set a route to treat the item as a parent to activate a submenu.
 **routeParameters**|OPTIONAL|array|Route placeholder values to use when generating the URL
-**id**|OPTIONAL|string|Sets the id of the &lt;a /&gt; attribute. This will default to what is set as route.
+**id**|OPTIONAL|string|Sets the id of the &lt;a /&gt; attribute. This will default to what is set as route. This is used in conjuction with `returnUrl` returned in a controller's response so that the correct menu item is highlighted when ajax is used to navigate the interface. 
 **iconClass**|OPTIONAL|string|Font Awesome class to set the icon for the menu item.
 **access**|OPTIONAL|string|Set the [permission](#security) required for this item to display to the user currently logged in. Can also set 'admin' to restrict to Administrators only.
 **checks**|OPTIONAL|array|Restricts display of the link based on either configured parameters or the GET request. It will accept a 'parameters' and/or 'request' array of key => value pairs that must be true to display the menu item.
 **bundle**|OPTIONAL|string|Required only for [category integration](#categories).
+**parent**|OPTIONAL|string|Display this item under another parent menu item.
+**priority**|OPTIONAL|int|Set the priority for ordering this menu item with it's siblings.
 
 ### Services
 
@@ -201,7 +218,6 @@ Array Key|Required|Type|Description
         'helpers' => array(
             'mautic.helper.helloworld' => array(
                 'class'     => 'MauticPlugin\HelloWorldBundle\Helper\HelloWorldHelper',
-                'arguments' => 'mautic.factory',
                 'alias'     => 'helloworld'
             )
         ),
@@ -217,7 +233,7 @@ Array Key|Required|Type|Description
 
 ```
 
-Services are PHP objects stored in the service container and are used all throughout Mautic. They can be as simple or as complex as required. Read more about Symfony's service container [here](http://symfony.com/doc/2.5/book/service_container.html). 
+Services are PHP objects stored in the service container and are used all throughout Mautic. They can be as simple or as complex as required. Read more about Symfony's service container [here](http://symfony.com/doc/2.8/book/service_container.html). 
    
 #### Service types
 Mautic allows easy configuration for four types of services:
@@ -227,6 +243,7 @@ Type|Description
 **events**|Defines event subscriber classes used to listen to events dispatched throughout Mautic and auto-tagged with 'kernel.event_subscriber.' The defined class must extend \Mautic\CoreBundle\EventListener\CommonSubscriber. Read more about subscribers [here](#subscribers).
 **forms**|Defines custom [form types](#forms) and auto-tagged with 'form.type.'
 **helpers**|Defines custom template helpers available through the $view variable in [views](#views). These services are auto-tagged with 'templating.helper.'
+**models**|Defines [model services](#models)
 **other**|All other custom services.
 
 #### Service definitions
@@ -238,14 +255,23 @@ Array Key|Required|Type|Description
 **class**|REQUIRED|string|Namespace to the service class (not that it does not start with a backslash)
 **arguments**|OPTIONAL|string or array|String of a single argument to pass to the construct or an array of arguments to pass. Arguments enclosed with %% will be treated as a [parameter](#parameters). To pass a specific string, enclose the argument with double quotations "". Anything else that is not a boolean or a namespaced class (string with \ in it) will be treated as the name of another registered service. Often, this will simply be [mautic.factory](#factory-service).
 **alias**|OPTIONAL|string|Sets the alias used by the service. For example, the key for the template helpers, $view, array or the string to retrieve a specific form type.
-**tag**|OPTIONAL|string|[Tags](http://symfony.com/doc/2.5/components/dependency_injection/tags.html) the service used by bundles to get a list of specific services (for example form types and event subscribers).
+**tag**|OPTIONAL|string|[Tags](http://symfony.com/doc/2.8/components/dependency_injection/tags.html) the service used by bundles to get a list of specific services (for example form types and event subscribers).
 **tags**|OPTIONAL|array|Array of of tags 
-**tagArguments**|OPTIONAL|array|Array of attributes for the tag. See [Symfony docs](http://symfony.com/doc/2.5/components/dependency_injection/tags.html#adding-additional-attributes-on-tags) for more information.
-**scope**|OPTIONAL|string|Defines the [service scope](http://symfony.com/doc/2.5/cookbook/service_container/scopes.html)
-**factoryService**|OPTIONAL|string|[Factory class](http://symfony.com/doc/2.5/components/dependency_injection/factories.html) for managing creating the service
-**factoryMethod**|OPTIONAL|string|Method name in the [factory service](http://symfony.com/doc/2.5/components/dependency_injection/factories.html) called to create the service
+**tagArguments**|OPTIONAL|array|Array of attributes for the tag. See [Symfony docs](http://symfony.com/doc/2.8/components/dependency_injection/tags.html#adding-additional-attributes-on-tags) for more information.
+**scope**|OPTIONAL|string|Defines the [service scope](http://symfony.com/doc/2.8/cookbook/service_container/scopes.html). Deprecated.
+**factory**|OPTIONAL|string|Preferred method for using a factory class. [Factory class](http://symfony.com/doc/2.8/components/dependency_injection/factories.html) for managing creating the service.
+**factoryService**|OPTIONAL|string|[Factory class](http://symfony.com/doc/2.8/components/dependency_injection/factories.html) for managing creating the service. Deprecated; use `factory` instead.
+**factoryMethod**|OPTIONAL|string|Method name in the [factory service](http://symfony.com/doc/2.8/components/dependency_injection/factories.html) called to create the service. Deprecated; use `factory` instead.
 **methodCalls**|OPTIONAL|array|Array of methods to be called after a service is created passing in the array of arguments provided. Should be in the format of 'methodName' => array('service_name', '%parameter%')
- 
+**decoratedService**|OPTIONAL|array|[Decorated service](http://symfony.com/doc/2.8/components/dependency_injection/advanced.html#decorating-services)
+**public**|OPTIONAL|bool|[Public/private service](http://symfony.com/doc/2.8/components/dependency_injection/advanced.html#marking-services-as-public-private)
+**lazy**|OPTIONAL|bool|[Lazy load service](http://symfony.com/doc/2.8/components/dependency_injection/lazy_services.html)
+**synthetic**|OPTIONAL|bool|[Synthetic service](http://symfony.com/doc/2.8/components/dependency_injection/synthetic_services.html)
+**synthetic**|OPTIONAL|bool|[Synthetic service](http://symfony.com/doc/2.8/components/dependency_injection/synthetic_services.html)
+**file**|OPTIONAL|string|[Include file prior to loading service](http://symfony.com/doc/2.8/components/dependency_injection/definitions.html#requiring-files)
+**configurator**|OPTIONAL|array|[Use a configurator to load service](http://symfony.com/doc/current/components/dependency_injection/configurators.html#configurator-service-config)
+
+
 ### Categories
 
 ```php
@@ -255,7 +281,7 @@ Array Key|Required|Type|Description
         'plugin:helloWorld' => 'mautic.helloworld.world.categories'
     ),
 ```
-Defines category types available or the Category manager. See [Extending Categories](#extending_categories).
+Defines category types available or the Category manager. See [Extending Categories](#extending-categories).
 
 ### Parameters
 
@@ -269,6 +295,8 @@ Defines category types available or the Category manager. See [Extending Categor
 ```
 
 The parameters array define and set default values for [custom configuration parameters](#custom-config-params) specific to the plugin. 
+
+To obtain the values of these parameters, use the [`mautic.helper.core_parameters` service](#config-parameters).
 
 <aside class="notice">
 Any parameter to be written to the system's local config file should be defined here.

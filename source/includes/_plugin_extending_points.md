@@ -20,7 +20,7 @@ Key|Required|Type|Description
 In order for the custom point action to work, add something like the following in the code logic when the lead executes the custom action:
  
  
-`$this->factory->getModel('point')->triggerAction('page.hit', $event->getHit());`
+`$this->getModel('point')->triggerAction('page.hit', $event->getHit());`
 
 
 #### Point Triggers

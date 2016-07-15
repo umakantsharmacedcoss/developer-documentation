@@ -4,9 +4,9 @@
 <?php
 
 /** @var \Mautic\LeadBundle\Model\LeadModel $leadModel */
-$leadModel = $this->factory->getModel('lead');
+$leadModel = $this->getModel('lead');
 
-/** @var \Mautic\LeadBundle\Entity\Lead $currentLead
+/** @var \Mautic\LeadBundle\Entity\Lead $currentLead */
 $currentLead = $leadModel->getCurrentLead();
 
 // To obtain the tracking ID as well, pass true
@@ -36,10 +36,12 @@ Leads are tracked by two cookies. The first cookie notes which ID the lead is tr
 Review the sample code on how to obtain the currently tracked lead.
 
 <div class="clear-right"></div>
+
 #### Creating New Leads
 ```php
 <?php
 // Currently tracked lead based on cookies
+$leadModel = $this->getModel('lead');
 $lead = $leadModel->getCurrentLead();
 $leadId = $lead->getId();
 
@@ -49,7 +51,7 @@ $lead->setNewlyCreated(true);
 $leadId = null;
 
 // IP address of the request
-$ipAdddress = $this->factory->getIpAddress();
+$ipAdddress = $this->get('mautic.helper.ip_lookup')->getIpAddress();
 
 // Updated/new fields
 $leadFields = array(
@@ -58,7 +60,7 @@ $leadFields = array(
 );
 
 // Optionally check for identifier fields to determine if the lead is unique
-$uniqueLeadFields    = $this->factory->getModel('lead.field')->getUniqueIdentiferFields();
+$uniqueLeadFields    = $this->getModel('lead.field')->getUniqueIdentiferFields();
 $uniqueLeadFieldData = array();
 
 // Check if unique identifier fields are included
@@ -75,7 +77,7 @@ foreach ($inList as $k => $v) {
 
 // If there are unique identifier fields, check for existing leads based on lead data
 if (count($inList) && count($uniqueLeadFieldData)) {
-    $existingLeads = $this->em->getRepository('MauticLeadBundle:Lead')->getLeadsByUniqueFields(
+    $existingLeads = $this->getDoctrine()->getManager()->getRepository('MauticLeadBundle:Lead')->getLeadsByUniqueFields(
         $uniqueLeadFieldData,
         $leadId // If a currently tracked lead, ignore this ID when searching for duplicates
     );

@@ -8,43 +8,70 @@ namespace MauticPlugin\HelloWorldBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Mautic\CategoryBundle\Entity\Category;
+use Mautic\CoreBundle\Doctrine\Mapping\ClassMetadataBuilder;
 use Mautic\CoreBundle\Entity\CommonEntity;
 
 /**
  * Class World
- * @ORM\Table(name="worlds")
- * @ORM\Entity(repositoryClass="MauticPlugin\HelloWorldBundle\Entity\WorldRepository")
  */
 class World extends CommonEntity
 {
-
     /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @var string
      */
     private $name;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @var string
      */
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Mautic\CategoryBundle\Entity\Category")
-     * @ORM\JoinColumn(onDelete="SET NULL")
+     * @var Category
      */
     private $category;
 
     /**
-     * @ORM\Column(name="visit_count", type="integer", nullable=true)
+     * @var int
      */
     private $visitCount;
+
+    /**
+     * @var int
+     */
+    private $population = 0;
+
+    /**
+     * @var bool
+     */
+    private $isInhabited = false;
+
+    /**
+     * @param ORM\ClassMetadata $metadata
+     */
+    public static function loadMetadata (ORM\ClassMetadata $metadata)
+    {
+        $builder = new ClassMetadataBuilder($metadata);
+
+        $builder->setTable('worlds')
+            ->setCustomRepositoryClass('MauticPlugin\HelloWorldBundle\Entity\WorldRepository');
+
+        // Helper functions
+        $builder->addIdColumns();
+        $builder->addCategory();
+        $builder->addNamedField('visitorCount', 'int', 'visitor_count');
+        $builder->addField('population', 'int');
+
+        // Native means to build a field
+        $builder->createField('isInhabited', 'bool')
+            ->columnName('is_inhabited')
+            ->nullable(false);
+    }
 
     /**
      * @return mixed
@@ -133,13 +160,53 @@ class World extends CommonEntity
 
         return $this;
     }
-    
+
     /**
      * Increase the visit count by one
      */
     public function upVisitCount()
     {
         $this->visitCount++;
+    }
+
+    /**
+     * Get planet population
+     */
+    public function getPopulation()
+    {
+        return $this->population;
+    }
+
+    /**
+     * @param int $population
+     *
+     * @return World
+     */
+    public function setPopulation($population)
+    {
+        $this->population = $population;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isIsInhabited()
+    {
+        return $this->isInhabited;
+    }
+
+    /**
+     * @param boolean $isInhabited
+     *
+     * @return World
+     */
+    public function setIsInhabited($isInhabited)
+    {
+        $this->isInhabited = $isInhabited;
+
+        return $this;
     }
 }
 ```
@@ -179,11 +246,7 @@ Most of Mautic use [entity and repository classes](http://symfony.com/doc/curren
 Refer to [Symfony's](http://symfony.com/doc/current/book/doctrine.html) and [Doctrine's](http://doctrine-orm.readthedocs.org/en/latest) documentation on the specifics of how to interact with the Database.
 
 #### Metadata/Schema
-In 1.0.x-1.1.x, Mautic uses [Doctrine annotations driver ](#http://doctrine-orm.readthedocs.org/en/latest/reference/basic-mapping.html) to map entity metadata which in turn defines the schema structure.
-
-<aside class="warning">
-A problem with this method for many shared hosts is the number of cache files it generates (can be 800+ files). Thus, planned for 1.2, metadata mapping will be switched to using the Doctrine's <a href="http://doctrine-orm.readthedocs.org/en/latest/reference/php-mapping.html#static-function" target="_new">PHP driver</a> by leveraging the entity's static <code>loadMetadata()</code> function.
-</aside>
+Mautic uses Doctrine's [PHP Driver](http://doctrine-orm.readthedocs.org/en/latest/reference/php-mapping.html#static-function) to define schema. The plugin doesn't necessarily have to use entities but should at least define Entity classes to create it's schema. 
 
 #### Installing/Updating Schema
 When an plugin is installed or updated, the bundle's onInstall or onUpgrade functions are called.  These functions can be used to manipulate the database schema. See [Install/Upgrade](#install/upgrade).
@@ -191,35 +254,8 @@ When an plugin is installed or updated, the bundle's onInstall or onUpgrade func
 #### Table Prefix
 Mautic allows custom table prefixes.  If using ORM, there is no need to include the prefix as Mautic will automatically handle it.  However, if there is a need to use Doctrine's DBAL layer directly, the contstant `MAUTIC_TABLE_PREFIX` can be used in conjuction with the table name.
 
-#### Query Builder Best Practices
-
-Due to Mautic supporting both MySQL and Postgres, it is best to use Doctrine's query builders when possible. Here are some notes when using the query builders:
-
-`->groupBy()` must include the same columns included in `->select()`
-
-`->where()` statements that include something like `'my_boolean_column = 1' ` must be
-`->where('my_boolean_column = :true')->setParameter('true', true, 'boolean')`
-
-The same applies for `->expr()->eq('l.isPublished', true)`
-
-Instead use
-
-`->where($qb->expr()->eq('l.isPublished', ':true'))->setParameter('true', true, 'boolean')`
-
-Of course the same principle applies to = 0 or false.
-
-`->select(sum(my_boolean_column) as total)` works in MySql but will fail in others.  Either type case the entity property as an integer or use
-
-`count(CASE WHEN my_boolean_column THEN 1 ELSE null END)`
-
-Mysql does not like the above in a `where()` statement.  Use `having()` instead.
-
-Aliases should be lower case or in quotations as Postgres will return the result lower case if not quoted which will lead to PHP errors when used as array keys.
-
-`->select('f.field as myField')` will return as `myfield`
-
-`->select('f.field as "myField"')` will return as `myField`
-
-<strong>Quoting aliases will not work for ORM.  If using ORM, use lower case.</strong>
+#### ORM Arrays and DateTime 
 
 When using ORM, Mautic will automatically convert DateTime properties to UTC and to the system/user's profile timezone on retrieval.  However, if using DBAL, DateTime strings must be converted to UTC before persisting and to the local timezone on retrieval.  See [Date/Time Helper](#date/time-helper) to assist with conversions.
+
+For arrays, ORM will auto serialize and unserialize. DBAL will need to manually handle this.

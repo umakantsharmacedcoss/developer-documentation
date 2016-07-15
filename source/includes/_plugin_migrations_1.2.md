@@ -1,4 +1,4 @@
-## Migrating from an Addon
+### 1.2.0
 
 1.2.0 deprecated the Mautic Addon with it's successor, the Plugin.  Mautic addons will continue to work but should be migrated to a plugin before Mautic 2.0 when support will be dropped.
 

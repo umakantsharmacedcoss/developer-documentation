@@ -32,7 +32,7 @@ The permission <code>full</code> is reserved to grant access to all previous per
 ```php
 <?php
 
-$security = $this->factory->getSecurity();
+$security = $this->get('mautic.security');
 
 // Check if user is granted a single permission
 if ($security->isGranted('plugin:helloWorld:worlds:view')) {
@@ -81,13 +81,13 @@ if ($security->isGranted('lead:leads:viewother')) {
 }
 ```
 
-To determine if a user has a specific permission, use Mautic's security service which can be obtained from the [factory service](#factory-service) via `$this->factory->getSecurity()`.
+To determine if a user has a specific permission, use Mautic's security service which can be obtained from the [`mautic.security` service](#security).
 
 As suggested above, Mautic uses a special permission notation to refer to a specific permission. For core bundles, `bundleName:permissionLevel:permission` is used.  For plugins, append `plugin:`, i.e. `plugin:bundleName:permissionLevel:permission`. `plugin:` tells Mautic to look for the permission class in the plugins/ directory and `MauticPlugin` namespace. 
 
 The permission level and permissions are set by the core bundle or plugin. For example, Mautic's core UserBundle has `users` and `roles` levels with `view`, `edit`, `create`, `delete` and `full` permissions for each. 
  
- To check if a user has permission to edit roles, use `$this->factory->getSecurity()->isGranted('user:roles:edit');`
+ To check if a user has permission to edit roles, use `$mauticSecurity->isGranted('user:roles:edit');`
  
 ###Creating Custom Permissions
 
@@ -197,7 +197,7 @@ Then, for most permission classes, three methods are needed: `__construct()`, `b
 
 The construct method should do two things. It should call `parent::__construct($params)` or it should set `$this->params = $params;`. 
 
-Then it should define `$this->permissions`. `$this->permissions` is an array of permission levels that are each arrays with permissions assigned to bits.  For example, in the code block, a custom permission level of `worlds` is defined with the permissions of `use_telescope`, `send_probe`, `visit` and `full`. To check to see if a user has permission to the level `worlds` and permission `send_probe`, `$this->factory->getSecurity()->isGranted('plugin:helloWorld:worlds:send_probe')` would be used.
+Then it should define `$this->permissions`. `$this->permissions` is an array of permission levels that are each arrays with permissions assigned to bits.  For example, in the code block, a custom permission level of `worlds` is defined with the permissions of `use_telescope`, `send_probe`, `visit` and `full`. To check to see if a user has permission to the level `worlds` and permission `send_probe`, `$mauticSecurity->isGranted('plugin:helloWorld:worlds:send_probe')` would be used.
 
 Mautic provides a few helper methods for common permission sets:
 
