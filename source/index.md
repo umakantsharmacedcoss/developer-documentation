@@ -69,11 +69,11 @@ includes:
   - api_authorization_oauth2
   - api_libraries
   - api_endpoints
-  - api_endpoint_leads  
+  - api_endpoint_contacts
   - api_endpoint_assets
   - api_endpoint_campaigns
   - api_endpoint_forms
-  - api_endpoint_lists
+  - api_endpoint_segments
   - api_endpoint_pages
   - api_endpoint_point_actions
   - api_endpoint_point_triggers
