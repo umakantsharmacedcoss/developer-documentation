@@ -68,6 +68,18 @@ This way the builder will let users drop the new slots into this container. In t
 
 This functionality will provide you with lots of creative freedom for designing and developing your own unique email and landing pages. Have a unique design? Share it with the community! We would love to see how you’re using Mautic to engage your audience.
 
+## Sections
+
+Sections are full width parts of the theme which can currently (Mautic 2.0.0) let user to change the background color in the section wrapper and in the section itself. Additional functionality like reordering the sections, deleting and adding new are planned.
+
+### Section Wrapper
+
+Section wrapper must have 100% width of the browser window. You thus have to split your theme into several "rows" if you want to enable the users to change the background of each section. The section wrapper can be any block HTML element with attribute `data-section-wrapper`.
+
+### Section
+
+The section itself should be centered and should have fixed width. This fixed width should be consistent with all other sections. Section also wraps the content. The section can be any block HTML element with attribute `data-section`.
+
 ## Theme HTML Files
 
 Notice that in the directory structure above, there is a base.html.twig file. This is not necessary but used in the example to define the base HTML document which each some of the following files extend.
