@@ -350,7 +350,7 @@ Delete a contact.
 
 #### HTTP Request
 
-`DELETE /contacts/ID`
+`DELETE /contacts/ID/delete`
 
 #### Response
 
