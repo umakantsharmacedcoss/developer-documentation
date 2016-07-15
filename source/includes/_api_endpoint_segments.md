@@ -12,7 +12,7 @@ $apiUrl   = "https://your-mautic.com";
 $segmentApi = MauticApi::getContext("segments", $auth, $apiUrl);
 ```
 
-### List Contact Segments**
+### List Contact Segments
 
 ```php
 <?php
