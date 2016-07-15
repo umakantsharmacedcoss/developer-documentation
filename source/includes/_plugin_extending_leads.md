@@ -1,4 +1,4 @@
-### Manipulating Leads
+### Manipulating Contacts (Leads)
 
 ```php
 <?php
@@ -24,6 +24,10 @@ $leadModel->setCurrentLead($lead);
 $leadModel->setSystemCurrentLead($lead);
 
 ```
+
+<aside class="note">
+In Mautic 1.4, Leads were renamed to Contacts. However, much of the code still refers to contacts as leads.
+</aside>
 
 Many plugins extending Mautic will be manipulating leads in one way or another. Here is a quick summary of how to obtain the current lead and/or manipulate the leads data.
 
