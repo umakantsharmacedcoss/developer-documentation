@@ -42,7 +42,7 @@ class ApiController extends CommonApiController
      */
     public function getWorldsAction()
     {
-        if (!$this->factory->getSecurity()->isGranted('plugin:helloWorld:worlds:view')) {
+        if (!$this->get('mautic.security')->isGranted('plugin:helloWorld:worlds:view')) {
             return $this->accessDenied();
         }
 
@@ -51,7 +51,7 @@ class ApiController extends CommonApiController
         $start   = $this->request->query->get('start', null);
         
         /** @var \MauticPlugin\HelloWorldBundle\Model\WorldsModel $model */
-        $model   = $this->factory->getModel('plugin.helloworld.worlds');
+        $model   = $this->getModel('helloworld.worlds');
 
         $worlds  = $model->getWorlds($filter, $limit, $start);
         $worlds  = $this->view($worlds, Codes::HTTP_OK);

@@ -12,7 +12,7 @@ The code should try to follow [Symfony's Coding Standards](http://symfony.com/do
 
 ## Symfony
 
-Mautic is built on [Symfony](http://symfony.com), the popular PHP framework (Mautic 1.0.x uses Symfony version 2.5). This document will go over the basics but most of [their documentation](http://symfony.com/doc/2.5/book/index.html) applies to Mautic as well which can be used to obtain more advanced Symfony functionality.
+Mautic is built on [Symfony](http://symfony.com), the popular PHP framework (Mautic 1.0.x uses Symfony 2.5; Mautic 2.0.x uses Symfony 2.8). This document will go over the basics but most of [their documentation](http://symfony.com/doc/2.8/book/index.html) applies to Mautic as well which can be used to obtain more advanced Symfony functionality.
   
 There are some structural differences between Mautic and standard Symfony. Below is a list of where you will find some of standard Symfony locations in Mautic:
  

@@ -12,6 +12,8 @@ use Mautic\ReportBundle\Event\ReportBuilderEvent;
 use Mautic\ReportBundle\Event\ReportGeneratorEvent;
 use Mautic\ReportBundle\Event\ReportGraphEvent;
 use Mautic\ReportBundle\ReportEvents;
+use Mautic\CoreBundle\Helper\Chart\ChartQuery;
+use Mautic\CoreBundle\Helper\Chart\LineChart;
 
 /**
  * Class ReportSubscriber
@@ -43,22 +45,34 @@ class ReportSubscriber extends CommonSubscriber
         // Use checkContext() to determine if the report being requested is this report
         if ($event->checkContext(array('worlds'))) {
             // Define the columns that are available to the report.
-            $prefix        = 'w.';
+            $prefix  = 'w.';
             $columns = array(
                 $prefix . 'visit_count' => array(
                     'label' => 'mautic.hellobundle.report.visit_count',
                     'type'  => 'int'
-                )
+                ),
+                $prefix . 'world' => array(
+                    'label' => 'mautic.hellobundle.report.world',
+                    'type'  => 'text'
+                ),
             );
-            
+
              // Several helper functions are available to append common columns such as categories, publish state fields, lead, etc.  Refer to the ReportBuilderEvent class for more details.
-            $columns       = array_merge($columns, $event->getStandardColumns($prefix), $event->getCategoryColumns());
-            
+            $columns = $filters = array_merge($columns, $event->getStandardColumns($prefix), $event->getCategoryColumns());
+
+            // Optional to override and update filters, i.e. change it to a select list for the UI
+            $filters[$prefix.'world']['type'] = 'select';
+            $filters[$prefix.'world']['list'] = array(
+                'earth' => 'Earth',
+                'mars'  => 'Mars'
+            );
+
             // Add the table to the list
             $event->addTable('worlds',
                 array(
                     'display_name' => 'mautic.helloworld.worlds',
-                    'columns'      => $columns
+                    'columns'      => $columns,
+                    'filters'      => $filters // Defaults to columns if not set
                 )
             );
 
@@ -68,8 +82,8 @@ class ReportSubscriber extends CommonSubscriber
     }
 
     /**
-     * Initialize the QueryBuilder object used to generate the report's data. 
-     * This should use Doctrine's DBAL layer, not the ORM so be sure to use 
+     * Initialize the QueryBuilder object used to generate the report's data.
+     * This should use Doctrine's DBAL layer, not the ORM so be sure to use
      * the real schema column names (not the ORM property names) and the
      * MAUTIC_TABLE_PREFIX constant.
      *
@@ -81,7 +95,7 @@ class ReportSubscriber extends CommonSubscriber
     {
         $context = $event->getContext();
         if ($context == 'worlds') {
-            $qb = $this->factory->getEntityManager()->getConnection()->createQueryBuilder();
+            $qb = $event->getQueryBuilder();
 
             $qb->from(MAUTIC_TABLE_PREFIX . 'worlds', 'w');
             $event->addCategoryLeftJoin($qb, 'w');
@@ -105,38 +119,25 @@ class ReportSubscriber extends CommonSubscriber
 
         $graphs   = $event->getRequestedGraphs();
         $qb       = $event->getQueryBuilder();
-        $repo     = $this->factory->getEntityManager()->getRepository('HelloWorldBundle:World');
 
         foreach ($graphs as $graph) {
-            $options      = $event->getOptions($graph);
             $queryBuilder = clone $qb;
+            $options      = $event->getOptions($graph);
+            /** @var ChartQuery $chartQuery */
+            $chartQuery    = clone $options['chartQuery'];
+            $chartQuery->applyDateFilters($queryBuilder, 'date_added', 'v');
 
             switch ($graph) {
                 case 'mautic.hellobundle.graph.line.visits':
-                    // Generate data for Stats line graph
-                    $unit   = 'D';
-                    $amount = 30;
+                    $chart = new LineChart(null, $options['dateFrom'], $options['dateTo']);
+                    $chartQuery->modifyTimeDataQuery($queryBuilder, 'date_added', 'v');
+                    $visits = $chartQuery->loadAndBuildTimeData($queryBuilder);
+                    $chart->setDataset($options['translator']->trans('mautic.hellobundle.graph.line.visits'), $visits);
+                    $data         = $chart->render();
+                    $data['name'] = $graph;
+                    $data['iconClass'] = 'fa-tachometer';
+                    $event->setGraph($graph, $data);
 
-                    if (isset($options['amount'])) {
-                        $amount = $options['amount'];
-                    }
-
-                    if (isset($options['unit'])) {
-                        $unit = $options['unit'];
-                    }
-
-                    // Prepare the line graph
-                    $graphStats = GraphHelper::prepareDatetimeLineGraphData($amount, $unit, array('visits'));
-
-                    // Get counts from repo
-                    $visitStats = $repo->getVisitStats($graphStats['fromDate']);
-
-                    $graphStats  = GraphHelper::mergeLineGraphData($graphStats, $visitStats, $unit,
-
-                    $graphData['data']      = $graphStats;
-                    $graphData['name']      = $graph;
-                    $graphData['iconClass'] = 'fa-tachometer';
-                    $event->setGraph($graph, $graphStats);
                     break;
             }
         }
@@ -148,7 +149,28 @@ Adding and rendering custom reports are done by listening to the `\Mautic\Report
 
 #### Defining the Report
 
-Defining the report is done through the `ReportEvents::REPORT_ON_BUILD` event. This is where the plugin will define the context of the report, available columns for table data, and available graphs. See the code example's `onReportBuilder` for details.
+Defining the report is done through the `ReportEvents::REPORT_ON_BUILD` event. This is where the plugin will define the context of the report, available columns for table data, available filters for the table data (defaults to columns) and available graphs. See the code example's `onReportBuilder` for details.
+
+##### Column Definition
+
+Each column array can include the following properties:
+
+Key|Required|Type|Description
+---|--------|----|-----------
+**label**|REQUIRED|string|The language string for the column
+**type**|REQUIRED|string|Column type
+**alias**|OPTIONAL|string|An alias for the returned value. Useful in conjuction with `formula`
+**formula**|OPTIONAL|string|SQL formula instead of a column. e.g. `SUBSTRING_INDEX(e.type, \'.\', 1)`
+**link**|OPTIONAL|string|Route name to convert the value into a hyperlink. Used usually with an ID of an Entity. The route must accept `objectAction` and `objectId` parameters.
+
+##### Filter Definition
+
+Filter definitions are optional as Mautic will default to the column list. But sometimes it's useful to replace filter values with a select list. Filter definitions can accept the same properties as columns but can also accept the following:
+
+Key|Required|Type|Description
+---|--------|----|-----------
+**list**|OPTIONAL|array|Used when `type` is `select` for a filter. Provides the dropdown options for a select input. Format should be `value => label`
+**operators**|OPTIONAL|array|Custom list of operators to allow for this filter. See `Mautic\ReportBundle\Builder\MauticReportBuilder::OPERATORS` for a examples.
 
 #### Generate the QueryBuilder
 
@@ -157,11 +179,11 @@ The `ReportEvents::REPORT_ON_GENERATE` event is dispatched when a report is to b
 Use `$event->checkContext()` to determine if the report requested is the subscribers report.
 
 <aside class="notice">
-Note that the <code>ReportEvents::REPORT_ON_GENERATE</code> event should use Doctrine's DBAL layer QueryBuilder obtained via <code>$qb = $this->factory->getEntityManager()->getConnection()->createQueryBuilder();</code>.
+Note that the <code>ReportEvents::REPORT_ON_GENERATE</code> event should use Doctrine's DBAL layer QueryBuilder obtained via <code>$qb = $event->getQueryBuilder();</code>.
 </aside>
 
 There are a number of helper functions to append joins for commonly used relationships such as category, leads, ip address, etc.  Refer to the ReportGeneratorEvent class for more details.
    
 #### Graphs
 
-Graphs are generated using `ReportEvents::REPORT_ON_GRAPH_GENERATE` event. The listener should check the context then generate and set the graph data.  The `Mautic\CoreBundle\Helper\GraphHelper()` class can be used to assist in formatting the data for the graph.
+Graphs are generated using `ReportEvents::REPORT_ON_GRAPH_GENERATE` event. The listener should check the context then generate and set the graph data. There are several classes to assist with generating classes. See 

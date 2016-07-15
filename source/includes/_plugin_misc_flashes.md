@@ -17,16 +17,15 @@ $this->addFlash(
 ```php
 <?php
 
-// From within a model or other service with MauticFactory access
+// From within a model or other service with access to the translator and session services
 
-$session          = $this->factory->getSession();
-$translatedString = $this->factory->getTranslator()->trans(, 
+$translatedString = $this->translator->trans(, 
     array(
         '%placeholder%' => 'some text'
     ),
     'flashes'
 );
-$this->factory->getSession()->getFlashBag()->add('notice', $translatedString);
+$this->session->getFlashBag()->add('notice', $translatedString);
 ```
 
 To create an alert, aka flash message, you can use the flash bag in the session.
@@ -35,7 +34,7 @@ If your controller extends one of [Mautic's common controllers](#controllers), y
 
 From a model, or any service, you can use the session to obtain the flash bag.
 
-`$flashBag = $this->factory->getSession()->getFlashBag();`
+`$flashBag = $this->get('session')->getFlashBag();`
 
 ### Notifications
 
@@ -49,10 +48,8 @@ $this->addNotification($message, $type, $isRead, $header, $iconClass, new \DateT
 ```php
 <?php
 
-// From within a model or other service with MauticFactory access
+// From within a model or other service that has access to the mautic.core.model.notification service
 
-/** @var \Mautic\CoreBundle\Model\NotificationModel $notificationModel */
-$notificationModel = $this->factory->getModel('core.notification');
 $notificationModel->addNotification($message, $type, $isRead, $header, $iconClass, $datetime );
 
 ```

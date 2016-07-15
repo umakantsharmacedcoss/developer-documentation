@@ -12,7 +12,9 @@ toc_footers:
 includes:
   - introduction
   - plugin_intro
-  - plugin_addon_migration
+  - plugin_migrations
+  - plugin_migrations_1.2
+  - plugin_migrations_2.0
   - plugin_structure
   - plugin_install
   - plugin_config
@@ -21,17 +23,27 @@ includes:
   - plugin_mvc_controllers
   - plugin_mvc_models
   - plugin_mvc_views
-  - plugin_factory
+  - plugin_services
+  - plugin_services_factory
+  - plugin_services_users
+  - plugin_services_security
+  - plugin_services_translator
+  - plugin_services_router
+  - plugin_services_request
+  - plugin_services_session
+  - plugin_services_database
+  - plugin_services_parameters
+  - plugin_services_event_dispatcher
+  - plugin_services_paths_helper
+  - plugin_services_ip_lookup_helper
+  - plugin_services_plugin_config_helper
+  - plugin_services_cookie_helper
+  - plugin_services_mail_helper
   - plugin_database
   - plugin_permissions
   - plugin_configuration
-  - plugin_misc
-  - plugin_misc_flashes
-  - plugin_misc_helpers
-  - plugin_misc_forms
-  - plugin_misc_events
-  - plugin_extending_intro
-  - plugin_extending_api
+  - plugin_extending_intro  
+  - plugin_extending_api  
   - plugin_extending_campaigns
   - plugin_extending_categories
   - plugin_extending_emails
@@ -43,6 +55,14 @@ includes:
   - plugin_extending_reports
   - plugin_extending_webhooks
   - plugin_extending_leads
+  - plugin_misc
+  - plugin_misc_flashes
+  - plugin_misc_helpers
+  - plugin_misc_helpers_input
+  - plugin_misc_helpers_datetime
+  - plugin_misc_helpers_chartquery
+  - plugin_misc_forms
+  - plugin_misc_events  
   - themes
   - api_intro
   - api_authorization
@@ -50,15 +70,17 @@ includes:
   - api_authorization_oauth2
   - api_libraries
   - api_endpoints
-  - api_endpoint_leads
+  - api_endpoint_contacts
   - api_endpoint_assets
   - api_endpoint_campaigns
   - api_endpoint_forms
-  - api_endpoint_lists
+  - api_endpoint_segments
   - api_endpoint_pages
   - api_endpoint_point_actions
   - api_endpoint_point_triggers
   - webhooks
-
+  - mauticjs_api_intro
+  - mauticjs_api_reference
+  
 search: true
 ---

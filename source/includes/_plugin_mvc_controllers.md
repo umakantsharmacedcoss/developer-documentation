@@ -20,7 +20,7 @@ class DefaultController extends FormController
     public function worldAction($world = 'earth')
     {
         /** @var \MauticPlugin\HelloBundleBundle\Model\WorldModel $model */
-        $model = $this->factory->getModel('plugin.helloworld.world');
+        $model = $this->getModel('helloworld.world');
 
         // Retrieve details about the world
         $worldDetails = $model->getWorldDetails($world);
@@ -62,7 +62,7 @@ class DefaultController extends FormController
                 if ($valid = $this->isFormValid($form)) {
 
                     /** @var \MauticPlugin\HelloBundleBundle\Model\ContactModel $model */
-                    $model = $this->factory->getModel('plugin.helloworld.contact');
+                    $model = $this->getModel('helloworld.contact');
 
                     // Send the email
                     $model->sendContactEmail($form->getData());

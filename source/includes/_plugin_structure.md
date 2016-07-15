@@ -54,6 +54,7 @@ HelloWorldBundle/<br />
 - - - - - - World/<br />
 - - - - - - - - - index.html.php<br />
 - - - - - - - - - list.html.php<br />
-- - - HelloWorldBundle.php
+- - - HelloWorldBundle.php<br />
+- - - HelloWorldEvents.php
 
 Each of the other directories and files are explained elsewhere in the document. 
