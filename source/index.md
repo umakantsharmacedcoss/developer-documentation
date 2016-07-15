@@ -77,6 +77,7 @@ includes:
   - api_endpoint_pages
   - api_endpoint_point_actions
   - api_endpoint_point_triggers
+  - api_endpoint_data
   - webhooks
   - mauticjs_api_intro
   - mauticjs_api_reference
