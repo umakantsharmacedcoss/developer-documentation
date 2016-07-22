@@ -1,4 +1,4 @@
-### Manipulating Contacts (Leads)
+## Manipulating Contacts (Leads)
 
 ```php
 <?php
