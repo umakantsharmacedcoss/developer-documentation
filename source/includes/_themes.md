@@ -20,7 +20,7 @@ The themes use the same templating formats as [Symfony's twig templates](http://
 
 ## Theme zip package
 
-If you want to make your theme installable via the Theme Manager, make a zip package from it. The zip package name must be the same as the final folder name of the theme in the /themes folder. The contents of the zip folder must contain the theme files directly, not in a subfolder.
+If you want to make your theme installable via the Theme Manager, make a zip package from it. The zip package name must be the same as the final folder name of the theme in the /themes folder. The contents of the zip folder must contain the theme files directly, not in a subfolder. You can download an existing theme via the Theme Manager to see an example ZIP file.
   
 ## Theme Config File
  
@@ -125,9 +125,9 @@ This file defines the document for building an email template. Of course this fi
 ### form.html.twig
 
 ```twig
-{# themes/HelloBundle/html/form.html.twig #} 
+{# themes/thellotheme/html/form.html.twig #} 
 
-{% extends ":blank:base.html.twig" %}
+{% extends ":"~template~":base.html.twig" %}
 
 {% block content %}
     {% if message is defined %}
@@ -163,9 +163,9 @@ Copy from `app/bundles/FormBundle/Views/Builder/form.html.php` in the theme's Bu
 
 ### message.html.twig
 ```twig
-{# themes/HelloBundle/html/message.html.twig #}
+{# themes/hellotheme/html/message.html.twig #}
 
-{% extends ":blank:base.html.twig" %}
+{% extends ":"~template~":base.html.twig" %}
 
 {% block content %}
     <div>
@@ -184,8 +184,8 @@ It requires echo'ing two variables: `message` and `content`. `message` houses th
 ### page.html.twig
 
 ```twig
-{# themes/HelloBundle/html/message.html.twig #}
-{% extends ":blank:base.html.twig" %}
+{# themes/hellotheme/html/message.html.twig #}
+{% extends ":"~template~":base.html.twig" %}
 
 {% block content %}
 <div data-section-wrapper>
