@@ -89,6 +89,7 @@ Notice that in the directory structure above, there is a base.html.twig file. Th
 {# themes/HelloBundle/html/email.html.twig #} 
 <html>
     <head>
+        <title>{subject}</title>
     </head>
     <body style="margin:0">
         <div data-section-wrapper>
@@ -188,30 +189,21 @@ It requires echo'ing two variables: `message` and `content`. `message` houses th
 {% extends ":blank:base.html.twig" %}
 
 {% block content %}
-<div data-section-wrapper>
-    <center>
-        <table data-section style="width: 600;" width="600" cellpadding="0" cellspacing="0">
-            <tbody>
-                <tr>
-                    <td>
-                        <div data-slot-container style="min-height: 30px">
-                            <div data-slot="text">
-                                <br>
-                                <h2>Hello there!</h2>
-                                <br>
-                                We haven't heard from you for a while...
-                                <br>
-                                <br>
-                                {unsubscribe_text} | {webview_text}
-                                <br>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </center>
-</div>
+<!DOCTYPE html>
+<html>
+    <head>
+        {% if page is defined %}
+        <title>{pagetitle}</title>
+        <meta name="description" content="{pagemetadescription}">
+        {% endif %}
+        {{ outputHeadDeclarations() }}
+    </head>
+    <body>
+        {{ outputScripts('bodyOpen') }}
+        {% block content %}{% endblock %}
+        {{ outputScripts('bodyClose') }}
+    </body>
+</html>
 {% endblock %}
 ```
 
