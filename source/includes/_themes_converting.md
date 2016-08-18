@@ -1,8 +1,10 @@
 # Converting themes
 
-Earlier Mautic templates used PHP based on Symfony templates, however with the release of the 2.0 series, templates now use Twig.
+Earlier Mautic themes used PHP based on Symfony templates, however with the release of the 2.0 series, themes now use Twig.  While themes from older versions of Mautic should be able to be used on existing resources which have been migrated, they will not be available when creating new resources.
 
-There are some changes that you will need to make to your older templates to have them work with the newer versions of Mautic.
+If you have existing emails, landing pages etc which are using Mautic 1.x themes they will still work, but you must migrate your theme to 2.x if you wish to create new emails, landing pages etc.
+
+There are some changes that you will need to make to your older themes to have them work with the newer versions of Mautic.
 
 ## Directory structure
 
@@ -137,6 +139,12 @@ Themes being written directly for Mautic 2.x simply contain the following in the
      ]
    }
    ```
+
+You can run the following command to convert an existing PHP theme configuration file to JSON:
+
+```
+mautic:theme:json-config --theme="THEME_NAME
+```
 
 * Name: The name of the theme, used in dropdowns when selecting the theme
 * onlyForBC: Set to true if you wish old themes to still be available in 2.x in existing emails/pages (will **not** be available for selection in dropdowns when creating new resources, however).
