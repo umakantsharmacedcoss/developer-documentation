@@ -1,5 +1,5 @@
-## Contacts
-Use this endpoint to manipulate and obtain details on Mautic's contacts.
+## Leads
+Use this endpoint to manipulate and obtain details on Mautic's leads.
 
 ```php
 <?php
@@ -7,20 +7,20 @@ use Mautic\MauticApi;
 use Mautic\Auth\ApiAuth;
 
 // ...
-$auth       = ApiAuth::initiate($settings);
-$apiUrl     = "https://your-mautic.com"; 
-$contactApi = MauticApi::getContext("contacts", $auth, $apiUrl);
+$auth     = ApiAuth::initiate($settings);
+$apiUrl   = "https://your-mautic.com"; 
+$leadApi  = MauticApi::getContext("leads", $auth, $apiUrl);
 ```
 
-### Get Contact
+### Get Lead
 ```php
 <?php
 
 //...
-$contact = $contactApi->get($id);
+$lead = $leadApi->get($id);
 ```
 ```json
-    "contact": {
+    "lead": {
         "id": 47,
         "dateAdded": "2015-07-21T12:27:12-05:00",
         "createdBy": 1,
@@ -84,7 +84,7 @@ $contact = $contactApi->get($id);
                     "alias": "twitter",
                     "type": "text",
                     "group": "social",
-                    "value": "jimcontact"
+                    "value": "jimlead"
                 },
                 
                 "...": {
@@ -97,18 +97,18 @@ $contact = $contactApi->get($id);
             "all": {
                 "title": "Mr",
                 "firstname": "Jim",
-                "twitter": "jimcontact",
+                "twitter": "jimlead",
                 
                 "...": "..."
             }
         }
     }
 ```
-Get an individual contact by ID.
+Get an individual lead by ID.
 
 #### HTTP Request
 
-`GET /contacts/ID`
+`GET /leads/ID`
 
 #### Response
 
@@ -116,36 +116,36 @@ Get an individual contact by ID.
 
 See JSON code example.
 
-**Contact Properties**
+**Lead Properties**
 
 Name|Type|Description
 ----|----|-----------
-id|int|ID of the contact
-dateAdded|datetime|Date/time contact was created
-createdBy|int|ID of the user that created the contact
-createdByUser|string|Name of the user that created the contact
-dateModified|datetime/null|Date/time contact was last modified
-modifiedBy|int|ID of the user that last modified the contact
-modifiedByUser|string|Name of the user that last modified the contact
-owner|object|User object that owns the contact.
-points|int|Contact's current number of points
-lastActive|datetime/null|Date/time for when the contact was last recorded as active
-dateIdentified|datetime/null|Date/time when the contact identified themselves
-color|string|Hex value given to contact from Point Trigger definitions based on the number of points the contact has been awarded
-ipAddresses|array|Array of IPs currently associated with this contact
-fields|array|Array of all contact fields with data grouped by field group. See JSON code example for format. This array includes an "all" key that includes an single level array of fieldAlias => contactValue pairs.
+id|int|ID of the lead
+dateAdded|datetime|Date/time lead was created
+createdBy|int|ID of the user that created the lead
+createdByUser|string|Name of the user that created the lead
+dateModified|datetime/null|Date/time lead was last modified
+modifiedBy|int|ID of the user that last modified the lead
+modifiedByUser|string|Name of the user that last modified the lead
+owner|object|User object that owns the lead.
+points|int|Lead's current number of points
+lastActive|datetime/null|Date/time for when the lead was last recorded as active
+dateIdentified|datetime/null|Date/time when the lead identified themselves
+color|string|Hex value given to lead from Point Trigger definitions based on the number of points the lead has been awarded
+ipAddresses|array|Array of IPs currently associated with this lead
+fields|array|Array of all lead fields with data grouped by field group. See JSON code example for format. This array includes an "all" key that includes an single level array of fieldAlias => leadValue pairs.
 
-### List Contacts
+### List Leads
 ```php
 <?php
 
 //...
-$contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $orderByDir);
+$leads = $leadApi->getList($searchFilter, $start, $limit, $orderBy, $orderByDir);
 ```
 ```json
 {
     "total": "1",
-    "contacts": [
+    "leads": [
         {
             "id": 47,
             "isPublished": true,
@@ -210,7 +210,7 @@ $contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $order
                         "alias": "twitter",
                         "type": "text",
                         "group": "social",
-                        "value": "jimcontact"
+                        "value": "jimlead"
                     },
                     
                     "...": {
@@ -222,7 +222,7 @@ $contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $order
                 "all": {
                     "title": "Mr",
                     "firstname": "Jim",
-                    "twitter": "jimcontact",
+                    "twitter": "jimlead",
                     
                     "...": "..."    
                 }
@@ -231,11 +231,11 @@ $contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $order
     ]
 }
 ```
-Get a list of contacts.
+Get a list of leads.
 
 #### HTTP Request
 
-`GET /contacts`
+`GET /leads`
 
 **Query Parameters**
 
@@ -256,35 +256,35 @@ See JSON code example.
 
 **Properties**
 
-Same as [Get Contact](#get-contact).
+Same as [Get Lead](#get-lead).
 
-### Create Contact
+### Create Lead
 ```php
 <?php 
 
 $data = array(
     'firstname' => 'Jim',
-    'lastname'  => 'Contact',
+    'lastname'  => 'Lead',
     'email'     => 'jim@his-site.com',
     'ipAddress' => $_SERVER['REMOTE_ADDR']
 );
 
-$contact = $contactApi->create($data);
+$lead = $leadApi->create($data);
 ```
-Create a new contact.
+Create a new lead.
 
 #### HTTP Request
 
-`POST /contacts/new`
+`POST /leads/new`
 
 **Post Parameters**
 
 Name|Description
 ----|-----------
-*|Any contact field alias can be posted as a parameter.  For example, firstname, lastname, email, etc.
-ipAddress|IP address to associate with the contact
+*|Any lead field alias can be posted as a parameter.  For example, firstname, lastname, email, etc.
+ipAddress|IP address to associate with the lead
 lastActive|Date/time in UTC; preferablly in the format of Y-m-d H:m:i but if that format fails, the string will be sent through PHP's strtotime then formatted
-owner|ID of a Mautic user to assign this contact to
+owner|ID of a Mautic user to assign this lead to
 
 #### Response
 
@@ -292,9 +292,9 @@ owner|ID of a Mautic user to assign this contact to
 
 **Properties**
 
-Same as [Get Contact](#get-contact).
+Same as [Get Lead](#get-lead).
 
-### Edit Contact
+### Edit Lead
 ```php
 <?php
 
@@ -304,53 +304,53 @@ $data = array(
     'ipAddress' => $_SERVER['REMOTE_ADDR']
 );
 
-// Create new a contact of ID 1 is not found?
+// Create new a lead of ID 1 is not found?
 $createIfNotFound = true;
 
-$contact = $contactApi->edit($id, $data, $createIfNotFound);
+$lead = $leadApi->edit($id, $data, $createIfNotFound);
 ```
-Edit a new contact.  Note that this supports PUT or PATCH depending on the desired behavior for when a contact cannot be found based on the ID given.
+Edit a new lead.  Note that this supports PUT or PATCH depending on the desired behavior for when a lead cannot be found based on the ID given.
 
 #### HTTP Request
 
-To edit a contact and return a 404 if the contact is not found:
+To edit a lead and return a 404 if the lead is not found:
 
-`PATCH /contacts/ID/edit`
+`PATCH /leads/ID/edit`
 
-To edit a contact and create a new one if the contact is not found:
+To edit a lead and create a new one if the lead is not found:
 
-`PUT /contacts/ID/edit`
+`PUT /leads/ID/edit`
 
 **Post Parameters**
 
 Name|Description
 ----|-----------
-*|Any contact field alias can be posted as a parameter.  For example, firstname, lastname, email, etc.
-ipAddress|IP address to associate with the contact
-lastActive|Date/time in UTC; preferably in the format of Y-m-d H:m:i but if that format fails, the string will be sent through PHP's strtotime then formatted
-owner|ID of a Mautic user to assign this contact to
+*|Any lead field alias can be posted as a parameter.  For example, firstname, lastname, email, etc.
+ipAddress|IP address to associate with the lead
+lastActive|Date/time in UTC; preferablly in the format of Y-m-d H:m:i but if that format fails, the string will be sent through PHP's strtotime then formatted
+owner|ID of a Mautic user to assign this lead to
 
 #### Response
 
-If `PUT`, the expected response code is `200` if the contact was edited or `201` if created.
+If `PUT`, the expected response code is `200` if the lead was edited or `201` if created.
 
 If `PATCH`, the expected response code is `200`.
 
 **Properties**
 
-Same as [Get Contact](#get-contact).
+Same as [Get Lead](#get-lead).
 
-### Delete Contact
+### Delete Lead
 ```php
 <?php
 
-$contact = $contactApi->delete($id);
+$lead = $leadApi->delete($id);
 ```
-Delete a contact.
+Delete a lead.
 
 #### HTTP Request
 
-`DELETE /contacts/ID/delete`
+`DELETE /leads/ID`
 
 #### Response
 
@@ -358,7 +358,7 @@ Delete a contact.
 
 **Properties**
 
-Same as [Get Contact](#get-contact).
+Same as [Get Lead](#get-lead).
 
 ### Set Points
 ```php
@@ -374,9 +374,9 @@ Replace lead points
 
 #### HTTP Request
 
-To change a contact points and return a 404 if the lead is not found:
+To edit a lead and return a 404 if the lead is not found:
 
-`PATCH /contacts/ID/setpoints/POINTS`
+`PATCH /leads/ID/setpoints/POINTS`
 
 ** Data Parameters (optional) **
 Name|Description
@@ -402,9 +402,9 @@ Add lead points
 
 #### HTTP Request
 
-To add points to a contact and return a 404 if the lead is not found:
+To edit a lead and return a 404 if the lead is not found:
 
-`PATCH /contacts/ID/addpoints/POINTS`
+`PATCH /leads/ID/addpoints/POINTS`
 
 ** Data Parameters (optional) **
 Name|Description
@@ -430,9 +430,9 @@ Subtract lead points
 
 #### HTTP Request
 
-To subtract points to a contact and return a 404 if the lead is not found:
+To edit a lead and return a 404 if the lead is not found:
 
-`PATCH /contacts/ID/removepoints/POINTS`
+`PATCH /leads/ID/removepoints/POINTS`
 
 ** Data Parameters (optional) **
 Name|Description
@@ -448,7 +448,7 @@ actionname|Name of the action
 ```php
 <?php
 
-$owners = $contactApi->getOwners();
+$owners = $leadApi->getOwners();
 ```
 ```json
 [
@@ -464,11 +464,11 @@ $owners = $contactApi->getOwners();
   }
 ]
 ```
-Get a list of owners that can be used to assign contacts to when creating/editing.
+Get a list of owners that can be used to assign leads to when creating/editing.
 
 #### HTTP Request
 
-`GET /contacts/list/owners`
+`GET /leads/list/owners`
 
 #### Response
 
@@ -486,7 +486,7 @@ lastName|string|Last name of the Mautic user
 ```php
 <?php
 
-$fields = $contactApi->getFieldList();
+$fields = $leadApi->getFieldList();
 ```
 ```json
 {
@@ -520,11 +520,11 @@ $fields = $contactApi->getFieldList();
     }
 }
 ```
-Get a list of available contact fields including custom ones.
+Get a list of available lead fields including custom ones.
 
 #### HTTP Request
 
-`GET /contacts/list/fields`
+`GET /leads/list/fields`
 
 #### Response
 
@@ -541,12 +541,11 @@ type|string|Type of field.  I.e. text, lookup, etc
 group|string|Group the field belongs to
 order|int|Field order
 
-### List Contact Notes
+### List Lead Notes
 ```php
 <?php
 
-$notes = $contactApi->getContactNotes($id, $searchFilter, $start, $limit, $orderBy, $orderByDir);
-```
+$notes = $leadApi->getLeadNotes($id, $searchFilter, $start, $limit, $orderBy, $orderByDir);
 ```json
 {
     "total": 1,
@@ -560,11 +559,11 @@ $notes = $contactApi->getContactNotes($id, $searchFilter, $start, $limit, $order
     ]
 }
 ```
-Get a list of notes for a specific contact.
+Get a list of notes for a specific lead.
 
 #### HTTP Request
 
-`GET /contacts/ID/notes`
+`GET /leads/ID/notes`
 
 **Query Parameters**
 
@@ -589,29 +588,28 @@ text|string|Body of the note
 type|string|Type of note. Options are "general", "email", "call", "meeting"
 dateTime|datetime|Date/time string of when the note was created.
 
-### Get Segment Memberships
+### Get List Memberships
 ```php
 <?php
 
-$segments = $contactApi->getContactSegments($id);
-```
+$lists = $leadApi->getLeadLists($id);
 ```json
 {
     "total": 1,
-    "segments": {
+    "lists": {
         "3": {
             "id": 3,
-            "name": "New Contacts",
-            "alias": "newcontacts"
+            "name": "New Leads",
+            "alias": "newleads"
         }
     }
 }
 ```
-Get a list of contact segments the contact is a member of.
+Get a list of lead lists the lead is a member of.
 
 #### HTTP Request
 
-`GET /contacts/ID/segments`
+`GET /leads/ID/lists`
 
 #### Response
 
@@ -624,21 +622,20 @@ Name|Type|Description
 id|int|ID of the list
 name|string|Name of the list
 alias|string|Alias of the list used with search commands.
-dateAdded|datetime|Date/time string for when the contact was added to the list
-manuallyAdded|bool|True if the contact was manually added to the list versus being added by a filter
-manuallyRemoved|bool|True if the contact was manually removed from the list even though the list's filter is a match
+dateAdded|datetime|Date/time string for when the lead was added to the list
+manuallyAdded|bool|True if the lead was manually added to the list versus being added by a filter
+manuallyRemoved|bool|True if the lead was manually removed from the list even though the list's filter is a match
 
 ### Change List Memberships
 
-See [Segements](#segments).
+See [Lists](#lists).
 
 
 ### Get Campaign Memberships
 ```php
 <?php
 
-$segments = $contactApi->getContactCampaigns($id);
-```
+$lists = $leadApi->getLeadCampaigns($id);
 ```json
 {
     "total": 1,
@@ -656,11 +653,11 @@ $segments = $contactApi->getContactCampaigns($id);
     }
 }
 ```
-Get a list of campaigns the contact is a member of.
+Get a list of campaigns the lead is a member of.
 
 #### HTTP Request
 
-`GET /contacts/ID/campaigns`
+`GET /leads/ID/campaigns`
 
 #### Response
 
@@ -672,10 +669,10 @@ Name|Type|Description
 ----|----|-----------
 id|int|ID of the campaign
 name|string|Name of the campaign
-dateAdded|datetime|Date/time string for when the contact was added to the campaign
-manuallyAdded|bool|True if the contact was manually added to the campaign versus being added by a contact list
-manuallyRemoved|bool|True if the contact was manually removed from the campaign when the contact's list is assigned to the campaign
-listMembership|array|Array of contact list IDs this contact belongs to that is also associated with this campaign
+dateAdded|datetime|Date/time string for when the lead was added to the campaign
+manuallyAdded|bool|True if the lead was manually added to the campaign versus being added by a lead list
+manuallyRemoved|bool|True if the lead was manually removed from the campaign when the lead's list is assigned to the campaign
+listMembership|array|Array of lead list IDs this lead belongs to that is also associated with this campaign
 
 ### Change Campaign Memberships
 
