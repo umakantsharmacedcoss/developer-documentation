@@ -42,7 +42,7 @@ There are three environments in Mautic: prod, dev, and test.
 
 **prod** is used when accessing the site through index.php.
 
-**dev** is used when accessing the site through index_dev.php. Using Mautic in the dev environment will activate Symfony's profiler toolbar, has more strict error handling, will display information about exceptions, and will not cache as much (see below). Note that steps should be taken to ensure index_dev.php is not accessible to the public as it could potentially reveal sensitive information. It is restricted to localhost by default.
+**dev** is used when accessing the site through index_dev.php. Using Mautic in the dev environment will activate Symfony's profiler toolbar, has more strict error handling, will display information about exceptions, and will not cache as much (see below). Note that steps should be taken to ensure index_dev.php is not accessible to the public as it could potentially reveal sensitive information. It is restricted to localhost by default. However, there are two ways to allow access to index_dev.php from a non-localhost. The first option is to set a header from the web-server with the IP addresses assigned to `MAUTIC_DEV_HOSTS`. The second and easier option is to add an array to your installation's `app/config/local.php` file as `'dev_hosts' = ['123.123.123.123', '124.124.124.124'],` then clear the [cache](#cache).
 
 **test** is used mainly for PHP Unit Tests.
 
@@ -59,3 +59,4 @@ Symfony makes heavy use of a filesystem cache. Frequently clearing this cache wi
  <aside class="warning">
  If you get class could not be found or cannot redeclare class errors when using the cache:clear command, manually delete the app/cache/ENV folder then run the command and/or browse to the site to rebuild.
  </aside>
+ 
