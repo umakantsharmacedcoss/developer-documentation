@@ -16,9 +16,9 @@ includes:
   - plugin_migrations_1.2
   - plugin_migrations_2.0
   - plugin_structure
-  - plugin_install  
+  - plugin_install
   - plugin_config
-  - plugin_translations  
+  - plugin_translations
   - plugin_mvc
   - plugin_mvc_controllers
   - plugin_mvc_models
@@ -49,10 +49,11 @@ includes:
   - plugin_extending_emails
   - plugin_extending_forms
   - plugin_extending_integrations
+  - plugin_extending_maintenance
   - plugin_extending_pages
   - plugin_extending_points
   - plugin_extending_reports
-  - plugin_extending_webhooks    
+  - plugin_extending_webhooks
   - plugin_extending_leads
   - plugin_misc
   - plugin_misc_flashes
