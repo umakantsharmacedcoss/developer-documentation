@@ -10,25 +10,35 @@ The themes use the same templating formats as [Symfony's twig templates](http://
    
   themes/blank/<br />
   - - - [config.json](#theme-config-file)<br />
-  - - - [thumbnail.png](#theme-config-file)<br />
+  - - - [thumbnail.png](#theme-thumbnail)<br />
   - - - html/ <br />
   - - - - - - [base.html.twig](#theme-html-files)<br />
   - - - - - - [email.html.twig](#theme-html-files)<br />
   - - - - - - [form.html.twig](#theme-html-files)<br />
   - - - - - - [message.html.twig](#theme-html-files)<br />
   - - - - - - [page.html.twig](#theme-html-files)<br />
+
+## Theme zip package
+
+If you want to make your theme installable via the Theme Manager, make a zip package from it. The zip package name must be the same as the final folder name of the theme in the /themes folder. The contents of the zip folder must contain the theme files directly, not in a subfolder. You can download an existing theme via the Theme Manager to see an example ZIP file.
   
 ## Theme Config File
  
  ```json
  {
-   "name": "Blank",
+   "name": "Theme Name",
+   "author": "John Doe",
+   "authorUrl": "https://john-doe-the-mautic-theme-builder.com",
    "features": [
      "page",
      "email",
      "form"
    ]
  }
+
+## Theme Thumbnail
+
+The thumbnail should be a screenshot of the theme with demo content. The width x height should be 575 x 600 px. This thumbnail will be available for Mautic users for quick theme preview in the Email edit form, Landing Page edit form and the Theme Manager.
 
 ```
  The config file defines the name of the theme and the features it supports.
@@ -37,7 +47,9 @@ The themes use the same templating formats as [Symfony's twig templates](http://
  
  Key|Type|Description
  ---|----|-----------
- name|string|Name displayed in the theme dropdowns
+ name|string|Name of the theme
+ author|string|Name of the theme author
+ authorUrl|string|URL to the author's website
  features|array|Array of features the theme supports. Options currently are email, form, and/or page
   
 ## Slots
@@ -125,9 +137,9 @@ This file defines the document for building an email template. Of course this fi
 ### form.html.twig
 
 ```twig
-{# themes/HelloBundle/html/form.html.twig #} 
+{# themes/thellotheme/html/form.html.twig #} 
 
-{% extends ":blank:base.html.twig" %}
+{% extends ":"~template~":base.html.twig" %}
 
 {% block content %}
     {% if message is defined %}
@@ -163,9 +175,9 @@ Copy from `app/bundles/FormBundle/Views/Builder/form.html.php` in the theme's Bu
 
 ### message.html.twig
 ```twig
-{# themes/HelloBundle/html/message.html.twig #}
+{# themes/hellotheme/html/message.html.twig #}
 
-{% extends ":blank:base.html.twig" %}
+{% extends ":"~template~":base.html.twig" %}
 
 {% block content %}
     <div>
@@ -184,8 +196,8 @@ It requires echo'ing two variables: `message` and `content`. `message` houses th
 ### page.html.twig
 
 ```twig
-{# themes/HelloBundle/html/message.html.twig #}
-{% extends ":blank:base.html.twig" %}
+{# themes/hellotheme/html/message.html.twig #}
+{% extends ":"~template~":base.html.twig" %}
 
 {% block content %}
 <div data-section-wrapper>
