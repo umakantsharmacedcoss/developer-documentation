@@ -108,6 +108,8 @@ Key|Required|Type|Description
 **formTypeOptions**|OPTIONAL|array|Array of options to include into the formType's $options argument
 **formTypeCleanMasks**|OPTIONAL|array|Array of input masks to clean a values from formType
 **formTypeTheme**|OPTIONAL|string|Theme to customize elements for formType
+**associatedDecisions**|OPTIONAL|array|Array of keys registered as decisions that this action can attached to. Defaults to any decision.
+**anchorRestrictions**|OPTIONAL|array|Array of anchors (the places on an event in the builder this action can be attached to). The format is eventType.anchorName. Event types can be source, decision, action, or condition. anchorName includes top, bottom, inaction (yes/green), action (no/red) or leadsource. For example, by passing an array with `decision.inaction`, this action will not be attachable to the inaction/red anchor of a decision.
 **callback**|DEPRECATED|mixed|Deprecated as of 2.0 and support to be removed in 3.0; use eventName instead. Static callback function that will be called for the action and should contain the logic to execute the custom action
 
 The listener for dispatched event will have the `Mautic\CampaignBundle\Event\CampaignExecutionEvent` injected. To note that the action was successfully executed, use `$event->setResult($result)`. `$result` can be a boolean or an array. Setting false will cause the action to be retried. If an array, it will be stored in the campaign event log's metadata array (useful for displaying information in the contact time-line).
@@ -132,7 +134,7 @@ Use `$event->setFailed()` to note that an event failed but should not be retried
  $campaignModel->triggerEvent('helloworld.visits_mars', $customPassthroughToActions, $uniqueTriggerId);
  ```
  
-Campaign decisions are registered exactly as a campaign action except it uses the `$event->addLeadDecision($identifier, $parameters)` method. The only difference in the `$parameters` arguments is that the listener for the `eventName` is used to validate the decision rather than execute some action. For example, if the decision is configured to only apply to a specific ID chosen by the user (defined in the `formType`), the listener could compare the decision's `$event->getEventDetails()->getId()` (see example) with the event's`$event->getConfig()['id']`. If the decision should execute the actions associated with it, set `$event->setResult(true);`.  Otherwise `$event->setResult(false);` and nothing will be executed or logged.
+Campaign decisions are registered exactly as a campaign action except it uses the `$event->addLeadDecision($identifier, $parameters)` method. The only difference in the `$parameters` arguments is that the listener for the `eventName` is used to validate the decision rather than execute some action and it accepts a `associatedActions` array instead of `associatedDecisions`. For example, if the decision is configured to only apply to a specific ID chosen by the user (defined in the `formType`), the listener could compare the decision's `$event->getEventDetails()->getId()` (see example) with the event's`$event->getConfig()['id']`. If the decision should execute the actions associated with it, set `$event->setResult(true);`.  Otherwise `$event->setResult(false);` and nothing will be executed or logged.
   
 For custom decisions to work, there must be a trigger executed when the lead makes the decision. Thus, where ever is appropriate in the plugin's code logic, add something similar to what's in the example code block. 
  
