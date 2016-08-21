@@ -145,7 +145,7 @@ php app/console router:match /blog/my-latest-post
                     )
                 )
             )
-        )
+        ),
         'admin' => array(
             'plugin.helloworld.admin' => array(
                 'route'     => 'plugin_helloworld_admin',
