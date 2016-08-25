@@ -309,7 +309,10 @@ $createIfNotFound = true;
 
 $contact = $contactApi->edit($id, $data, $createIfNotFound);
 ```
-Edit a new contact.  Note that this supports PUT or PATCH depending on the desired behavior for when a contact cannot be found based on the ID given.
+Edit a new contact.  Note that this supports PUT or PATCH depending on the desired behavior.
+
+**PUT** creates a contact if the given ID does not exist and clears all the contact information, adds the information from the request.
+**PATCH** fails if the contact with the given ID does not exist and updates the contact field values with the values form the request.
 
 #### HTTP Request
 
