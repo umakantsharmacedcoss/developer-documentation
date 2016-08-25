@@ -42,10 +42,12 @@ includes:
   - plugin_database
   - plugin_permissions
   - plugin_configuration
-  - plugin_extending_intro  
+  - plugin_manipulating_contacts  
+  - plugin_extending_intro    
   - plugin_extending_api  
   - plugin_extending_campaigns
   - plugin_extending_categories
+  - plugin_extending_contacts
   - plugin_extending_emails
   - plugin_extending_forms
   - plugin_extending_integrations
@@ -54,7 +56,6 @@ includes:
   - plugin_extending_points
   - plugin_extending_reports
   - plugin_extending_webhooks
-  - plugin_extending_leads
   - plugin_misc
   - plugin_misc_flashes
   - plugin_misc_helpers
