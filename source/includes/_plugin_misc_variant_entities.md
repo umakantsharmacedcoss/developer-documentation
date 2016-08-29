@@ -27,6 +27,7 @@ parent::saveEntity($entity, $unlock);
 
 $this->postVariantSaveEntity($entity, $resetVariants, $entity->getRelatedEntityIds(), $variantStartDate);
 ````
+<div class="clear-right"></div>
 
 #### \Mautic\CoreBundle\Doctrine\VariantMigrationTrait
 
