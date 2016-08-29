@@ -63,7 +63,9 @@ includes:
   - plugin_misc_helpers_datetime
   - plugin_misc_helpers_chartquery
   - plugin_misc_forms
-  - plugin_misc_events  
+  - plugin_misc_events
+  - plugin_misc_translated_entities.md
+  - plugin_misc_variant_entities.md
   - themes
   - api_intro
   - api_authorization
