@@ -174,6 +174,10 @@ To provide custom form field templates or to manipulate the form body, create th
     
 Copy from `app/bundles/FormBundle/Views/Builder/form.html.php` in the theme's Builder directory or one or more of the fields templates in `app/bundles/FormBundle/Views/Field/*.html.php` into the theme's Field directory. Then customize to the desired layout. Note that these must be PHP templates.
 
+#### Styling the embedded forms
+
+The embedded forms can be styled by the `themes/{your theme name}/html/MauticFormBundle/Builder/style.html.twig` file. The best way is to copy the content of the [default form styles](https://github.com/mautic/mautic/blob/staging/app/bundles/FormBundle/Views/Builder/style.html.php) and modify them to your needs.
+
 ### message.html.twig
 ```twig
 {# themes/hellotheme/html/message.html.twig #}
