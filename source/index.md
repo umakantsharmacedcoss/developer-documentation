@@ -78,6 +78,7 @@ includes:
   - api_endpoint_campaigns
   - api_endpoint_forms
   - api_endpoint_segments
+  - api_endpoint_stages
   - api_endpoint_pages
   - api_endpoint_point_actions
   - api_endpoint_point_triggers
