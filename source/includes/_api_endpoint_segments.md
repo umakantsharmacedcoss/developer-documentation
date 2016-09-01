@@ -30,7 +30,7 @@ $segment = $segmentApi->get($id);
         "modifiedBy": 1,
         "modifiedByUser": "Joe Smith",
         "name": "Segment A",
-        "alias": "sgment-a",
+        "alias": "segment-a",
         "description": "This is my first segment created via API.",
         "filters": [
           "glue": "and",
@@ -84,21 +84,32 @@ $segments = $segmentApi->getSegments();
 ```
 ```json
 {
-  "1": {
-    "id": 1,
-    "name": "New Contacts",
-    "alias": "new"
-  },
-  "2": {
-    "id": 2,
-    "name": "Region A Contacts",
-    "alias": "region-a-laeds"
-  },
-  "3": {
-    "id": 3,
-    "name": "Region B Contacts",
-    "alias": "region-b-contacts"
-  }
+  "total": 13,
+  "lists": [
+    {
+        "id": 47,
+        "isPublished": 1,
+        "dateAdded": "2015-07-21T12:27:12-05:00",
+        "createdBy": 1,
+        "createdByUser": "Joe Smith",
+        "dateModified": "2015-07-21T14:12:03-05:00",
+        "modifiedBy": 1,
+        "modifiedByUser": "Joe Smith",
+        "name": "Segment A",
+        "alias": "segment-a",
+        "description": "This is my first segment created via API.",
+        "filters": [
+          "glue": "and",
+          "field": "city",
+          "type": "text",
+          "filter": "Prague",
+          "display": null,
+          "operator": "=",
+        ],
+        "isGlobal": true
+    },
+    ...
+  ]
 }
 ```
 Returns a list of contact segments available to the user. This list is not filterable.
@@ -117,9 +128,20 @@ See JSON code example.
 
 Name|Type|Description
 ----|----|-----------
+total|int|Count of all segments
 id|int|ID of the segment
-name|string|Name of the segment
-alias|string|Alias of the segment
+isPublished|boolean|Whether the segment is published
+dateAdded|datetime|Date/time segment was created
+createdBy|int|ID of the user that created the segment
+createdByUser|string|Name of the user that created the segment
+dateModified|datetime/null|Date/time segment was last modified
+modifiedBy|int|ID of the user that last modified the segment
+modifiedByUser|string|Name of the user that last modified the segment
+name|string|Segment name
+alias|string|Segment alias
+description|string|Segment description
+filters|array|Smart filters for the segment
+isGlobal|boolean|Whether the segment is global. 0 means only the author will see it.
 
 ### Create Segment
 ```php
