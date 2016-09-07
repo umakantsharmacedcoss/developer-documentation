@@ -238,4 +238,61 @@ Delete a stage.
 
 Same as [Get Stage](#get-stage).
 
+### Add Contact to a Stage
 
+```php
+<?php
+
+//...
+$response = $stageApi->addContact($contactId, $stageId);
+if (!isset($response['success'])) {
+    // handle error
+}
+```
+```json
+{
+    "success": true
+}
+```
+
+Manually add a contact to a specific stage.
+
+#### HTTP Request
+
+`POST /stages/SEGMENT_ID/contact/add/CONTACT_ID`
+
+#### Response
+
+`Expected Response Code: 200`
+
+See JSON code example.
+
+
+### Remove Contact from a Stage
+
+```php
+<?php
+
+//...
+$response = $stageApi->removeContact($contactId, $stageId);
+if (!isset($response['success'])) {
+    // handle error
+}
+```
+```json
+{
+    "success": true
+}
+```
+
+Manually remove a contact to a specific stage.
+
+#### HTTP Request
+
+`POST /stages/SEGMENT_ID/contact/remove/CONTACT_ID`
+
+#### Response
+
+`Expected Response Code: 200`
+
+See JSON code example.
