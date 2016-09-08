@@ -163,3 +163,115 @@ See JSON code example.
 **Properties**
 
 Same as [Get Page](#get-page).
+
+### Create Page
+```php
+<?php 
+
+$data = array(
+    'title'        => 'Page A',
+    'description' => 'This is my first page created via API.',
+    'isPublished' => 1
+);
+
+$page = $pageApi->create($data);
+```
+Create a new page.
+
+#### HTTP Request
+
+`POST /page/new`
+
+**Post Parameters**
+
+Name|Description
+----|-----------
+title|Page title is the only required field
+alias|string|Used to generate the URL for the page
+description|A description of the page.
+isPublished|A value of 0 or 1
+language|string|Language locale of the page
+metaDescription|Meta description for the page's <head>
+redirectType|int|If unpublished, redirect with 301 or 302
+redirectUrl|string|If unpublished, the URL to redirect to if redirectType is set
+
+#### Response
+
+`Expected Response Code: 201`
+
+**Properties**
+
+Same as [Get Page](#get-page).
+
+### Edit Page
+```php
+<?php
+
+$id   = 1;
+$data = array(
+    'title'        => 'New page title',
+    'isPublished' => 0
+);
+
+// Create new a page of ID 1 is not found?
+$createIfNotFound = true;
+
+$page = $pageApi->edit($id, $data, $createIfNotFound);
+```
+Edit a new page. Note that this supports PUT or PATCH depending on the desired behavior.
+
+**PUT** creates a page if the given ID does not exist and clears all the page information, adds the information from the request.
+**PATCH** fails if the page with the given ID does not exist and updates the page field values with the values form the request.
+
+#### HTTP Request
+
+To edit a page and return a 404 if the page is not found:
+
+`PATCH /pages/ID/edit`
+
+To edit a page and create a new one if the page is not found:
+
+`PUT /pages/ID/edit`
+
+**Post Parameters**
+
+Name|Description
+----|-----------
+title|Page title is the only required field
+alias|Name alias generated automatically if not set
+description|A description of the page.
+isPublished|A value of 0 or 1
+language|string|Language locale of the page
+metaDescription|Meta description for the page's <head>
+redirectType|int|If unpublished, redirect with 301 or 302
+redirectUrl|string|If unpublished, the URL to redirect to if redirectType is set
+
+#### Response
+
+If `PUT`, the expected response code is `200` if the page was edited or `201` if created.
+
+If `PATCH`, the expected response code is `200`.
+
+**Properties**
+
+Same as [Get Page](#get-page).
+
+### Delete Page
+```php
+<?php
+
+$page = $pageApi->delete($id);
+```
+Delete a page.
+
+#### HTTP Request
+
+`DELETE /pages/ID/delete`
+
+#### Response
+
+`Expected Response Code: 200`
+
+**Properties**
+
+Same as [Get Page](#get-page).

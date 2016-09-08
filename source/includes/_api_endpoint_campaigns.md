@@ -303,7 +303,7 @@ Delete a campaign.
 
 **Properties**
 
-Same as [Get Campaign](#get-campaign).@che
+Same as [Get Campaign](#get-campaign).
 
 ### Add Contact to a Campaign
 
