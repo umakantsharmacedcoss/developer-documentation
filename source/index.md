@@ -76,6 +76,7 @@ includes:
   - api_endpoint_contacts
   - api_endpoint_assets
   - api_endpoint_campaigns
+  - api_endpoint_dynamic_content
   - api_endpoint_forms
   - api_endpoint_segments
   - api_endpoint_stages
