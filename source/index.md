@@ -78,6 +78,7 @@ includes:
   - api_endpoint_campaigns
   - api_endpoint_dynamic_content
   - api_endpoint_forms
+  - api_endpoint_notifications
   - api_endpoint_segments
   - api_endpoint_smses
   - api_endpoint_stages
