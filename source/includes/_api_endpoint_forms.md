@@ -343,7 +343,7 @@ $form = $formApi->edit($id, $data, $createIfNotFound);
 ```
 Edit a new form. Note that this supports PUT or PATCH depending on the desired behavior.
 
-**PUT** creates a form if the given ID does not exist and clears all the form information, adds the information from the request.
+**PUT** creates a form if the given ID does not exist and clears all the form information, adds the information from the request. Form fields and actions will be also deleted if not present in the request.
 **PATCH** fails if the form with the given ID does not exist and updates the form field values with the values form the request.
 
 #### HTTP Request
@@ -381,6 +381,52 @@ Delete a form.
 #### HTTP Request
 
 `DELETE /forms/ID/delete`
+
+#### Response
+
+`Expected Response Code: 200`
+
+**Properties**
+
+Same as [Get Form](#get-form).
+
+### Delete Form Fields
+
+The following examples will show how to delete fields with ID 56 and 59.
+
+```php
+<?php
+
+$form = $formApi->deleteFields($formId, array(56, 59));
+```
+Delete a form fields.
+
+#### HTTP Request
+
+`DELETE /forms/ID/fields/delete?fields[]=56&fields[]=59`
+
+#### Response
+
+`Expected Response Code: 200`
+
+**Properties**
+
+Same as [Get Form](#get-form).
+
+### Delete Form Actions
+
+The following examples will show how to delete actions with ID 56 and 59.
+
+```php
+<?php
+
+$form = $formApi->deleteActions($formId, array(56, 59));
+```
+Delete a form actions.
+
+#### HTTP Request
+
+`DELETE /forms/ID/actions/delete?actions[]=56&actions[]=59`
 
 #### Response
 
