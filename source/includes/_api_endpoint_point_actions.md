@@ -139,3 +139,129 @@ See JSON code example.
 **Properties**
 
 Same as [Get Point Action](#get-point-action).
+
+### Create Point Action
+```php
+<?php 
+
+$data = array(
+    'name' => 'test',
+    'delta' => 5,
+    'type' => 'page.hit',
+    'description' => 'created as a API test'
+);
+
+$point = $pointApi->create($data);
+```
+Create a new point action.
+
+#### HTTP Request
+
+`POST /points/new`
+
+**Post Parameters**
+
+Same as [Get Point Action](#get-point-action). Point Action fields and actions can be created/edited via the point actions/actions arrays in the point action array.
+
+#### Response
+
+`Expected Response Code: 201`
+
+**Properties**
+
+Same as [Get Point Action](#get-point-action).
+
+### Edit Point Action
+```php
+<?php
+
+$id   = 1;
+$data = array(
+    'name' => 'test',
+    'delta' => 5,
+    'type' => 'page.hit',
+    'description' => 'created as a API test'
+);
+
+// Create new a point action of ID 1 is not found?
+$createIfNotFound = true;
+
+$point = $pointApi->edit($id, $data, $createIfNotFound);
+```
+Edit a new point action. Note that this supports PUT or PATCH depending on the desired behavior.
+
+**PUT** creates a point action if the given ID does not exist and clears all the point action inpoint actionation, adds the inpoint actionation from the request. Point Action fields and actions will be also deleted if not present in the request.
+**PATCH** fails if the point action with the given ID does not exist and updates the point action field values with the values point action the request.
+
+#### HTTP Request
+
+To edit a point action and return a 404 if the point action is not found:
+
+`PATCH /points/ID/edit`
+
+To edit a point action and create a new one if the point action is not found:
+
+`PUT /points/ID/edit`
+
+**Post Parameters**
+
+Same as [Get Point Action](#get-point-action). Point Action fields and actions can be created/edited via the point actions/actions arrays in the point action array.
+
+#### Response
+
+If `PUT`, the expected response code is `200` if the point action was edited or `201` if created.
+
+If `PATCH`, the expected response code is `200`.
+
+**Properties**
+
+Same as [Get Point Action](#get-point-action).
+
+### Delete Point Action
+```php
+<?php
+
+$point = $pointApi->delete($id);
+```
+Delete a point action.
+
+#### HTTP Request
+
+`DELETE /points/ID/delete`
+
+#### Response
+
+`Expected Response Code: 200`
+
+**Properties**
+
+Same as [Get Point Action](#get-point-action).
+
+### Get Point Action Types
+```php
+<?php
+
+$point = $pointApi->getPointActionTypes();
+```
+Get array of available Point Action Types
+
+#### HTTP Request
+
+`DELETE /points/points/types`
+
+#### Response
+
+`Expected Response Code: 200`
+
+```json
+{  
+    "pointActionTypes":{  
+        "asset.download":"Downloads an asset",
+        "email.send":"Is sent an email",
+        "email.open":"Opens an email",
+        "form.submit":"Submits a form",
+        "page.hit":"Visits a landing page",
+        "url.hit":"Visits specific URL"
+    }
+}
+```
