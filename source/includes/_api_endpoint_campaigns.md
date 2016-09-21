@@ -217,7 +217,7 @@ Create a new campaign.
 
 #### HTTP Request
 
-`POST /campaign/new`
+`POST /campaigns/new`
 
 **Post Parameters**
 

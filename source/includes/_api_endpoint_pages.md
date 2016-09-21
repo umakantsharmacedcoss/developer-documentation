@@ -180,7 +180,7 @@ Create a new page.
 
 #### HTTP Request
 
-`POST /page/new`
+`POST /pages/new`
 
 **Post Parameters**
 

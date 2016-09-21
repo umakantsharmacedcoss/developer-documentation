@@ -149,7 +149,7 @@ Create a new stage.
 
 #### HTTP Request
 
-`POST /stage/new`
+`POST /stages/new`
 
 **Post Parameters**
 

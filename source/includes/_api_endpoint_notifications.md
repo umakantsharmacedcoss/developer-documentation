@@ -153,7 +153,7 @@ Create a new notification.
 
 #### HTTP Request
 
-`POST /notification/new`
+`POST /notifications/new`
 
 **Post Parameters**
 

@@ -143,7 +143,7 @@ Create a new dynamicConent.
 
 #### HTTP Request
 
-`POST /dynamicConent/new`
+`POST /dynamicconents/new`
 
 **Post Parameters**
 

@@ -143,7 +143,7 @@ Create a new sms.
 
 #### HTTP Request
 
-`POST /sms/new`
+`POST /smses/new`
 
 **Post Parameters**
 

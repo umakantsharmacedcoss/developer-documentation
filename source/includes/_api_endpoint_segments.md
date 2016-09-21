@@ -160,7 +160,7 @@ Create a new segment.
 
 #### HTTP Request
 
-`POST /segment/new`
+`POST /segments/new`
 
 **Post Parameters**
 

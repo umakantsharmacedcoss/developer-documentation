@@ -294,7 +294,7 @@ Create a new form.
 
 #### HTTP Request
 
-`POST /form/new`
+`POST /forms/new`
 
 **Post Parameters**
 
