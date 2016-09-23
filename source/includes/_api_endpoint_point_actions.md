@@ -247,7 +247,7 @@ Get array of available Point Action Types
 
 #### HTTP Request
 
-`DELETE /points/points/types`
+`GET /points/actions/types`
 
 #### Response
 
