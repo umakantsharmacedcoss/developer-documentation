@@ -39,6 +39,8 @@ Leads are tracked by two cookies. The first cookie notes which ID the lead is tr
 
 Review the sample code on how to obtain the currently tracked lead.
 
+As of Mautic 2.2.0, a cookie is also placed on any domain with mtc.js embedded (that's allowed by Mautic's CORS settings) as `mtc_id`. This will contain the ID of the currently tracked contact.
+
 <div class="clear-right"></div>
 
 #### Creating New Leads
