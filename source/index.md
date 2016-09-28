@@ -45,6 +45,7 @@ includes:
   - plugin_manipulating_contacts  
   - plugin_extending_intro    
   - plugin_extending_api  
+  - plugin_extending_broadcasts
   - plugin_extending_campaigns
   - plugin_extending_categories
   - plugin_extending_contacts
