@@ -135,7 +135,8 @@ Key|Required|Type|Description
 namespace Mautic\LeadBundle\Entity;
 
 use Mautic\CoreBundle\Entity\CommonRepository;
-use Mautic\LeadBundle\Entity\TimelineTrait
+use Mautic\LeadBundle\Entity\TimelineTrait;
+
 /**
  * Class WorldRepository
  */
