@@ -66,3 +66,35 @@ Guidelines for translation strings:
 
 ### Using the translator
 Refer to the [translator service](#translator) to learn how to use translations in the code.
+
+### Using the translator in your javascript
+If your bundle implements custom javascript where translations are
+required, you can get them by the `Mautic.translate(key, params)` method.
+
+Create a `javascript.ini` in the same directory as the `messages.ini` as
+described above. Any translation strings added to that file will be
+available when translating in javascript.
+
+For example, if your `javascript.ini` file contained the following
+translation strings:
+
+```ini
+mautic.core.dynamicContent="Dynamic Content"
+mautic.core.dynamicContent.new="Dynamic Content %number%"
+```
+
+You can request those translation strings in your javascript by
+passing the key to the `Mautic.translate()` function.
+
+```js
+Mautic.translate("mautic.core.dynamicContent");
+// outputs "Dynamic Content"
+```
+
+String interpolation for messages with variables works with js
+translations just as you'd expect.
+
+```js
+Mautic.translate("mautic.core.dynamicContent.new", {number: 4});
+// outputs "Dynamic Content 4"
+```
