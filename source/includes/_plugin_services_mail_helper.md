@@ -8,10 +8,9 @@ $mailer = $this->get('mautic.helper.mailer')->getMailer();
 $mailer->addTo($toAddress, $toName);
 
 // Set a custom from; will use system settings by default
-$user = $this->factory->getUser();
 $mailer->setFrom(
-    $user->getEmail(),
-    $user->getFirstName().' '.$user->getLastName()
+    $this->user->getEmail(),
+    $this->user->getFirstName().' '.$this->user->getLastName()
 );
 
 // Set subject
@@ -45,6 +44,7 @@ use Mautic\EmailBundle\Swiftmailer\Exception\BatchQueueMaxException;
 $mailer = $this->get('mautic.helper.mailer')->getMailer();
 $failed = array();
 
+$mailer->enableQueue();
 foreach ($emailList as $email) {
     try {
         if (!$mailer->addTo($email['email'], $email['name'])) {
@@ -76,7 +76,7 @@ if (!$mailer->flushQueue()) {
 
 The mail helper can be used to send email, running the content through the event listeners to search/replace tokens, manipulate the content, etc. 
  
- Some transports, such as Mandrill, support tokenized emails for multiple recipients. The mail helper makes it easy to leverage this feature by using it's `queue()` and `flushQueue()` functions in place of `send()`. If sending a batch of emails, it is recommended to use the `queue()` function.
+ Some transports, such as Mandrill, support tokenized emails for multiple recipients. The mail helper makes it easy to leverage this feature by using it's `queue()` and `flushQueue()` functions in place of `send()`. If sending a batch of emails, it is recommended to use the `queue()` function. Although these classes will still work with using just `send()` for one off emails, if sending a batch of the same email to multiple contacts, enable tokenization/batch mode with `enableQueue()`. 
  
  If using an Email entity (`\Mautic\EmailBundle\Entity\Email`), just pass the Email entity to `$mailer->setEmail($email)` and the subject, body, assets, etc will be extracted and automatically set.
  

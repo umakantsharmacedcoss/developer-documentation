@@ -39,6 +39,7 @@ includes:
   - plugin_services_plugin_config_helper
   - plugin_services_cookie_helper
   - plugin_services_mail_helper
+  - plugin_services_model_factory
   - plugin_database
   - plugin_permissions
   - plugin_configuration
