@@ -55,7 +55,7 @@ class CampaignSubscriber extends CommonSubscriber
         );
 
         // Register custom decision (executes when a lead "makes a decision" i.e. executes some direct action
-        $event->addLeadDecision(
+        $event->addDecision(
             'helloworld.visits_mars',
             array(
                 'eventName'       => HelloWorldEvents::VALIDATE_VISIT,
@@ -93,7 +93,7 @@ class CampaignSubscriber extends CommonSubscriber
 }
 ```
 
-Plugins can add their own campaign actions and decisions by listening to the `\Mautic\CampaignBundle\CampaignEvents::CAMPAIGN_ON_BUILD` event.  Read more about [listeners and subscribers](#events). 
+Plugins can add their own campaign actions, decisions, or conditions by listening to the `\Mautic\CampaignBundle\CampaignEvents::CAMPAIGN_ON_BUILD` event.  Read more about [listeners and subscribers](#events). 
 
 #### Campaign Actions
 
@@ -139,3 +139,8 @@ Campaign decisions are registered exactly as a campaign action except it uses th
 For custom decisions to work, there must be a trigger executed when the lead makes the decision. Thus, where ever is appropriate in the plugin's code logic, add something similar to what's in the example code block. 
  
  The `triggerEvent()` method will pull all the triggered decisions (`helloworld.visits_mars` in the code example) for published campaigns the lead is in, dispatch the decisions event (if configured) for validation, then execute the associated actions if appropriate.
+ 
+
+#### Campaign Conditions
+
+Campaign conditions are registered with `addCondition()` and accepts the same arguments as `addDecision()`. The listener also receives an instance of `Mautic\CampaignBundle\Event\CampaignExecutionEvent`. To mark a condition as true or false, use `$event->setResult($result);`.
