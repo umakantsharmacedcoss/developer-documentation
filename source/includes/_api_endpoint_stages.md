@@ -75,7 +75,7 @@ publishDown|datetime|Date/time stage should be unpublished
 <?php
 
 //...
-$stages = $stageApi->getStages();
+$stages = $stageApi->getList();
 ```
 ```json
 {

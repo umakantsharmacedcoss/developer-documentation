@@ -73,9 +73,10 @@ includes:
   - api_authorization_oauth2
   - api_libraries
   - api_endpoints
-  - api_endpoint_contacts
   - api_endpoint_assets
   - api_endpoint_campaigns
+  - api_endpoint_companies
+  - api_endpoint_contacts
   - api_endpoint_dynamic_content
   - api_endpoint_forms
   - api_endpoint_notifications
