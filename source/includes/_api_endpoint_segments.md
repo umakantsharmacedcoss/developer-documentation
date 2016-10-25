@@ -257,7 +257,7 @@ Same as [Get Segment](#get-segment).
 <?php
 
 //...
-$response = $segmentApi->addContact($contactId, $segmentId);
+$response = $segmentApi->addContact($segmentId, $contactId);
 if (!isset($response['success'])) {
     // handle error
 }
@@ -287,7 +287,7 @@ See JSON code example.
 <?php
 
 //...
-$response = $segmentApi->removeContact($contactId, $segmentId);
+$response = $segmentApi->removeContact($segmentId, $contactId);
 if (!isset($response['success'])) {
     // handle error
 }

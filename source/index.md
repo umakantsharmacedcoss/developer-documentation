@@ -78,7 +78,8 @@ includes:
   - api_endpoint_categories
   - api_endpoint_companies
   - api_endpoint_contacts
-  - api_endpoint_dynamic_content
+  - api_endpoint_dynamic_contents
+  - api_endpoint_emails
   - api_endpoint_forms
   - api_endpoint_notifications
   - api_endpoint_segments
