@@ -110,7 +110,7 @@ fields|array|Custom fields for the company
 <?php
 
 //...
-$companies = $companyApi->getList();
+$companies = $companyApi->getList($searchFilter, $start, $limit, $orderBy, $orderByDir, $publishedOnly, $minimal);
 ```
 ```json
 {

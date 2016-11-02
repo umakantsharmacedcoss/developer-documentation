@@ -67,7 +67,7 @@ bundle|string|The bundle where the category will be available
 <?php
 
 //...
-$categories = $categoryApi->getList();
+$categories = $categoryApi->getList($searchFilter, $start, $limit, $orderBy, $orderByDir, $publishedOnly, $minimal);
 ```
 ```json
 {  

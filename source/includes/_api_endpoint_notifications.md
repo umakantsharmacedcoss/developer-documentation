@@ -83,7 +83,7 @@ category|null/object|Category
 <?php
 // ...
 
-$notifications = $notificationApi->getList($searchFilter, $start, $limit, $orderBy, $orderByDir);
+$notifications = $notificationApi->getList($searchFilter, $start, $limit, $orderBy, $orderByDir, $publishedOnly, $minimal);
 ```
 ```json
 {  
@@ -126,6 +126,7 @@ limit|Limit number of entities to return. Defaults to the system configuration f
 orderBy|Column to sort by. Can use any column listed in the response.
 orderByDir|Sort direction: asc or desc.
 publishedOnly|Only return currently published entities.
+minimal|Return only array of entities without additional lists in it.
 
 #### Response
 

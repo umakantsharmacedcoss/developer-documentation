@@ -80,7 +80,7 @@ isGlobal|boolean|Whether the segment is global. 0 means only the author will see
 <?php
 
 //...
-$segments = $segmentApi->getList();
+$segments = $segmentApi->getList($searchFilter, $start, $limit, $orderBy, $orderByDir, $publishedOnly, $minimal);
 ```
 ```json
 {
