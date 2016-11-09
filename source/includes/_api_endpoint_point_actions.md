@@ -266,3 +266,4 @@ Get array of available Point Action Types
     }
 }
 ```
+See JSON code example.

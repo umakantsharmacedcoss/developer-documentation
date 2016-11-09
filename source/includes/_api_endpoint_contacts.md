@@ -364,6 +364,73 @@ Delete a contact.
 
 Same as [Get Contact](#get-contact).
 
+### Add Points
+```php
+<?php
+
+$data = array(
+	 'eventname' => 'Score via api',
+	 'actionname' => 'Adding',
+ );
+$contactApi->addPoints($contactId, $pointDelta, $data);
+```
+
+Add lead points
+
+#### HTTP Request
+
+To add points to a contact and return a 404 if the lead is not found:
+
+`PATCH /contacts/ID/points/plus/POINTS`
+
+** Data Parameters (optional) **
+Name|Description
+----|-----------
+eventname|Name of the event
+actionname|Name of the action
+
+#### Response
+
+`Expected Response Code: 200`
+```json
+{
+    "success": true
+}
+```
+
+### Subtract Points
+```php
+<?php
+
+$data = array(
+	 'eventname' => 'Score via api',
+	 'actionname' => 'Subtracting',
+ );
+$contactApi->subtractPoints($contactId, $pointDelta, $data);
+```
+Subtract lead points
+
+#### HTTP Request
+
+To subtract points to a contact and return a 404 if the lead is not found:
+
+`PATCH /contacts/ID/points/minus/POINTS`
+
+** Data Parameters (optional) **
+Name|Description
+----|-----------
+eventname|Name of the event
+actionname|Name of the action
+
+#### Response
+
+`Expected Response Code: 200`
+```json
+{
+    "success": true
+}
+```
+
 ### List Available Owners
 ```php
 <?php
