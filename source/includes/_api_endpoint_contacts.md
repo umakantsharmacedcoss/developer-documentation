@@ -364,6 +364,60 @@ Delete a contact.
 
 Same as [Get Contact](#get-contact).
 
+### Add Do Not Contact
+```php
+<?php
+
+$data = array(
+     'eventname' => 'Score via api',
+     'actionname' => 'Adding',
+ );
+$contactApi->addDnc($contactId, $channel, $reason, $channelId, $comments);
+```
+
+Add a contact to DNC list
+
+#### HTTP Request
+
+To add Do Not Contact entry to a contact:
+
+`PATCH /contacts/ID/dnc/add/CHANNEL`
+
+** Data Parameters (optional) **
+Name|Description
+----|-----------
+channel|Channel of DNC. For example 'email', 'sms'... Default is email.
+reason|Int value of the reason. Use Contacts constants: Contacts::UNSUBSCRIBED, Contacts::BOUNCED, Contacts::MANUAL. Default is Manual
+channelId|ID of the entity which was the reason for unsubscription
+comments|A text describing details of DNC entry
+
+#### Response
+
+Same as [Get Contact](#get-contact).
+
+### Remove from Do Not Contact
+```php
+<?php
+$contactApi->addDnc($contactId, $channel);
+```
+
+Remove a contact from DNC list
+
+#### HTTP Request
+
+To remove Do Not Contact entry from a contact:
+
+`PATCH /contacts/ID/dnc/remove/CHANNEL`
+
+** Data Parameters (optional) **
+Name|Description
+----|-----------
+channel|Channel of DNC. For example 'email', 'sms'... Default is email.
+
+#### Response
+
+Same as [Get Contact](#get-contact).
+
 ### Add Points
 ```php
 <?php
