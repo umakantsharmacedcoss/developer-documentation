@@ -600,3 +600,95 @@ listMembership|array|Array of contact list IDs this contact belongs to that is a
 ### Change Campaign Memberships
 
 See [Campaigns](#campaigns).
+
+### Get Contact Events
+```php
+<?php
+
+$segments = $contactApi->getEvents($id, $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page);
+```
+**Query Parameters**
+
+Name|Description
+----|-----------
+search|String or search command to filter events by.
+includeEvents|Array of event types to include
+excludeEvents|Array of event types to exclude
+orderBy|Column to sort by. Can use any column listed in the response.
+orderByDir|Sort direction: asc or desc.
+page|What page number to load
+
+```json
+{  
+  "events":[  
+    {  
+      "event":"lead.identified",
+      "icon":"fa-user",
+      "eventType":"Contact identified",
+      "eventPriority":-4,
+      "timestamp":"2016-06-09T21:39:08+00:00",
+      "featured":true
+    }
+  ],
+  "filters":{  
+    "search":"",
+    "includeEvents":[  
+      "lead.identified"
+    ],
+    "excludeEvents":[]
+  },
+  "order":[  
+    "",
+    "ASC"
+  ],
+  "types":{  
+    "lead.ipadded":"Accessed from IP",
+    "asset.download":"Asset downloaded",
+    "campaign.event":"Campaign action triggered",
+    "lead.create":"Contact created",
+    "lead.identified":"Contact identified",
+    "lead.donotcontact":"Do not contact",
+    "email.read":"Email read",
+    "email.sent":"Email sent",
+    "email.failed":"Failed",
+    "form.submitted":"Form submitted",
+    "page.hit":"Page hit",
+    "point.gained":"Point gained",
+    "stage.changed":"Stage changed",
+    "lead.utmtagsadded":"UTM tags recorded",
+    "page.videohit":"Video View Event"
+  },
+  "total":1,
+  "page":1,
+  "limit":25,
+  "maxPages":1
+}
+```
+Get a list of contact events the contact created.
+
+#### HTTP Request
+
+`GET /contacts/ID/events`
+
+#### Response
+
+`Expected response code: 200`
+
+**List Properties**
+
+Name|Type|Description
+----|----|-----------
+events|array|List of events
+event|string|ID of the event type
+icon|string|Icon class from FontAwesome
+eventType|string|Human name of the event
+eventPriority|string|Priority of the event
+timestamp|timestamp|Date and time when the event was created
+featured|bool|Flag whether the event is featured
+filters|array|Filters used in the query
+order|array|Ordering used in the query
+types|array|Array of available event types
+total|int|Total number of events in the request
+page|int|Current page number
+limit|int|Limit of events per page
+maxPages|int|How many pages of events are there
