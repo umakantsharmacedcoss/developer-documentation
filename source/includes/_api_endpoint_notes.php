@@ -170,8 +170,8 @@ Same as [Get Note](#get-note).
 
 $id   = 1;
 $data = array(
-    'name'        => 'New note name',
-    'isPublished' => 0
+    'text' => 'Note B',
+    'type' => 'general',
 );
 
 // Create new a note of ID 1 is not found?
