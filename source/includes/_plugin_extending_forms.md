@@ -6,6 +6,7 @@
 
 namespace MauticPlugin\HelloWorldBundle\EventListener;
 
+use MauticPlugin\HelloWorldBundle\HelloWorldEvents;
 use Mautic\CoreBundle\EventListener\CommonSubscriber;
 use Mautic\FormBundle\Event as Events;
 use Mautic\FormBundle\FormEvents;
@@ -36,7 +37,7 @@ class FormSubscriber extends CommonSubscriber
         // Register a form submit actions
         $event->addSubmitAction(
             'helloworld.sendemail',
-            array(
+            [
                 // Label to group by in the dropdown
                 'group'       => 'plugin.helloworld.header',
                 
@@ -48,18 +49,24 @@ class FormSubscriber extends CommonSubscriber
                 'formType'    => 'helloworld_worlds',
                 'formTheme'   => 'HelloWorldBundle:FormTheme\SubmitAction',
                 
-                // Custom validation callback
-                'validator'   => '\MauticPlugin\HelloWorldBundle\Helper\FormSubmitHelper::validateForm',
-                
                 // Callback method to be executed after the submission 
-                'callback'    => '\MauticPlugin\HelloWorldBundle\Helper\FormSubmitHelper::sendEmail'
-            )
+                'eventName'    => HelloWorldEvents::FORM_SUBMIT_ACTION
+            ]
+        );
+
+        // Register a custom validation service
+        $event->addValidator(
+            'helloworld.customfield',
+            [
+                'eventName' => HelloWorldEvents::FORM_VALIDATION,
+                'fieldType' => 'helloworld.customfield' // Optional - otherwise all fields will be sent through this listener for validation
+            ]
         );
 
         // Register a custom form field
         $event->addFormField(
             'helloworld.customfield',
-            array(
+            [
                 // Field label
                 'label'    => 'plugin.helloworld.formfield.customfield',
                 
@@ -68,7 +75,7 @@ class FormSubscriber extends CommonSubscriber
                 
                 // Template to use to render the formType
                 'template' => 'HelloWorldBundle:SubscribedEvents\FormField:customfield.html.php'
-            )
+            ]
         );
     }
 }
@@ -91,7 +98,6 @@ Key|Required|Type|Description
 **valueConstraints**|OPTIONAL|mixed|Callback function to use to validate the value; the function should accept the arguments `\Mautic\FormBundle\Entity\Field $field` and `$filteredValue`.
 **builderOptions**|OPTIONAL|array|Array of boolean options for the form builder: <br />addHelpMessage = true/false<br />addShowLabel = true/false<br />addDefaultValue = true/false<br />addLabelAttributes = true/false<br />addInputAttributes = true/false<br />addIsRequired = true/false
 
-
 #### Form Submit Actions
 
 To add an action, use the `$event->addSubmitAction($identifier, $parameters)` method. `$identifier` must be something unique. The `$parameters` array can contain the following elements:
@@ -100,23 +106,26 @@ Key|Required|Type|Description
 ---|--------|----|-----------
 **label**|REQUIRED|string|The language string for the option in the dropdown
 **description**|OPTIONAL|string|The language string to use for the option's tooltip
-**validator**|OPTIONAL|mixed|Static callback function called to validate the form submission
-**callback**|REQUIRED|mixed|Static callback function called after a submission (submit action logic goes here)
+**eventName**|REQUIRED|string|This is the custom event name that will be dispatched to handle this action (`callback` has been deprecated)
 **formType**|OPTIONAL|string|The alias of a custom form type used to set config options
 **formTypeOptions**|OPTIONAL|array|Array of options to include into the formType's $options argument
 **formTypeCleanMasks**|OPTIONAL|array|Array of input masks to clean a values from formType
 **formTypeTheme**|OPTIONAL|string|Theme to customize elements for formType
 **template**|OPTIONAL|string|View template used to render the formType 
+**validator**|DEPRECATED|mixed|Static callback function called to validate the form submission. Deprecated - Register a validator using the `$event->addValidator()`. 
+**callback**|DEPRECATED|mixed|Static callback function called after a submission (submit action logic goes here). Deprecated - use eventName instead.
 
-The `callback` and `validator` functions can accept the following variables (determined via ReflectionMethod::invokeArgs()):
+The subscriber registered to listen to the `eventName` will be passed an instance of `Mautic\FormBundle\Events\SubmissionEvent` with the details about the post. 
+ 
+Sometimes, it is necessary to handle something after all the other submit actions have done their thing - like redirect to another page. This is done by registering a post submit callback through the subscriber that processes the action. You can either inject the `Symfony\Component\HttpFoundation\Response` at that time with `$event->setPostSubmitCallbackResponse($response);` or register another custom event to be dispatched after all submit actions have been processed using `$event->setPostSubmitCallback($key, ['eventName' => HelloWorld::ANOTHER_CUSTOM_EVENT]);`.
 
-Variable|Type|Description
---------|----|-----------
-**config**|array|Values saved from the custom config options in `formType` 
-**post**|array|$_POST
-**server**|array|$_SERVER
-**factory**|Mautic\CoreBundle\Factory\MauticFactory|[Mautic's factory service](#factory-service)
-**fields**|array|Array of the form's fields
-**form**|Mautic\FormBundle\Entity\Form|Form entity 
-**action**|Mautic\FormBundle\Entity\Action|Action entity 
-**submission**|Mautic\FormBundle\Entity\Submission|Submission entity for this submission
+#### Form Validations
+
+To add a custom validation, use the `$event->addValidator($identifier, $parameters)` method. `$identifier` must be something unique. The `$parameters` array can contain the following elements:
+
+Key|Required|Type|Description
+---|--------|----|-----------
+**eventName**|REQUIRED|string|The name of the custom event that will be dispatched to validate the form or specific field
+**fieldType**|optional|string|The key to a custom form type (for example something registered by `addFormField()`) to limit this listener to. Otherwise every field will be sent to listener.
+  
+The listener for the form event will receive a `Mautic\FormBundle\Event\ValidationEvent` object. Obtain the field with `$event->getField();` do the logic then to fail a validation, execute `$event->failedValidation('I said so.');`.

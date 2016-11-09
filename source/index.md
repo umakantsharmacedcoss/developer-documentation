@@ -39,12 +39,14 @@ includes:
   - plugin_services_plugin_config_helper
   - plugin_services_cookie_helper
   - plugin_services_mail_helper
+  - plugin_services_model_factory
   - plugin_database
   - plugin_permissions
   - plugin_configuration
   - plugin_manipulating_contacts  
   - plugin_extending_intro    
   - plugin_extending_api  
+  - plugin_extending_broadcasts
   - plugin_extending_campaigns
   - plugin_extending_categories
   - plugin_extending_contacts
