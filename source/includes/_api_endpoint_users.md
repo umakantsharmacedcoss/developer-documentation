@@ -295,3 +295,49 @@ Delete a user.
 **Properties**
 
 Same as [Get User](#get-user).
+
+### Get Self User
+```php
+<?php
+
+$user = $userApi->getSelf();
+```
+Get a self user.
+
+#### HTTP Request
+
+`GET /users/self`
+
+#### Response
+
+`Expected Response Code: 200`
+
+**Properties**
+
+Same as [Get User](#get-user).
+
+### Check User Permissions
+```php
+<?php
+$permission = array('user:users:create', 'user:users:edit');
+$user = $userApi->checkPermission($id, $permission);
+```
+Get a self user.
+
+#### HTTP Request
+
+`GET /users/ID/permissioncheck`
+
+#### Response
+
+`Expected Response Code: 200`
+```json
+{
+  "user:users:create":true,
+  "user:users:edit":true
+}
+```
+
+**Properties**
+
+array of requested permissions of string in case of just one
