@@ -214,7 +214,7 @@ $data = array(
 
 $campaign = $campaignApi->create($data);
 ```
-Create a new campaign.
+Create a new campaign. To see more advanced example with campaing events and so on, see the unit tests.
 
 #### HTTP Request
 
