@@ -7,9 +7,11 @@ use Mautic\MauticApi;
 use Mautic\Auth\ApiAuth;
 
 // ...
-$auth     = ApiAuth::initiate($settings);
-$apiUrl   = "https://your-mautic.com"; 
-$segmentApi = MauticApi::getContext("segments", $auth, $apiUrl);
+$initAuth   = new ApiAuth();
+$auth       = $initAuth->newAuth($settings);
+$apiUrl     = "https://your-mautic.com";
+$api        = new MauticApi();
+$segmentApi = $api->newApi("segments", $auth, $apiUrl);
 ```
 
 ### Get Segment

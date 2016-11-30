@@ -7,9 +7,11 @@ use Mautic\MauticApi;
 use Mautic\Auth\ApiAuth;
 
 // ...
-$auth    = ApiAuth::initiate($settings);
-$apiUrl  = "https://your-mautic.com"; 
-$formApi = MauticApi::getContext("forms", $auth, $apiUrl);
+$initAuth = new ApiAuth();
+$auth     = $initAuth->newAuth($settings);
+$apiUrl   = "https://your-mautic.com";
+$api      = new MauticApi();
+$formApi  = $api->newApi("forms", $auth, $apiUrl);
 ```
 
 ### Get Form

@@ -8,14 +8,17 @@ use Mautic\MauticApi;
 use Mautic\Auth\ApiAuth;
 
 // ...
-$auth     = ApiAuth::initiate($settings);
+$initAuth = new ApiAuth();
+$auth     = $initAuth->newAuth($settings);
 $apiUrl   = "https://your-mautic.com";
+$api      = new MauticApi();
+$assetApi = $api->newApi("assets", $auth, $apiUrl);
 
 // Get contact field context:
-$fieldApi = MauticApi::getContext("contactFields", $auth, $apiUrl);
+$fieldApi = $api->newApi("contactFields", $auth, $apiUrl);
 
 // Or use 'companyFields' for company fields:
-$fieldApi = MauticApi::getContext("companyFields", $auth, $apiUrl);
+$fieldApi = $api->newApi("companyFields", $auth, $apiUrl);
 ```
 
 ### Get Field

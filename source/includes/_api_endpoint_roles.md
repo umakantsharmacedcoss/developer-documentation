@@ -7,9 +7,11 @@ use Mautic\MauticApi;
 use Mautic\Auth\ApiAuth;
 
 // ...
-$auth    = ApiAuth::initiate($settings);
-$apiUrl  = "https://your-mautic.com"; 
-$roleApi = MauticApi::getContext("roles", $auth, $apiUrl);
+$initAuth = new ApiAuth();
+$auth     = $initAuth->newAuth($settings);
+$apiUrl   = "https://your-mautic.com";
+$api      = new MauticApi();
+$roleApi  = $api->newApi("roles", $auth, $apiUrl);
 ```
 
 ### Get Role

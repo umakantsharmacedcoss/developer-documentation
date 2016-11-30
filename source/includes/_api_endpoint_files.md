@@ -8,9 +8,11 @@ _Note: Assets doesn't have nor support subdirectories._
 use Mautic\MauticApi;
 use Mautic\Auth\ApiAuth;
 
-$auth     = ApiAuth::initiate($settings);
-$apiUrl   = "https://your-mautic.com"; 
-$filesApi = MauticApi::getContext("stats", $auth, $apiUrl);
+$initAuth = new ApiAuth();
+$auth     = $initAuth->newAuth($settings);
+$apiUrl   = "https://your-mautic.com";
+$api      = new MauticApi();
+$filesApi = $api->newApi("files", $auth, $apiUrl);
 ```
 
 ### Get List of files

@@ -7,9 +7,11 @@ use Mautic\MauticApi;
 use Mautic\Auth\ApiAuth;
 
 // ...
-$auth    = ApiAuth::initiate($settings);
-$apiUrl  = "https://your-mautic.com"; 
-$smsApi = MauticApi::getContext("smses", $auth, $apiUrl);
+$initAuth = new ApiAuth();
+$auth     = $initAuth->newAuth($settings);
+$apiUrl   = "https://your-mautic.com";
+$api      = new MauticApi();
+$smsApi   = $api->newApi("smses", $auth, $apiUrl);
 ```
 
 ### Get Text message
