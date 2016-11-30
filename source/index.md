@@ -58,12 +58,13 @@ includes:
   - plugin_extending_points
   - plugin_extending_reports
   - plugin_extending_webhooks
-  - plugin_misc
+  - plugin_misc  
   - plugin_misc_flashes
   - plugin_misc_helpers
   - plugin_misc_helpers_input
   - plugin_misc_helpers_datetime
   - plugin_misc_helpers_chartquery
+  - plugin_misc_commands  
   - plugin_misc_forms
   - plugin_misc_events
   - plugin_misc_translated_entities.md
