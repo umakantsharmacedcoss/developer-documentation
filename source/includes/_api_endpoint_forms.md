@@ -152,15 +152,15 @@ id|int|ID of the action
 type|string|Action type
 name|string|Name of the action
 description|string/null|Description of the action
-orde|int|Action order
-propertie|array|Configured properties for the action
+order|int|Action order
+properties|array|Configured properties for the action
 
 ### List Forms
 ```php
 <?php
 // ...
 
-$forms = $formApi->getList($searchFilter, $start, $limit, $orderBy, $orderByDir);
+$forms = $formApi->getList($searchFilter, $start, $limit, $orderBy, $orderByDir, $publishedOnly, $minimal);
 ```
 ```json
 {
@@ -250,12 +250,188 @@ limit|Limit number of entities to return. Defaults to the system configuration f
 orderBy|Column to sort by. Can use any column listed in the response.
 orderByDir|Sort direction: asc or desc.
 publishedOnly|Only return currently published entities.
+minimal|Return only array of entities without additional lists in it.
 
 #### Response
 
 `Expected Response Code: 200`
 
 See JSON code example.
+
+**Properties**
+
+Same as [Get Form](#get-form).
+
+### Create Form
+```php
+<?php 
+
+$data = array(
+    'name' => 'test',
+    'formType' => 'standalone',
+    'description' => 'API test',
+    'fields' => array(
+        array(
+            'label' => 'field name',
+            'type' => 'text'
+        )
+    ),
+    'actions' => array(
+        array(
+            'name' => 'action name',
+            'description' => 'action desc',
+            'type' => 'lead.pointschange',
+            'properties' => array(
+                'operator' => 'plus',
+                'points' => 2
+            )
+        )
+    )
+);
+
+$form = $formApi->create($data);
+```
+Create a new form.
+
+#### HTTP Request
+
+`POST /forms/new`
+
+**Post Parameters**
+
+Same as [Get Form](#get-form). Form fields and actions can be created/edited via the forms/actions arrays in the form array.
+
+#### Response
+
+`Expected Response Code: 201`
+
+**Properties**
+
+Same as [Get Form](#get-form).
+
+### Edit Form
+```php
+<?php
+
+$id   = 1;
+$data = array(
+    'name' => 'test',
+    'formType' => 'standalone',
+    'description' => 'API test',
+    'fields' => array(
+        array(
+            'label' => 'field name',
+            'type' => 'text'
+        )
+    ),
+    'actions' => array(
+        array(
+            'name' => 'action name',
+            'description' => 'action desc',
+            'type' => 'lead.pointschange',
+            'properties' => array(
+                'operator' => 'plus',
+                'points' => 2
+            )
+        )
+    )
+);
+
+// Create new a form of ID 1 is not found?
+$createIfNotFound = true;
+
+$form = $formApi->edit($id, $data, $createIfNotFound);
+```
+Edit a new form. Note that this supports PUT or PATCH depending on the desired behavior.
+
+**PUT** creates a form if the given ID does not exist and clears all the form information, adds the information from the request. Form fields and actions will be also deleted if not present in the request.
+**PATCH** fails if the form with the given ID does not exist and updates the form field values with the values form the request.
+
+#### HTTP Request
+
+To edit a form and return a 404 if the form is not found:
+
+`PATCH /forms/ID/edit`
+
+To edit a form and create a new one if the form is not found:
+
+`PUT /forms/ID/edit`
+
+**Post Parameters**
+
+Same as [Get Form](#get-form). Form fields and actions can be created/edited via the forms/actions arrays in the form array.
+
+#### Response
+
+If `PUT`, the expected response code is `200` if the form was edited or `201` if created.
+
+If `PATCH`, the expected response code is `200`.
+
+**Properties**
+
+Same as [Get Form](#get-form).
+
+### Delete Form
+```php
+<?php
+
+$form = $formApi->delete($id);
+```
+Delete a form.
+
+#### HTTP Request
+
+`DELETE /forms/ID/delete`
+
+#### Response
+
+`Expected Response Code: 200`
+
+**Properties**
+
+Same as [Get Form](#get-form).
+
+### Delete Form Fields
+
+The following examples will show how to delete fields with ID 56 and 59.
+
+```php
+<?php
+
+$form = $formApi->deleteFields($formId, array(56, 59));
+```
+Delete a form fields.
+
+#### HTTP Request
+
+`DELETE /forms/ID/fields/delete?fields[]=56&fields[]=59`
+
+#### Response
+
+`Expected Response Code: 200`
+
+**Properties**
+
+Same as [Get Form](#get-form).
+
+### Delete Form Actions
+
+The following examples will show how to delete actions with ID 56 and 59.
+
+```php
+<?php
+
+$form = $formApi->deleteActions($formId, array(56, 59));
+```
+Delete a form actions.
+
+#### HTTP Request
+
+`DELETE /forms/ID/actions/delete?actions[]=56&actions[]=59`
+
+#### Response
+
+`Expected Response Code: 200`
 
 **Properties**
 

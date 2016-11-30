@@ -1,7 +1,7 @@
 ### OAuth 1a
 ```php
 <?php
-use Mautic\Auth\ApiAuth
+use Mautic\Auth\ApiAuth;
 
 // ApiAuth::initiate will accept an array of OAuth settings
 $settings = array(

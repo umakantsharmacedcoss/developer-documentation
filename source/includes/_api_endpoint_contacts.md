@@ -140,7 +140,7 @@ fields|array|Array of all contact fields with data grouped by field group. See J
 <?php
 
 //...
-$contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $orderByDir);
+$contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $orderByDir, $publishedOnly, $minimal);
 ```
 ```json
 {
@@ -247,6 +247,7 @@ limit|Limit number of entities to return. Defaults to the system configuration f
 orderBy|Column to sort by. Can use any column listed in the response.
 orderByDir|Sort direction: asc or desc.
 publishedOnly|Only return currently published entities.
+minimal|Return only array of entities without additional lists in it.
 
 #### Response
 
@@ -363,6 +364,127 @@ Delete a contact.
 
 Same as [Get Contact](#get-contact).
 
+### Add Do Not Contact
+```php
+<?php
+
+$data = array(
+     'eventname' => 'Score via api',
+     'actionname' => 'Adding',
+ );
+$contactApi->addDnc($contactId, $channel, $reason, $channelId, $comments);
+```
+
+Add a contact to DNC list
+
+#### HTTP Request
+
+To add Do Not Contact entry to a contact:
+
+`PATCH /contacts/ID/dnc/add/CHANNEL`
+
+** Data Parameters (optional) **
+Name|Description
+----|-----------
+channel|Channel of DNC. For example 'email', 'sms'... Default is email.
+reason|Int value of the reason. Use Contacts constants: Contacts::UNSUBSCRIBED, Contacts::BOUNCED, Contacts::MANUAL. Default is Manual
+channelId|ID of the entity which was the reason for unsubscription
+comments|A text describing details of DNC entry
+
+#### Response
+
+Same as [Get Contact](#get-contact).
+
+### Remove from Do Not Contact
+```php
+<?php
+$contactApi->addDnc($contactId, $channel);
+```
+
+Remove a contact from DNC list
+
+#### HTTP Request
+
+To remove Do Not Contact entry from a contact:
+
+`PATCH /contacts/ID/dnc/remove/CHANNEL`
+
+** Data Parameters (optional) **
+Name|Description
+----|-----------
+channel|Channel of DNC. For example 'email', 'sms'... Default is email.
+
+#### Response
+
+Same as [Get Contact](#get-contact).
+
+### Add Points
+```php
+<?php
+
+$data = array(
+	 'eventname' => 'Score via api',
+	 'actionname' => 'Adding',
+ );
+$contactApi->addPoints($contactId, $pointDelta, $data);
+```
+
+Add lead points
+
+#### HTTP Request
+
+To add points to a contact and return a 404 if the lead is not found:
+
+`PATCH /contacts/ID/points/plus/POINTS`
+
+** Data Parameters (optional) **
+Name|Description
+----|-----------
+eventname|Name of the event
+actionname|Name of the action
+
+#### Response
+
+`Expected Response Code: 200`
+```json
+{
+    "success": true
+}
+```
+
+### Subtract Points
+```php
+<?php
+
+$data = array(
+	 'eventname' => 'Score via api',
+	 'actionname' => 'Subtracting',
+ );
+$contactApi->subtractPoints($contactId, $pointDelta, $data);
+```
+Subtract lead points
+
+#### HTTP Request
+
+To subtract points to a contact and return a 404 if the lead is not found:
+
+`PATCH /contacts/ID/points/minus/POINTS`
+
+** Data Parameters (optional) **
+Name|Description
+----|-----------
+eventname|Name of the event
+actionname|Name of the action
+
+#### Response
+
+`Expected Response Code: 200`
+```json
+{
+    "success": true
+}
+```
+
 ### List Available Owners
 ```php
 <?php
@@ -464,7 +586,7 @@ order|int|Field order
 ```php
 <?php
 
-$notes = $contactApi->getContactNotes($id, $searchFilter, $start, $limit, $orderBy, $orderByDir);
+$notes = $contactApi->getContactNotes($id, $searchFilter, $start, $limit, $orderBy, $orderByDir, $publishedOnly, $minimal);
 ```
 ```json
 {
@@ -599,3 +721,95 @@ listMembership|array|Array of contact list IDs this contact belongs to that is a
 ### Change Campaign Memberships
 
 See [Campaigns](#campaigns).
+
+### Get Contact Events
+```php
+<?php
+
+$segments = $contactApi->getEvents($id, $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page);
+```
+**Query Parameters**
+
+Name|Description
+----|-----------
+search|String or search command to filter events by.
+includeEvents|Array of event types to include
+excludeEvents|Array of event types to exclude
+orderBy|Column to sort by. Can use any column listed in the response.
+orderByDir|Sort direction: asc or desc.
+page|What page number to load
+
+```json
+{  
+  "events":[  
+    {  
+      "event":"lead.identified",
+      "icon":"fa-user",
+      "eventType":"Contact identified",
+      "eventPriority":-4,
+      "timestamp":"2016-06-09T21:39:08+00:00",
+      "featured":true
+    }
+  ],
+  "filters":{  
+    "search":"",
+    "includeEvents":[  
+      "lead.identified"
+    ],
+    "excludeEvents":[]
+  },
+  "order":[  
+    "",
+    "ASC"
+  ],
+  "types":{  
+    "lead.ipadded":"Accessed from IP",
+    "asset.download":"Asset downloaded",
+    "campaign.event":"Campaign action triggered",
+    "lead.create":"Contact created",
+    "lead.identified":"Contact identified",
+    "lead.donotcontact":"Do not contact",
+    "email.read":"Email read",
+    "email.sent":"Email sent",
+    "email.failed":"Failed",
+    "form.submitted":"Form submitted",
+    "page.hit":"Page hit",
+    "point.gained":"Point gained",
+    "stage.changed":"Stage changed",
+    "lead.utmtagsadded":"UTM tags recorded",
+    "page.videohit":"Video View Event"
+  },
+  "total":1,
+  "page":1,
+  "limit":25,
+  "maxPages":1
+}
+```
+Get a list of contact events the contact created.
+
+#### HTTP Request
+
+`GET /contacts/ID/events`
+
+#### Response
+
+`Expected response code: 200`
+
+**List Properties**
+
+Name|Type|Description
+----|----|-----------
+events|array|List of events
+event|string|ID of the event type
+icon|string|Icon class from FontAwesome
+eventType|string|Human name of the event
+eventPriority|string|Priority of the event
+timestamp|timestamp|Date and time when the event was created
+featured|bool|Flag whether the event is featured
+filters|array|Filters used in the query
+order|array|Ordering used in the query
+types|array|Array of available event types
+total|int|Total number of events in the request
+page|int|Current page number
+limit|int|Limit of events per page
+maxPages|int|How many pages of events are there

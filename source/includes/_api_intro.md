@@ -2,10 +2,6 @@
 
 Mautic provides a REST API to manipulate leads and/or obtain information for various entities of Mautic. 
 
-<aside class="notice">
-Currently, the only _editable_ entity is leads and is the main purpose for the Mautic API. All other entities are read-only.
-</aside>
-
 <aside class="warning">
 All Mautic API endpoints require an OAuth1a signtature or OAuth2 access token.
 </aside>
