@@ -3,7 +3,7 @@
 <?php
 use Mautic\Auth\ApiAuth;
 
-// ApiAuth::initiate will accept an array of OAuth settings
+// $initAuth->newAuth() will accept an array of OAuth settings
 $settings = array(
     'baseUrl'      => 'https://your-mautic.com',
     'version'      => 'OAuth1a',
@@ -13,7 +13,8 @@ $settings = array(
 );
 
 // Initiate the auth object
-$auth = ApiAuth::initiate($settings);
+$initAuth = new ApiAuth();
+$auth     = $initAuth->newAuth($settings);
 
 // Initiate process for obtaining an access token; this will redirect the user to the authorize endpoint and/or set the tokens when the user is redirected back after granting authorization
 

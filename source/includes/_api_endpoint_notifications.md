@@ -7,9 +7,11 @@ use Mautic\MauticApi;
 use Mautic\Auth\ApiAuth;
 
 // ...
-$auth    = ApiAuth::initiate($settings);
-$apiUrl  = "https://your-mautic.com"; 
-$notificationApi = MauticApi::getContext("notifications", $auth, $apiUrl);
+$initAuth        = new ApiAuth();
+$auth            = $initAuth->newAuth($settings);
+$apiUrl          = "https://your-mautic.com";
+$api             = new MauticApi();
+$notificationApi = $api->newApi("notifications", $auth, $apiUrl);
 ```
 
 ### Get Notification

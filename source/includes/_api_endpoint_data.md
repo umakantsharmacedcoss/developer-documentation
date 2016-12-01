@@ -7,9 +7,11 @@ use Mautic\MauticApi;
 use Mautic\Auth\ApiAuth;
 
 // ...
-$auth     = ApiAuth::initiate($settings);
-$apiUrl   = "https://your-mautic.com"; 
-$dataApi  = MauticApi::getContext("data", $auth, $apiUrl);
+$initAuth   = new ApiAuth();
+$auth       = $initAuth->newAuth($settings);
+$apiUrl     = "https://your-mautic.com";
+$api        = new MauticApi();
+$contactApi = $api->newApi("data", $auth, $apiUrl);
 ```
 
 ### Get list of available widget types

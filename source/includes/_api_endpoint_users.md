@@ -7,9 +7,11 @@ use Mautic\MauticApi;
 use Mautic\Auth\ApiAuth;
 
 // ...
-$auth    = ApiAuth::initiate($settings);
-$apiUrl  = "https://your-mautic.com"; 
-$userApi = MauticApi::getContext("users", $auth, $apiUrl);
+$initAuth = new ApiAuth();
+$auth     = $initAuth->newAuth($settings);
+$apiUrl   = "https://your-mautic.com";
+$api      = new MauticApi();
+$userApi  = $api->newApi("users", $auth, $apiUrl);
 ```
 
 ### Get User
