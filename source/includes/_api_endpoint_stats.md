@@ -27,6 +27,7 @@ $tables = $statsApi->get();
     "asset_downloads",
     "audit_log",
     "campaign_lead_event_log",
+    "channel_url_trackables",
     "email_stats",
     "email_stats_devices",
     "focus_stats",
