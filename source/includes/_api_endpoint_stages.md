@@ -261,7 +261,7 @@ Manually add a contact to a specific stage.
 
 #### HTTP Request
 
-`POST /stages/SEGMENT_ID/contact/add/CONTACT_ID`
+`POST /stages/STAGE_ID/contact/add/CONTACT_ID`
 
 #### Response
 
@@ -287,11 +287,11 @@ if (!isset($response['success'])) {
 }
 ```
 
-Manually remove a contact to a specific stage.
+Manually remove a contact from a specific stage.
 
 #### HTTP Request
 
-`POST /stages/SEGMENT_ID/contact/remove/CONTACT_ID`
+`POST /stages/STAGE_ID/contact/remove/CONTACT_ID`
 
 #### Response
 
