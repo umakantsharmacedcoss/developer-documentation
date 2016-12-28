@@ -680,7 +680,7 @@ See [Segements](#segments).
 ```php
 <?php
 
-$segments = $contactApi->getContactCampaigns($id);
+$campaigns = $contactApi->getContactCampaigns($id);
 ```
 ```json
 {
@@ -729,7 +729,7 @@ See [Campaigns](#campaigns).
 ```php
 <?php
 
-$segments = $contactApi->getEvents($id, $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page);
+$events = $contactApi->getEvents($id, $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page);
 ```
 **Query Parameters**
 
@@ -822,7 +822,7 @@ maxPages|int|How many pages of events are there
 ```php
 <?php
 
-$segments = $contactApi->getContactCompanies($contactId);
+$companies = $contactApi->getContactCompanies($contactId);
 
 ```json
 {  
@@ -863,3 +863,47 @@ companyname|string|Name of the company
 companyemail|string|Email of the company
 companycity|string|City of the company
 score|int|Score of the company
+
+
+### Get Contact's Devices
+```php
+<?php
+
+$devices = $contactApi->getContactDevices($contactId);
+
+```json
+{  
+  "total":1,
+  "devices":[  
+    {  
+      "id":60,
+      "lead":[],
+      "clientInfo":[],
+      "device":"desktop",
+      "deviceOsName":"Ubuntu",
+      "deviceOsShortName":"UBT",
+      "deviceOsPlatform":"x64"
+    }
+  ]
+}
+```
+Get a list of contact's devices the contact has used.
+
+#### HTTP Request
+
+`GET /contacts/ID/devices`
+
+#### Response
+
+`Expected response code: 200`
+
+**List Properties**
+
+Name|Type|Description
+----|----|-----------
+id|int|Device ID
+clientInfo|array|Array with various information about the client (browser)
+device|string|Device type; desktop, mobile..
+deviceOsName|string|Full device OS name
+deviceOsShortName|string|Short device OS name
+deviceOsPlatform|string|OS platform
