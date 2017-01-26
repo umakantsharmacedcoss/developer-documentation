@@ -123,6 +123,7 @@ See JSON code example.
 Name|Type|Description
 ----|----|-----------
 id|int|ID of the contact
+isPublished|Boolean|True if the contact is published
 dateAdded|datetime|Date/time contact was created
 createdBy|int|ID of the user that created the contact
 createdByUser|string|Name of the user that created the contact
@@ -136,6 +137,8 @@ dateIdentified|datetime/null|Date/time when the contact identified themselves
 color|string|Hex value given to contact from Point Trigger definitions based on the number of points the contact has been awarded
 ipAddresses|array|Array of IPs currently associated with this contact
 fields|array|Array of all contact fields with data grouped by field group. See JSON code example for format. This array includes an "all" key that includes an single level array of fieldAlias => contactValue pairs.
+tags|array|Array of tags associated with this contact. See JSON code example for format.
+utmtags|array|Array of UTM Tags associated with this contact. See JSON code example for format.
 
 ### List Contacts
 ```php
@@ -228,7 +231,28 @@ $contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $order
                     
                     "...": "..."    
                 }
-            }
+            },
+            "tags": [{
+              "tag": "aTag"
+            },
+            {
+              "tag": "bTag"
+            }],
+            "utmtags" : [{
+              "id": 1,
+              "query": {
+                "page": "asd",
+                "cid": "fb1"
+              },
+              "referer": "https://example.com/",
+              "remoteHost": "example.com",
+              "userAgent": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0",
+              "utmCampaign": "abcampaign",
+              "utmContent": "page",
+              "utmMedium": "social",
+              "utmSource": "fb",
+              "utmTerm": "test1"
+            }]
         }
     ]
 }
@@ -385,7 +409,8 @@ To add Do Not Contact entry to a contact:
 
 `PATCH /contacts/ID/dnc/add/CHANNEL`
 
-** Data Parameters (optional) **
+**Data Parameters (optional)**
+
 Name|Description
 ----|-----------
 channel|Channel of DNC. For example 'email', 'sms'... Default is email.
@@ -411,7 +436,8 @@ To remove Do Not Contact entry from a contact:
 
 `PATCH /contacts/ID/dnc/remove/CHANNEL`
 
-** Data Parameters (optional) **
+**Data Parameters (optional)**
+
 Name|Description
 ----|-----------
 channel|Channel of DNC. For example 'email', 'sms'... Default is email.
@@ -419,6 +445,78 @@ channel|Channel of DNC. For example 'email', 'sms'... Default is email.
 #### Response
 
 Same as [Get Contact](#get-contact).
+
+### Add UTM Tags
+```php
+<?php
+
+$data = array(
+    'utm_campaign' => 'apicampaign',
+    'utm_source'   => 'fb',
+    'utm_medium'   => 'social',
+    'utm_content'  => 'fbad',
+    'utm_term'     => 'mautic api',
+    'useragent'    => 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0',
+    'url'          => '/product/fbad01/',
+    'referer'      => 'https://google.com/q=mautic+api',
+    'query'        => ['cid'=>'abc','cond'=>'new'], // or as string with "cid=abc&cond=new"
+    'remotehost'   => 'example.com',
+    'lastActive'   => '2017-01-17T00:30:08+00:00'
+ );
+$contactApi->addUtm($contactId, $data);
+```
+
+Add UTM tags to a contact
+
+#### HTTP Request
+
+To add UTM tag entry to a contact:
+
+`POST /contacts/ID/utm/add`
+
+**UTM Parameters (required)**
+
+While the parameter array is required, each utm tag entry is optional.
+
+Name|Description
+----|-----------
+utm_campaign|The UTM Campaign parameter
+utm_source|The UTM Source parameter
+utm_medium|The UTM Medium parameter
+utm_content|The UTM Content parameter
+utm_term|The UTM Term parameter
+useragent|The browsers UserAgent. If provided a new Device entry will be created if necessary.
+url|The page url
+referer|The URL of the referer,
+query|Any extra query parameters you wish to include. Array or http query string
+remotehost|The Host name
+lastActive|The date that the action occured. Contacts lastActive date will be updated if included. Date format required `2017-01-17T00:30:08+00:00`.
+
+#### Response
+
+Same as [Get Contact](#get-contact) with the added UTM Tags.
+
+### Remove UTM Tags from a contact
+```php
+<?php
+$contactApi->removeUtm($contactId, $utmId);
+```
+
+Remove a set of UTM Tags from a contact
+
+#### HTTP Request
+
+To remove UTM Tags from a contact:
+
+`POST /contacts/ID/utm/UTMID/remove`
+
+**Data Parameters**
+
+None required.
+
+#### Response
+
+Same as [Get Contact](#get-contact) without the removed UTM Tags.
 
 ### Add Points
 ```php
@@ -439,7 +537,8 @@ To add points to a contact and return a 404 if the lead is not found:
 
 `PATCH /contacts/ID/points/plus/POINTS`
 
-** Data Parameters (optional) **
+**Data Parameters (optional)**
+
 Name|Description
 ----|-----------
 eventname|Name of the event
@@ -472,7 +571,8 @@ To subtract points to a contact and return a 404 if the lead is not found:
 
 `PATCH /contacts/ID/points/minus/POINTS`
 
-** Data Parameters (optional) **
+**Data Parameters (optional)**
+
 Name|Description
 ----|-----------
 eventname|Name of the event
