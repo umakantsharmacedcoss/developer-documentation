@@ -371,8 +371,8 @@ Same as [Get Contact](#get-contact).
 <?php
 
 $data = array(
-     'eventname' => 'Score via api',
-     'actionname' => 'Adding',
+     'eventName' => 'Score via api',
+     'actionName' => 'Adding',
  );
 $contactApi->addDnc($contactId, $channel, $reason, $channelId, $comments);
 ```
@@ -425,8 +425,8 @@ Same as [Get Contact](#get-contact).
 <?php
 
 $data = array(
-	 'eventname' => 'Score via api',
-	 'actionname' => 'Adding',
+	 'eventName' => 'Score via api',
+	 'actionName' => 'Adding',
  );
 $contactApi->addPoints($contactId, $pointDelta, $data);
 ```
@@ -442,8 +442,8 @@ To add points to a contact and return a 404 if the lead is not found:
 ** Data Parameters (optional) **
 Name|Description
 ----|-----------
-eventname|Name of the event
-actionname|Name of the action
+eventName|Name of the event
+actionName|Name of the action
 
 #### Response
 
