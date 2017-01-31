@@ -118,7 +118,7 @@ Get an individual contact by ID.
 
 See JSON code example.
 
-**Contact Properties**
+** Contact Properties **
 
 Name|Type|Description
 ----|----|-----------
@@ -239,7 +239,7 @@ Get a list of contacts.
 
 `GET /contacts`
 
-**Query Parameters**
+** Query Parameters **
 
 Name|Description
 ----|-----------
@@ -257,7 +257,7 @@ minimal|Return only array of entities without additional lists in it.
 
 See JSON code example.
 
-**Properties**
+** Properties **
 
 Same as [Get Contact](#get-contact).
 
@@ -280,7 +280,7 @@ Create a new contact.
 
 `POST /contacts/new`
 
-**Post Parameters**
+** Post Parameters **
 
 Name|Description
 ----|-----------
@@ -293,7 +293,7 @@ owner|ID of a Mautic user to assign this contact to
 
 `Expected Response Code: 201`
 
-**Properties**
+** Properties **
 
 Same as [Get Contact](#get-contact).
 
@@ -314,7 +314,7 @@ $contact = $contactApi->edit($id, $data, $createIfNotFound);
 ```
 Edit a new contact.  Note that this supports PUT or PATCH depending on the desired behavior.
 
-**PUT** creates a contact if the given ID does not exist and clears all the contact information, adds the information from the request.
+** PUT ** creates a contact if the given ID does not exist and clears all the contact information, adds the information from the request.
 **PATCH** fails if the contact with the given ID does not exist and updates the contact field values with the values form the request.
 
 #### HTTP Request
@@ -327,7 +327,7 @@ To edit a contact and create a new one if the contact is not found:
 
 `PUT /contacts/ID/edit`
 
-**Post Parameters**
+** Post Parameters **
 
 Name|Description
 ----|-----------
@@ -342,7 +342,7 @@ If `PUT`, the expected response code is `200` if the contact was edited or `201`
 
 If `PATCH`, the expected response code is `200`.
 
-**Properties**
+** Properties **
 
 Same as [Get Contact](#get-contact).
 
@@ -362,7 +362,7 @@ Delete a contact.
 
 `Expected Response Code: 200`
 
-**Properties**
+** Properties **
 
 Same as [Get Contact](#get-contact).
 
@@ -386,6 +386,7 @@ To add Do Not Contact entry to a contact:
 `PATCH /contacts/ID/dnc/add/CHANNEL`
 
 ** Data Parameters (optional) **
+
 Name|Description
 ----|-----------
 channel|Channel of DNC. For example 'email', 'sms'... Default is email.
@@ -412,6 +413,7 @@ To remove Do Not Contact entry from a contact:
 `PATCH /contacts/ID/dnc/remove/CHANNEL`
 
 ** Data Parameters (optional) **
+
 Name|Description
 ----|-----------
 channel|Channel of DNC. For example 'email', 'sms'... Default is email.
@@ -431,15 +433,16 @@ $data = array(
 $contactApi->addPoints($contactId, $pointDelta, $data);
 ```
 
-Add lead points
+Add contact points
 
 #### HTTP Request
 
 To add points to a contact and return a 404 if the lead is not found:
 
-`PATCH /contacts/ID/points/plus/POINTS`
+`POST /contacts/ID/points/plus/POINTS`
 
 ** Data Parameters (optional) **
+
 Name|Description
 ----|-----------
 eventname|Name of the event
@@ -464,15 +467,16 @@ $data = array(
  );
 $contactApi->subtractPoints($contactId, $pointDelta, $data);
 ```
-Subtract lead points
+Subtract contact points
 
 #### HTTP Request
 
-To subtract points to a contact and return a 404 if the lead is not found:
+To subtract points from a contact and return a 404 if the contact is not found:
 
-`PATCH /contacts/ID/points/minus/POINTS`
+`POST /contacts/ID/points/minus/POINTS`
 
 ** Data Parameters (optional) **
+
 Name|Description
 ----|-----------
 eventname|Name of the event
@@ -488,6 +492,7 @@ actionname|Name of the action
 ```
 
 ### List Available Owners
+
 ```php
 <?php
 
@@ -517,7 +522,7 @@ Get a list of owners that can be used to assign contacts to when creating/editin
 
 `Expected Response Code: 200`
 
-**Owner Properties**
+** Owner Properties **
 
 Name|Type|Description
 ----|----|-----------
@@ -573,7 +578,7 @@ Get a list of available contact fields including custom ones.
 
 `Expected Response Code: 200`
 
-**Field Properties**
+** Field Properties **
 
 Name|Type|Description
 ----|----|-----------
@@ -609,7 +614,7 @@ Get a list of notes for a specific contact.
 
 `GET /contacts/ID/notes`
 
-**Query Parameters**
+** Query Parameters **
 
 Name|Description
 ----|-----------
@@ -623,7 +628,7 @@ orderByDir|Sort direction: asc or desc.
 
 `Expected response code: 200`
 
-**Note Properties**
+** Note Properties **
 
 Name|Type|Description
 ----|----|-----------
@@ -660,7 +665,7 @@ Get a list of contact segments the contact is a member of.
 
 `Expected response code: 200`
 
-**List Properties**
+** List Properties **
 
 Name|Type|Description
 ----|----|-----------
@@ -709,7 +714,7 @@ Get a list of campaigns the contact is a member of.
 
 `Expected response code: 200`
 
-**List Properties**
+** List Properties **
 
 Name|Type|Description
 ----|----|-----------
@@ -730,7 +735,7 @@ See [Campaigns](#campaigns).
 
 $segments = $contactApi->getEvents($id, $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page);
 ```
-**Query Parameters**
+** Query Parameters **
 
 Name|Description
 ----|-----------
@@ -797,7 +802,7 @@ Get a list of contact events the contact created.
 
 `Expected response code: 200`
 
-**List Properties**
+** List Properties **
 
 Name|Type|Description
 ----|----|-----------
