@@ -41,18 +41,28 @@ $message = $messageApi->get($id);
                 "id": 55,
                 "channel": "email",
                 "channelId": 1197,
+                "channelName": "Email A",
                 "isEnabled": true
             },
             {
                 "id": 57,
                 "channel": "notification",
                 "channelId": null,
+                "channelName": null,
                 "isEnabled": false
             },
             {
                 "id": 56,
                 "channel": "sms",
                 "channelId": 103,
+                "channelName": "SMS A",
+                "isEnabled": false
+            },
+            {
+                "id": 91,
+                "channel": "tweet",
+                "channelId": null,
+                "channelName": null,
                 "isEnabled": false
             }
         ]
@@ -117,18 +127,21 @@ $messages = $messageApi->getList($searchFilter, $start, $limit, $orderBy, $order
                     "id": 1,
                     "channel": "email",
                     "channelId": 44,
+                    "channelName": "Email A",
                     "isEnabled": true
                 },
                 {
                     "id": 2,
                     "channel": "sms",
                     "channelId": 1,
+                    "channelName": "SMS A",
                     "isEnabled": true
                 },
                 {
                     "id": 3,
                     "channel": "notification",
                     "channelId": 75,
+                    "channelName": null,
                     "isEnabled": false
                 }
             ]
