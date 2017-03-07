@@ -7,9 +7,11 @@ use Mautic\MauticApi;
 use Mautic\Auth\ApiAuth;
 
 // ...
-$auth     = ApiAuth::initiate($settings);
-$apiUrl   = "https://your-mautic.com"; 
-$stageApi = MauticApi::getContext("stages", $auth, $apiUrl);
+$initAuth = new ApiAuth();
+$auth     = $initAuth->newAuth($settings);
+$apiUrl   = "https://your-mautic.com";
+$api      = new MauticApi();
+$stageApi = $api->newApi("stages", $auth, $apiUrl);
 ```
 
 ### Get Stage
@@ -259,7 +261,7 @@ Manually add a contact to a specific stage.
 
 #### HTTP Request
 
-`POST /stages/SEGMENT_ID/contact/add/CONTACT_ID`
+`POST /stages/STAGE_ID/contact/add/CONTACT_ID`
 
 #### Response
 
@@ -285,11 +287,11 @@ if (!isset($response['success'])) {
 }
 ```
 
-Manually remove a contact to a specific stage.
+Manually remove a contact from a specific stage.
 
 #### HTTP Request
 
-`POST /stages/SEGMENT_ID/contact/remove/CONTACT_ID`
+`POST /stages/STAGE_ID/contact/remove/CONTACT_ID`
 
 #### Response
 

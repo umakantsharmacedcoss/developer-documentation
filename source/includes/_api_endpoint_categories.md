@@ -7,9 +7,11 @@ use Mautic\MauticApi;
 use Mautic\Auth\ApiAuth;
 
 // ...
-$auth        = ApiAuth::initiate($settings);
-$apiUrl      = "https://your-mautic.com"; 
-$categoryApi = MauticApi::getContext("categories", $auth, $apiUrl);
+$initAuth    = new ApiAuth();
+$auth        = $initAuth->newAuth($settings);
+$apiUrl      = "https://your-mautic.com";
+$api         = new MauticApi();
+$categoryApi = $api->newApi("categories", $auth, $apiUrl);
 ```
 
 ### Get Category

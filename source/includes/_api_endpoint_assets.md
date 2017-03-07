@@ -8,9 +8,12 @@ use Mautic\MauticApi;
 use Mautic\Auth\ApiAuth;
 
 // ...
-$auth     = ApiAuth::initiate($settings);
-$apiUrl   = "https://your-mautic.com"; 
-$assetApi = MauticApi::getContext("assets", $auth, $apiUrl);
+$initAuth = new ApiAuth();
+$auth     = $initAuth->newAuth($settings);
+$apiUrl   = "https://your-mautic.com";
+$api      = new MauticApi();
+$assetApi = $api->newApi("assets", $auth, $apiUrl);
+
 ```
 
 ### Get Asset

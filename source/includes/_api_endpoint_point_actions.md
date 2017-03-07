@@ -7,9 +7,11 @@ use Mautic\MauticApi;
 use Mautic\Auth\ApiAuth;
 
 // ...
-$auth     = ApiAuth::initiate($settings);
-$apiUrl   = "https://your-mautic.com"; 
-$pointApi = MauticApi::getContext("points", $auth, $apiUrl);
+$initAuth = new ApiAuth();
+$auth     = $initAuth->newAuth($settings);
+$apiUrl   = "https://your-mautic.com";
+$api      = new MauticApi();
+$pointApi = $api->newApi("points", $auth, $apiUrl);
 ```
 
 ### Get Point Action

@@ -7,9 +7,11 @@ use Mautic\MauticApi;
 use Mautic\Auth\ApiAuth;
 
 // ...
-$auth     = ApiAuth::initiate($settings);
-$apiUrl   = "https://your-mautic.com"; 
-$companyApi = MauticApi::getContext("companies", $auth, $apiUrl);
+$initAuth   = new ApiAuth();
+$auth       = $initAuth->newAuth($settings);
+$apiUrl     = "https://your-mautic.com";
+$api        = new MauticApi();
+$companyApi = $api->newApi("companies", $auth, $apiUrl);
 ```
 
 ### Get Company

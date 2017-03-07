@@ -8,14 +8,17 @@ use Mautic\MauticApi;
 use Mautic\Auth\ApiAuth;
 
 // ...
-$auth     = ApiAuth::initiate($settings);
+$initAuth = new ApiAuth();
+$auth     = $initAuth->newAuth($settings);
 $apiUrl   = "https://your-mautic.com";
+$api      = new MauticApi();
+$assetApi = $api->newApi("assets", $auth, $apiUrl);
 
 // Get contact field context:
-$fieldApi = MauticApi::getContext("contactFields", $auth, $apiUrl);
+$fieldApi = $api->newApi("contactFields", $auth, $apiUrl);
 
 // Or use 'companyFields' for company fields:
-$fieldApi = MauticApi::getContext("companyFields", $auth, $apiUrl);
+$fieldApi = $api->newApi("companyFields", $auth, $apiUrl);
 ```
 
 ### Get Field
@@ -54,7 +57,7 @@ Get an individual field by ID.
 
 #### HTTP Request
 
-`GET /fields/ID`
+`GET /fields/contact/ID` or `GET /fields/company/ID`
 
 #### Response
 
@@ -156,7 +159,7 @@ minimal|Return only array of entities without additional lists in it.
 
 #### HTTP Request
 
-`GET /fields`
+`GET /fields/contact` or `GET /fields/company`
 
 #### Response
 
@@ -206,7 +209,7 @@ Create a new field.
 
 #### HTTP Request
 
-`POST /fields/new`
+`POST /fields/contact/new` or `POST /fields/company/new`
 
 **Post Parameters**
 
@@ -257,11 +260,11 @@ Edit a new field. Field that this supports PUT or PATCH depending on the desired
 
 To edit a field and return a 404 if the field is not found:
 
-`PATCH /fields/ID/edit`
+`PATCH /fields/contact/ID/edit` or `PATCH /fields/company/ID/edit`
 
 To edit a field and create a new one if the field is not found:
 
-`PUT /fields/ID/edit`
+`PUT /fields/contact/ID/edit` or `PUT /fields/company/ID/edit`
 
 **Post Parameters**
 
@@ -300,7 +303,7 @@ Delete a field.
 
 #### HTTP Request
 
-`DELETE /fields/ID/delete`
+`DELETE /fields/contact/ID/delete` or `DELETE /fields/company/ID/delete`
 
 #### Response
 

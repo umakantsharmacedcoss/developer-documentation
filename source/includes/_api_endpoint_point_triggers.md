@@ -7,9 +7,11 @@ use Mautic\MauticApi;
 use Mautic\Auth\ApiAuth;
 
 // ...
-$auth     = ApiAuth::initiate($settings);
-$apiUrl   = "https://your-mautic.com"; 
-$triggerApi = MauticApi::getContext("pointTriggers", $auth, $apiUrl);
+$initAuth   = new ApiAuth();
+$auth       = $initAuth->newAuth($settings);
+$apiUrl     = "https://your-mautic.com";
+$api        = new MauticApi();
+$triggerApi = $api->newApi("pointTriggers", $auth, $apiUrl);
 ```
 
 ### Get Point Trigger
