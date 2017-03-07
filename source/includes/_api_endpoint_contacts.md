@@ -732,9 +732,9 @@ $segments = $contactApi->getEvents($id, $search, $includeEvents, $excludeEvents,
 
 Name|Description
 ----|-----------
-search|String or search command to filter events by.
-includeEvents|Array of event types to include
-excludeEvents|Array of event types to exclude
+filters[search]|String or search command to filter events by.
+filters[includeEvents][]|Array of event types to include.
+filters[excludeEvents][]|Array of event types to exclude.
 orderBy|Column to sort by. Can use any column listed in the response.
 orderByDir|Sort direction: asc or desc.
 page|What page number to load
