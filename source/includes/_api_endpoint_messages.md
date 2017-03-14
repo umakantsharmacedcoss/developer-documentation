@@ -183,23 +183,23 @@ $data = array(
     'name'        => 'Marketing Message A',
     'description' => 'This is my first message created via API.',
     'isPublished' => 1,
-    'channels': [
-        {
+    'channels': {
+        'email': {
             'channel': 'email',
             'channelId': 44,
             'isEnabled': true
         },
-        {
+        'sms': {
             'channel': 'sms',
             'channelId': 1,
             'isEnabled': true
         },
-        {
+        'notification': {
             'channel': 'notification',
             'channelId': 75,
             'isEnabled': false
         }
-    ]
+    }
 );
 
 $message = $messageApi->create($data);
