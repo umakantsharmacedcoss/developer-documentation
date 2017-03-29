@@ -35,11 +35,20 @@ $tweet = $tweetApi->get($id);
         "name": "Thank you tweet",
         "text": "Hi {twitter_handle}\n\nThanks for ...",
         "language": "en",
-        "category": null,
+        "category": {
+            "createdByUser": "John Doe",
+            "modifiedByUser": null,
+            "id": 185,
+            "title": "Thank you tweets",
+            "alias": "thank-you-tweets",
+            "description": null,
+            "color": "244bc9",
+            "bundle": "global"
+        },
         "tweetId": null,
         "mediaId": null,
         "mediaPath": null,
-        "dateTweeted": null,
+        "sentCount": 3,
         "favoriteCount": 0,
         "retweetCount": 0,
         "description": "Used in the Product A campaign 1"
@@ -75,7 +84,6 @@ dateModified|datetime/null|Date/time tweet was last modified
 modifiedBy|int|ID of the user that last modified the tweet
 modifiedByUser|string|Name of the user that last modified the tweet
 language|string|Language locale of the tweet
-dateTweeted|datetime/null|Date/time tweet was sent
 category|null/object|Category
 
 ### List Tweets
@@ -105,7 +113,6 @@ $tweets = $tweetApi->getList($searchFilter, $start, $limit, $orderBy, $orderByDi
             "tweetId": null,
             "mediaId": null,
             "mediaPath": null,
-            "dateTweeted": null,
             "favoriteCount": 0,
             "retweetCount": 0,
             "description": "Used in the Product A campaign 1"
