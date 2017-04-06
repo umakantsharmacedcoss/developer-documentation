@@ -91,7 +91,6 @@ $data = array(
     'file' => dirname(__DIR__).'/'.'mytheme.zip' // Must be a path to an existing file
 );
 
-// Create a file in root media/images directory:
 $response = $themeApi->create($data);
 ```
 The file is sent via regular POST files array like a browser sends it during file upload.
