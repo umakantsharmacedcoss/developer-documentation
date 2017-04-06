@@ -420,7 +420,7 @@ Send a predefined email to existing contact.
 
 #### HTTP Request
 
-`POST /emails/ID/send/contact/CONTACT_ID`
+`POST /emails/ID/contact/CONTACT_ID/send`
 
 #### Response
 
