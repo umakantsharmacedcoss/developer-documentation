@@ -422,6 +422,12 @@ Send a predefined email to existing contact.
 
 `POST /emails/ID/contact/CONTACT_ID/send`
 
+**Post Parameters**
+
+Name|Type|Description
+----|----|-----------
+tokens|array|Array of tokens in email
+
 #### Response
 
 `Expected Response Code: 200`
