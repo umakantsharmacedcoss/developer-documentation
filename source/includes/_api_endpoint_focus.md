@@ -103,11 +103,8 @@ createdByUser|string|Name of the user that created the focus
 dateModified|datetime/null|Date/time focus was last modified
 modifiedBy|int|ID of the user that last modified the focus
 modifiedByUser|string|Name of the user that last modified the focus
-variantChildren|array|Array of focus entities for variants of this landing focus
-variantParent|object|The parent/main focus if this is a variant (A/B test)
-sentCount|int|Count of how many times the dynamic content was sent
 
-### List focuss
+### List focus
 ```php
 <?php
 // ...
@@ -212,7 +209,7 @@ Create a new focus.
 
 #### HTTP Request
 
-`POST /focuss/new`
+`POST /focus/new`
 
 **Post Parameters**
 
@@ -230,9 +227,6 @@ createdByUser|string|Name of the user that created the focus
 dateModified|datetime/null|Date/time focus was last modified
 modifiedBy|int|ID of the user that last modified the focus
 modifiedByUser|string|Name of the user that last modified the focus
-variantChildren|array|Array of focus entities for variants of this landing focus
-variantParent|object|The parent/main focus if this is a variant (A/B test)
-sentCount|int|Count of how many times the dynamic content was sent
 
 #### Response
 
@@ -266,11 +260,11 @@ Edit a new focus. Note that this supports PUT or PATCH depending on the desired 
 
 To edit a focus and return a 404 if the focus is not found:
 
-`PATCH /focuss/ID/edit`
+`PATCH /focus/ID/edit`
 
 To edit a focus and create a new one if the focus is not found:
 
-`PUT /focuss/ID/edit`
+`PUT /focus/ID/edit`
 
 **Post Parameters**
 
@@ -288,9 +282,6 @@ createdByUser|string|Name of the user that created the focus
 dateModified|datetime/null|Date/time focus was last modified
 modifiedBy|int|ID of the user that last modified the focus
 modifiedByUser|string|Name of the user that last modified the focus
-variantChildren|array|Array of focus entities for variants of this landing focus
-variantParent|object|The parent/main focus if this is a variant (A/B test)
-sentCount|int|Count of how many times the dynamic content was sent
 
 #### Response
 
@@ -312,7 +303,7 @@ Delete a focus.
 
 #### HTTP Request
 
-`DELETE /focuss/ID/delete`
+`DELETE /focus/ID/delete`
 
 #### Response
 
