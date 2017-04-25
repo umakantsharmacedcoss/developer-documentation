@@ -420,7 +420,13 @@ Send a predefined email to existing contact.
 
 #### HTTP Request
 
-`DELETE /emails/ID/send/contact/CONTACT_ID`
+`POST /emails/ID/contact/CONTACT_ID/send`
+
+**Post Parameters**
+
+Name|Type|Description
+----|----|-----------
+tokens|array|Array of tokens in email
 
 #### Response
 
@@ -443,7 +449,7 @@ Send a segment email to linked segment(s).
 
 #### HTTP Request
 
-`DELETE /emails/ID/send`
+`POST /emails/ID/send`
 
 #### Response
 
