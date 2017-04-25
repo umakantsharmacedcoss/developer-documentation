@@ -36,10 +36,6 @@ If you want to make your theme installable via the Theme Manager, make a zip pac
    ]
  }
 
-## Theme Thumbnail
-
-The thumbnail should be a screenshot of the theme with demo content. The width x height should be 575 x 600 px. This thumbnail will be available for Mautic users for quick theme preview in the Email edit form, Landing Page edit form and the Theme Manager.
-
 ```
  The config file defines the name of the theme and the features it supports.
   
@@ -51,7 +47,23 @@ The thumbnail should be a screenshot of the theme with demo content. The width x
  author|string|Name of the theme author
  authorUrl|string|URL to the author's website
  features|array|Array of features the theme supports. Options currently are email, form, and/or page
-  
+
+## Theme Thumbnail
+
+The thumbnail should be a screenshot of the theme with demo content. The width x height should be 575 x 600 px. This thumbnail will be available for Mautic users for quick theme preview in the Email edit form, Landing Page edit form and the Theme Manager.
+
+<aside class="warning">
+Mautic will be look for thumbnail.png for default but if you want a specific image for your [email, page, form] template you can add a thumbnail_feature.png.
+</aside>
+
+Example
+
+ Feature|thumbnail name
+ ---|-----------
+ email|thumbnail_email.png
+ form|thumbnail_form.png
+ page|thumbnail_page.png
+
 ## Slots
 
 ### Slot definition
