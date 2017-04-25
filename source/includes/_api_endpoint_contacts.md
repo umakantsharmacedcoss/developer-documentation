@@ -685,7 +685,7 @@ See [Segements](#segments).
 ```php
 <?php
 
-$segments = $contactApi->getContactCampaigns($id);
+$campaigns = $contactApi->getContactCampaigns($id);
 ```
 ```json
 {
@@ -729,11 +729,12 @@ listMembership|array|Array of contact list IDs this contact belongs to that is a
 
 See [Campaigns](#campaigns).
 
-### Get Contact Events
+
+### Get Contact's Events
 ```php
 <?php
 
-$segments = $contactApi->getEvents($id, $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page);
+$events = $contactApi->getEvents($id, $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page);
 ```
 ** Query Parameters **
 
@@ -820,3 +821,94 @@ total|int|Total number of events in the request
 page|int|Current page number
 limit|int|Limit of events per page
 maxPages|int|How many pages of events are there
+
+
+### Get Contact's Companies
+```php
+<?php
+
+$companies = $contactApi->getContactCompanies($contactId);
+
+```json
+{  
+  "total":1,
+  "companies":[  
+    {  
+      "company_id":"420",
+      "date_associated":"2016-12-27 15:03:43",
+      "is_primary":"0",
+      "companyname":"test",
+      "companyemail":"test@company.com",
+      "companycity":"Raleigh",
+      "score":"0",
+      "date_added":"2016-12-27 15:03:42"
+    }
+  ]
+}
+```
+Get a list of contact's companies the contact belongs to.
+
+#### HTTP Request
+
+`GET /contacts/ID/companies`
+
+#### Response
+
+`Expected response code: 200`
+
+**List Properties**
+
+Name|Type|Description
+----|----|-----------
+company_id|int|Company ID
+date_associated|datetime|Date and time when the contact was associated to the company
+date_added|datetime|Date and time when the company was created
+is_primary|bool|Flag whether the company association is primary (current)
+companyname|string|Name of the company
+companyemail|string|Email of the company
+companycity|string|City of the company
+score|int|Score of the company
+
+
+### Get Contact's Devices
+```php
+<?php
+
+$devices = $contactApi->getContactDevices($contactId);
+
+```json
+{  
+  "total":1,
+  "devices":[  
+    {  
+      "id":60,
+      "lead":[],
+      "clientInfo":[],
+      "device":"desktop",
+      "deviceOsName":"Ubuntu",
+      "deviceOsShortName":"UBT",
+      "deviceOsPlatform":"x64"
+    }
+  ]
+}
+```
+Get a list of contact's devices the contact has used.
+
+#### HTTP Request
+
+`GET /contacts/ID/devices`
+
+#### Response
+
+`Expected response code: 200`
+
+**List Properties**
+
+Name|Type|Description
+----|----|-----------
+id|int|Device ID
+clientInfo|array|Array with various information about the client (browser)
+device|string|Device type; desktop, mobile..
+deviceOsName|string|Full device OS name
+deviceOsShortName|string|Short device OS name
+deviceOsPlatform|string|OS platform
