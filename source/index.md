@@ -89,6 +89,7 @@ includes:
   - api_endpoint_fields
   - api_endpoint_files
   - api_endpoint_forms
+  - api_endpoint_messages
   - api_endpoint_notes
   - api_endpoint_notifications
   - api_endpoint_pages

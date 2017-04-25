@@ -204,6 +204,43 @@ See JSON code example.
 Same as [Get Campaign](#get-campaign).
 
 
+### List Campaign Contacts
+
+This endpoint is basically an alias for the stats endpoint with 'campaign_leads' table and campaign_id specified. Other parameters are the same as in the stats endpoint.
+
+```php
+<?php
+// ...
+
+$response = $campaignApi->getContacts($campaignId, $start, $limit, $order, $where);
+```
+```json
+{  
+  "total":"1",
+  "contacts":[  
+    {  
+      "campaign_id":"311",
+      "lead_id":"3126",
+      "date_added":"2017-01-25 15:11:10",
+      "manually_removed":"0",
+      "manually_added":"1"
+    }
+  ]
+}
+```
+#### HTTP Request
+
+`GET /campaigns/ID/contacts`
+
+**Query Parameters**
+
+#### Response
+
+`Expected Response Code: 200`
+
+See JSON code example.
+
+
 ### Create Campaign
 ```php
 <?php 
