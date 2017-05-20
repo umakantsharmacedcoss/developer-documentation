@@ -35,6 +35,21 @@ $response = $themesApi->get($themeName);
 
 `Expected Response Code: 200`
 
+### Set Temporary File Path
+
+Changes the default temporary directory where the zip file is created. The directory is created if it does not exist.
+
+```php
+<?php
+$themesApi->setTemporaryFilePath("/absolute/path/to/a/different/temp/dir");
+$response = $themesApi->get($themeName);
+```
+```json
+{
+    "file": "/absolute/path/to/a/different/temp/dir/zipfile"
+}
+```
+
 ### Get List of themes
 
 Lists all installed themes with the detailes stored in their config.json files.
