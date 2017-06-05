@@ -118,7 +118,7 @@ Get an individual contact by ID.
 
 See JSON code example.
 
-**Contact Properties**
+** Contact Properties **
 
 Name|Type|Description
 ----|----|-----------
@@ -239,7 +239,7 @@ Get a list of contacts.
 
 `GET /contacts`
 
-**Query Parameters**
+** Query Parameters **
 
 Name|Description
 ----|-----------
@@ -257,7 +257,7 @@ minimal|Return only array of entities without additional lists in it.
 
 See JSON code example.
 
-**Properties**
+** Properties **
 
 Same as [Get Contact](#get-contact).
 
@@ -280,7 +280,7 @@ Create a new contact.
 
 `POST /contacts/new`
 
-**Post Parameters**
+** Post Parameters **
 
 Name|Description
 ----|-----------
@@ -293,7 +293,7 @@ owner|ID of a Mautic user to assign this contact to
 
 `Expected Response Code: 201`
 
-**Properties**
+** Properties **
 
 Same as [Get Contact](#get-contact).
 
@@ -314,7 +314,7 @@ $contact = $contactApi->edit($id, $data, $createIfNotFound);
 ```
 Edit a new contact.  Note that this supports PUT or PATCH depending on the desired behavior.
 
-**PUT** creates a contact if the given ID does not exist and clears all the contact information, adds the information from the request.
+** PUT ** creates a contact if the given ID does not exist and clears all the contact information, adds the information from the request.
 **PATCH** fails if the contact with the given ID does not exist and updates the contact field values with the values form the request.
 
 #### HTTP Request
@@ -327,7 +327,7 @@ To edit a contact and create a new one if the contact is not found:
 
 `PUT /contacts/ID/edit`
 
-**Post Parameters**
+** Post Parameters **
 
 Name|Description
 ----|-----------
@@ -342,7 +342,7 @@ If `PUT`, the expected response code is `200` if the contact was edited or `201`
 
 If `PATCH`, the expected response code is `200`.
 
-**Properties**
+** Properties **
 
 Same as [Get Contact](#get-contact).
 
@@ -362,7 +362,7 @@ Delete a contact.
 
 `Expected Response Code: 200`
 
-**Properties**
+** Properties **
 
 Same as [Get Contact](#get-contact).
 
@@ -371,8 +371,8 @@ Same as [Get Contact](#get-contact).
 <?php
 
 $data = array(
-     'eventname' => 'Score via api',
-     'actionname' => 'Adding',
+     'eventName' => 'Score via api',
+     'actionName' => 'Adding',
  );
 $contactApi->addDnc($contactId, $channel, $reason, $channelId, $comments);
 ```
@@ -386,6 +386,7 @@ To add Do Not Contact entry to a contact:
 `PATCH /contacts/ID/dnc/add/CHANNEL`
 
 ** Data Parameters (optional) **
+
 Name|Description
 ----|-----------
 channel|Channel of DNC. For example 'email', 'sms'... Default is email.
@@ -412,6 +413,7 @@ To remove Do Not Contact entry from a contact:
 `PATCH /contacts/ID/dnc/remove/CHANNEL`
 
 ** Data Parameters (optional) **
+
 Name|Description
 ----|-----------
 channel|Channel of DNC. For example 'email', 'sms'... Default is email.
@@ -425,25 +427,26 @@ Same as [Get Contact](#get-contact).
 <?php
 
 $data = array(
-	 'eventname' => 'Score via api',
-	 'actionname' => 'Adding',
+	 'eventName' => 'Score via api',
+	 'actionName' => 'Adding',
  );
 $contactApi->addPoints($contactId, $pointDelta, $data);
 ```
 
-Add lead points
+Add contact points
 
 #### HTTP Request
 
 To add points to a contact and return a 404 if the lead is not found:
 
-`PATCH /contacts/ID/points/plus/POINTS`
+`POST /contacts/ID/points/plus/POINTS`
 
 ** Data Parameters (optional) **
+
 Name|Description
 ----|-----------
-eventname|Name of the event
-actionname|Name of the action
+eventName|Name of the event
+actionName|Name of the action
 
 #### Response
 
@@ -464,15 +467,16 @@ $data = array(
  );
 $contactApi->subtractPoints($contactId, $pointDelta, $data);
 ```
-Subtract lead points
+Subtract contact points
 
 #### HTTP Request
 
-To subtract points to a contact and return a 404 if the lead is not found:
+To subtract points from a contact and return a 404 if the contact is not found:
 
-`PATCH /contacts/ID/points/minus/POINTS`
+`POST /contacts/ID/points/minus/POINTS`
 
 ** Data Parameters (optional) **
+
 Name|Description
 ----|-----------
 eventname|Name of the event
@@ -488,6 +492,7 @@ actionname|Name of the action
 ```
 
 ### List Available Owners
+
 ```php
 <?php
 
@@ -517,7 +522,7 @@ Get a list of owners that can be used to assign contacts to when creating/editin
 
 `Expected Response Code: 200`
 
-**Owner Properties**
+** Owner Properties **
 
 Name|Type|Description
 ----|----|-----------
@@ -573,7 +578,7 @@ Get a list of available contact fields including custom ones.
 
 `Expected Response Code: 200`
 
-**Field Properties**
+** Field Properties **
 
 Name|Type|Description
 ----|----|-----------
@@ -609,7 +614,7 @@ Get a list of notes for a specific contact.
 
 `GET /contacts/ID/notes`
 
-**Query Parameters**
+** Query Parameters **
 
 Name|Description
 ----|-----------
@@ -623,7 +628,7 @@ orderByDir|Sort direction: asc or desc.
 
 `Expected response code: 200`
 
-**Note Properties**
+** Note Properties **
 
 Name|Type|Description
 ----|----|-----------
@@ -660,7 +665,7 @@ Get a list of contact segments the contact is a member of.
 
 `Expected response code: 200`
 
-**List Properties**
+** List Properties **
 
 Name|Type|Description
 ----|----|-----------
@@ -680,7 +685,7 @@ See [Segements](#segments).
 ```php
 <?php
 
-$segments = $contactApi->getContactCampaigns($id);
+$campaigns = $contactApi->getContactCampaigns($id);
 ```
 ```json
 {
@@ -709,7 +714,7 @@ Get a list of campaigns the contact is a member of.
 
 `Expected response code: 200`
 
-**List Properties**
+** List Properties **
 
 Name|Type|Description
 ----|----|-----------
@@ -724,13 +729,14 @@ listMembership|array|Array of contact list IDs this contact belongs to that is a
 
 See [Campaigns](#campaigns).
 
-### Get Contact Events
+
+### Get Contact's Events
 ```php
 <?php
 
-$segments = $contactApi->getEvents($id, $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page);
+$events = $contactApi->getEvents($id, $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page);
 ```
-**Query Parameters**
+** Query Parameters **
 
 Name|Description
 ----|-----------
@@ -797,7 +803,7 @@ Get a list of contact events the contact created.
 
 `Expected response code: 200`
 
-**List Properties**
+** List Properties **
 
 Name|Type|Description
 ----|----|-----------
@@ -815,3 +821,94 @@ total|int|Total number of events in the request
 page|int|Current page number
 limit|int|Limit of events per page
 maxPages|int|How many pages of events are there
+
+
+### Get Contact's Companies
+```php
+<?php
+
+$companies = $contactApi->getContactCompanies($contactId);
+
+```json
+{  
+  "total":1,
+  "companies":[  
+    {  
+      "company_id":"420",
+      "date_associated":"2016-12-27 15:03:43",
+      "is_primary":"0",
+      "companyname":"test",
+      "companyemail":"test@company.com",
+      "companycity":"Raleigh",
+      "score":"0",
+      "date_added":"2016-12-27 15:03:42"
+    }
+  ]
+}
+```
+Get a list of contact's companies the contact belongs to.
+
+#### HTTP Request
+
+`GET /contacts/ID/companies`
+
+#### Response
+
+`Expected response code: 200`
+
+**List Properties**
+
+Name|Type|Description
+----|----|-----------
+company_id|int|Company ID
+date_associated|datetime|Date and time when the contact was associated to the company
+date_added|datetime|Date and time when the company was created
+is_primary|bool|Flag whether the company association is primary (current)
+companyname|string|Name of the company
+companyemail|string|Email of the company
+companycity|string|City of the company
+score|int|Score of the company
+
+
+### Get Contact's Devices
+```php
+<?php
+
+$devices = $contactApi->getContactDevices($contactId);
+
+```json
+{  
+  "total":1,
+  "devices":[  
+    {  
+      "id":60,
+      "lead":[],
+      "clientInfo":[],
+      "device":"desktop",
+      "deviceOsName":"Ubuntu",
+      "deviceOsShortName":"UBT",
+      "deviceOsPlatform":"x64"
+    }
+  ]
+}
+```
+Get a list of contact's devices the contact has used.
+
+#### HTTP Request
+
+`GET /contacts/ID/devices`
+
+#### Response
+
+`Expected response code: 200`
+
+**List Properties**
+
+Name|Type|Description
+----|----|-----------
+id|int|Device ID
+clientInfo|array|Array with various information about the client (browser)
+device|string|Device type; desktop, mobile..
+deviceOsName|string|Full device OS name
+deviceOsShortName|string|Short device OS name
+deviceOsPlatform|string|OS platform

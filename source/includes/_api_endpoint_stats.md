@@ -449,7 +449,7 @@ stats|array|An empty array of stats, because no table was defined
 ```php
 <?php
 // Example setup variables:
-$table = 'asset_downloads'; 
+$table = 'asset_downloads';
 $start = 0;
 $limit = 50;
 $order = array(
@@ -469,9 +469,9 @@ $where = array(
 $stats = $statsApi->get($table, $start, $limit, $order, $where);
 ```
 ```json
-{  
-  "stats":[  
-    {  
+{
+  "stats":[
+    {
       "id":"1",
       "asset_id":"1",
       "ip_id":"1",
