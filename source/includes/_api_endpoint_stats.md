@@ -53,6 +53,7 @@ $tables = $statsApi->get();
         "push_notification_stats",
         "sms_message_stats",
         "stage_lead_action_log",
+        "tweet_stats",
         "video_hits",
         "webhook_logs"
     ],
@@ -377,6 +378,21 @@ $tables = $statsApi->get();
             "lead_id",
             "stage_id"
         ],
+        "tweet_stats": [
+            "date_sent",
+            "favorite_count",
+            "handle",
+            "id",
+            "is_failed",
+            "lead_id",
+            "response_details",
+            "retry_count",
+            "retweet_count",
+            "source",
+            "source_id",
+            "tweet_id",
+            "twitter_tweet_id"
+        ],
         "video_hits": [
             "browser_languages",
             "channel",
@@ -433,7 +449,7 @@ stats|array|An empty array of stats, because no table was defined
 ```php
 <?php
 // Example setup variables:
-$table = 'asset_downloads'; 
+$table = 'asset_downloads';
 $start = 0;
 $limit = 50;
 $order = array(
@@ -453,9 +469,9 @@ $where = array(
 $stats = $statsApi->get($table, $start, $limit, $order, $where);
 ```
 ```json
-{  
-  "stats":[  
-    {  
+{
+  "stats":[
+    {
       "id":"1",
       "asset_id":"1",
       "ip_id":"1",
