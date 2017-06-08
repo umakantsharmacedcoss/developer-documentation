@@ -87,6 +87,7 @@ $where = array(
 
 $stats = $statsApi->get($table, $start, $limit, $order, $where);
 ```
+
 ```json
 {  
   "stats":[  
@@ -106,17 +107,28 @@ $stats = $statsApi->get($table, $start, $limit, $order, $where);
 
 #### HTTP Request
 
-`GET /stats`
+`GET /stats/TABLE`
 
 **Request Properties**
 
 Name|Type|Description
 ----|----|-----------
-table|string|Stat table name
 start|int|Which row to start on
 limit|int|How many rows to return
 order|array|An array of arrays which contain ordering (example above)
-where|array|An array of arrays which contain where conditions (example above). As the `expr` param can be used most of the methods from [DBAL Doctrine where methods](http://www.doctrine-project.org/api/dbal/2.3/class-Doctrine.DBAL.Query.Expression.ExpressionBuilder.html).
+where|array|An array of arrays which contain where conditions (example above). As the `expr` param can be used most of the methods from [DBAL Doctrine where methods](http://www.doctrine-project.org/api/dbal/2.3/class-Doctrine.DBAL.Query.Expression.ExpressionBuilder.html). 
+
+If using cURL, a query parameter may look something like `where%5B0%5D%5Bcol%5D=id&where%5B0%5D%5Bexpr%5D=eq&where%5B0%5D%5Bval%5D=3` which is the equivalent to the following:
+
+<pre class="inline">
+array(
+    array(
+        'col'  => 'id',
+        'expr' => 'eq',
+        'val'  => 3,
+    )
+);
+</pre>
 
 #### Response
 

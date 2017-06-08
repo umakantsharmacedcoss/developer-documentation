@@ -437,7 +437,7 @@ Add lead points
 
 To add points to a contact and return a 404 if the lead is not found:
 
-`PATCH /contacts/ID/points/plus/POINTS`
+`POST /contacts/ID/points/plus/POINTS`
 
 ** Data Parameters (optional) **
 Name|Description
@@ -470,7 +470,7 @@ Subtract lead points
 
 To subtract points to a contact and return a 404 if the lead is not found:
 
-`PATCH /contacts/ID/points/minus/POINTS`
+`POST /contacts/ID/points/minus/POINTS`
 
 ** Data Parameters (optional) **
 Name|Description
