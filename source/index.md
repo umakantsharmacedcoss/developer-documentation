@@ -43,9 +43,9 @@ includes:
   - plugin_database
   - plugin_permissions
   - plugin_configuration
-  - plugin_manipulating_contacts  
-  - plugin_extending_intro    
-  - plugin_extending_api  
+  - plugin_manipulating_contacts
+  - plugin_extending_intro
+  - plugin_extending_api
   - plugin_extending_broadcasts
   - plugin_extending_campaigns
   - plugin_extending_categories
@@ -59,13 +59,13 @@ includes:
   - plugin_extending_reports
   - plugin_extending_webhooks
   - plugin_extending_ui
-  - plugin_misc  
+  - plugin_misc
   - plugin_misc_flashes
   - plugin_misc_helpers
   - plugin_misc_helpers_input
   - plugin_misc_helpers_datetime
   - plugin_misc_helpers_chartquery
-  - plugin_misc_commands  
+  - plugin_misc_commands
   - plugin_misc_forms
   - plugin_misc_events
   - plugin_misc_translated_entities.md
@@ -75,7 +75,7 @@ includes:
   - api_authorization
   - api_authorization_oauth1a
   - api_authorization_oauth2
-  - api_authorization_basic  
+  - api_authorization_basic
   - api_libraries
   - api_endpoints
   - api_endpoint_assets
@@ -101,9 +101,10 @@ includes:
   - api_endpoint_stages
   - api_endpoint_stats
   - api_endpoint_users
+  - api_endpoint_webhooks
   - webhooks
   - mauticjs_api_intro
   - mauticjs_api_reference
-  
+
 search: true
 ---
