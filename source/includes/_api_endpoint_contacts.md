@@ -73,11 +73,11 @@ $contact = $contactApi->get($id);
                     "group": "core",
                     "value": "Jim"
                 },
-                
+
                 "...": {
                     "..." : "..."
                 }
-                
+
             },
             "social": {
                 "twitter": {
@@ -88,11 +88,11 @@ $contact = $contactApi->get($id);
                     "group": "social",
                     "value": "jimcontact"
                 },
-                
+
                 "...": {
                     "..." : "..."
                 }
-                
+
             },
             "personal": [],
             "professional": [],
@@ -100,7 +100,7 @@ $contact = $contactApi->get($id);
                 "title": "Mr",
                 "firstname": "Jim",
                 "twitter": "jimcontact",
-                
+
                 "...": "..."
             }
         }
@@ -200,7 +200,7 @@ $contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $order
                         "group": "core",
                         "value": "Jim"
                     },
-                    
+
                     "...": {
                         "..." : "..."
                     }
@@ -214,7 +214,7 @@ $contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $order
                         "group": "social",
                         "value": "jimcontact"
                     },
-                    
+
                     "...": {
                         "..." : "..."
                     }
@@ -225,8 +225,8 @@ $contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $order
                     "title": "Mr",
                     "firstname": "Jim",
                     "twitter": "jimcontact",
-                    
-                    "...": "..."    
+
+                    "...": "..."
                 }
             }
         }
@@ -263,7 +263,7 @@ Same as [Get Contact](#get-contact).
 
 ### Create Contact
 ```php
-<?php 
+<?php
 
 $data = array(
     'firstname' => 'Jim',
@@ -562,7 +562,7 @@ $fields = $contactApi->getFieldList();
         "group": "core",
         "order": 3
     },
-    
+
     "...": {
         "..." : "..."
     }
@@ -699,7 +699,7 @@ $campaigns = $contactApi->getContactCampaigns($id);
             "manuallyAdded": false,
             "list_membership": [
                 3
-            ]            
+            ]
         }
     }
 }
@@ -731,6 +731,9 @@ See [Campaigns](#campaigns).
 
 
 ### Get Contact's Events
+
+This endpoint will get you all events for a specific contact.
+
 ```php
 <?php
 
@@ -740,6 +743,7 @@ $events = $contactApi->getEvents($id, $search, $includeEvents, $excludeEvents, $
 
 Name|Description
 ----|-----------
+id|Contact ID
 filters[search]|String or search command to filter events by.
 filters[includeEvents][]|Array of event types to include.
 filters[excludeEvents][]|Array of event types to exclude.
@@ -748,9 +752,9 @@ orderByDir|Sort direction: asc or desc.
 page|What page number to load
 
 ```json
-{  
-  "events":[  
-    {  
+{
+  "events":[
+    {
       "event":"lead.identified",
       "icon":"fa-user",
       "eventType":"Contact identified",
@@ -759,18 +763,18 @@ page|What page number to load
       "featured":true
     }
   ],
-  "filters":{  
+  "filters":{
     "search":"",
-    "includeEvents":[  
+    "includeEvents":[
       "lead.identified"
     ],
     "excludeEvents":[]
   },
-  "order":[  
+  "order":[
     "",
     "ASC"
   ],
-  "types":{  
+  "types":{
     "lead.ipadded":"Accessed from IP",
     "asset.download":"Asset downloaded",
     "campaign.event":"Campaign action triggered",
@@ -822,6 +826,1139 @@ page|int|Current page number
 limit|int|Limit of events per page
 maxPages|int|How many pages of events are there
 
+### Get All Contact Events
+
+This endpoint will get you all events across all contacts.
+
+```php
+<?php
+
+$events = $contactApi->getAllEvents($search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page);
+```
+** Query Parameters **
+
+Name|Description
+----|-----------
+filters[search]|String or search command to filter events by.
+filters[includeEvents][]|Array of event types to include.
+filters[excludeEvents][]|Array of event types to exclude.
+orderBy|Column to sort by. Can use any column listed in the response.
+orderByDir|Sort direction: asc or desc.
+page|What page number to load
+
+```json
+{
+  "events": [
+    {
+      "event": "stage.changed",
+      "eventLabel": {
+        "label": "12:test",
+        "href": "\/s\/stages\/edit\/12",
+        "isExternal": false
+      },
+      "eventType": "Stage changed",
+      "timestamp": "2017-08-03T10:27:50+00:00",
+      "extra": {
+        "log": {
+          "reference": "12",
+          "eventName": "12:test",
+          "actionName": "Stage changed",
+          "dateAdded": "2017-08-03T10:27:50+00:00",
+          "lead_id": "7149"
+        }
+      },
+      "icon": "fa-tachometer",
+      "contactId": "7149"
+    },
+    {
+      "event": "lead.utmtagsadded",
+      "eventType": "UTM tags recorded",
+      "timestamp": "2017-07-31T20:20:20+00:00",
+      "icon": "fa-tag",
+      "extra": {
+        "utmtags": {
+          "id": "1",
+          "lead_id": "7151",
+          "date_added": "2017-07-31T20:20:20+00:00",
+          "query": [],
+          "referer": "http:\/\/seznam.cz"
+        }
+      },
+      "contentTemplate": "MauticLeadBundle:SubscribedEvents\\Timeline:utmadded.html.php",
+      "contactId": "7151"
+    },
+    {
+      "event": "point.gained",
+      "eventLabel": "test \/ 3",
+      "eventType": "Point gained",
+      "timestamp": "2017-07-29T20:20:20+00:00",
+      "extra": {
+        "log": {
+          "eventName": "test",
+          "actionName": "test",
+          "dateAdded": "2017-07-29T20:20:20+00:00",
+          "type": "test",
+          "delta": "3",
+          "id": "1",
+          "lead_id": "7151"
+        }
+      },
+      "icon": "fa-calculator",
+      "contactId": "7151"
+    },
+    {
+      "event": "campaign.event",
+      "eventLabel": {
+        "label": "Send Email To User \/ test user send email action",
+        "href": "\/s\/campaigns\/view\/30"
+      },
+      "eventType": "Campaign action triggered",
+      "timestamp": "2017-07-27T14:21:10+00:00",
+      "extra": {
+        "log": {
+          "event_id": "98",
+          "campaign_id": "30",
+          "dateTriggered": "2017-07-27T14:21:10+00:00",
+          "event_name": "Send Email To User",
+          "campaign_name": "test user send email action",
+          "campaign_description": "Created via API",
+          "metadata": [],
+          "type": "email.send.to.user",
+          "isScheduled": "0",
+          "lead_id": "1190"
+        },
+        "campaignEventSettings": {
+          "decision": {
+            "asset.download": {
+              "label": "Downloads asset",
+              "description": "Trigger actions upon downloading an asset.",
+              "eventName": "mautic.asset.on_campaign_trigger_decision",
+              "formType": "campaignevent_assetdownload",
+              "channel": "asset",
+              "channelIdField": "assets"
+            },
+            "email.open": {
+              "label": "Opens email",
+              "description": "Trigger actions when an email is opened. Connect a &quot;Send Email&quot; action to the top of this decision.",
+              "eventName": "mautic.email.on_campaign_trigger_decision",
+              "connectionRestrictions": {
+                "source": {
+                  "action": [
+                    "email.send"
+                  ]
+                }
+              }
+            },
+            "dwc.decision": {
+              "label": "Request dynamic content",
+              "description": "This is the top level for a dynamic content request.",
+              "eventName": "mautic.dwc.on_campaign_trigger_decision",
+              "formType": "dwcdecision_list",
+              "formTypeOptions": {
+                "update_select": "campaignevent_properties_dynamicContent"
+              },
+              "formTheme": "MauticDynamicContentBundle:FormTheme\\DynamicContentDecisionList",
+              "channel": "dynamicContent",
+              "channelIdField": "dynamicContent"
+            },
+            "form.submit": {
+              "label": "Submits form",
+              "description": "Trigger actions when a contact submits a form",
+              "formType": "campaignevent_formsubmit",
+              "eventName": "mautic.form.on_campaign_trigger_decision"
+            },
+            "page.pagehit": {
+              "label": "Visits a page",
+              "description": "Trigger actions on a page\/url hit.",
+              "formType": "campaignevent_pagehit",
+              "eventName": "mautic.page.on_campaign_trigger_decision",
+              "channel": "page",
+              "channelIdField": "pages"
+            }
+          },
+          "condition": {
+            "lead.field_value": {
+              "label": "Contact field value",
+              "description": "Condition based on a contact field value.",
+              "formType": "campaignevent_lead_field_value",
+              "formTheme": "MauticLeadBundle:FormTheme\\FieldValueCondition",
+              "eventName": "mautic.lead.on_campaign_trigger_condition"
+            },
+            "lead.owner": {
+              "label": "Contact owner",
+              "description": "Condition based on a contact owner.",
+              "formType": "campaignevent_lead_owner",
+              "eventName": "mautic.lead.on_campaign_trigger_condition"
+            },
+            "lead.segments": {
+              "label": "Contact segments",
+              "description": "Condition based on a contact segments.",
+              "formType": "campaignevent_lead_segments",
+              "eventName": "mautic.lead.on_campaign_trigger_condition"
+            },
+            "lead.tags": {
+              "label": "Contact tags",
+              "description": "Condition based on a contact tags.",
+              "formType": "campaignevent_lead_tags",
+              "eventName": "mautic.lead.on_campaign_trigger_condition"
+            },
+            "form.field_value": {
+              "label": "Form field value",
+              "description": "Trigger actions when a submitted form field value suits the defined condition.",
+              "formType": "campaignevent_form_field_value",
+              "formTheme": "MauticFormBundle:FormTheme\\FieldValueCondition",
+              "eventName": "mautic.form.on_campaign_trigger_condition"
+            }
+          },
+          "action": {
+            "lead.scorecontactscompanies": {
+              "label": "Add to company's score",
+              "description": "This action will add the specified value to the company's existing score",
+              "formType": "scorecontactscompanies_action",
+              "eventName": "mautic.lead.on_campaign_trigger_action"
+            },
+            "lead.addtocompany": {
+              "label": "Add to company action",
+              "description": "This action will add contacts to the selected company",
+              "formType": "addtocompany_action",
+              "eventName": "mautic.lead.on_campaign_trigger_action"
+            },
+            "lead.changepoints": {
+              "label": "Adjust contact points",
+              "description": "Increase or decrease points",
+              "formType": "leadpoints_action",
+              "eventName": "mautic.lead.on_campaign_trigger_action"
+            },
+            "campaign.addremovelead": {
+              "label": "Change campaigns",
+              "description": "Add contact to specific campaigns and\/or remove from specific campaigns when the event is triggered.",
+              "formType": "campaignevent_addremovelead",
+              "formTypeOptions": {
+                "include_this": true
+              },
+              "callback": "\\Mautic\\CampaignBundle\\Helper\\CampaignEventHelper::addRemoveLead"
+            },
+            "stage.change": {
+              "label": "Change contact's stage",
+              "description": "Choose a stage to change a contact to.",
+              "eventName": "mautic.stage.on_campaign_trigger_action",
+              "formType": "stageaction_change",
+              "formTheme": "MauticStageBundle:FormTheme\\StageActionChange"
+            },
+            "lead.deletecontact": {
+              "label": "Delete contact",
+              "description": "<span class='text-danger'>Permanently deletes the contact as well as all associated statistical data. <strong>Warning: this is irreversible!<\/strong><\/span>",
+              "eventName": "mautic.lead.on_campaign_trigger_action",
+              "connectionRestrictions": {
+                "target": {
+                  "decision": [
+                    "none"
+                  ],
+                  "action": [
+                    "none"
+                  ],
+                  "condition": [
+                    "none"
+                  ]
+                }
+              }
+            },
+            "lead.changelist": {
+              "label": "Modify contact's segments",
+              "description": "Add contact to or remove contact from segment(s)",
+              "formType": "leadlist_action",
+              "eventName": "mautic.lead.on_campaign_trigger_action"
+            },
+            "lead.changetags": {
+              "label": "Modify contact's tags",
+              "description": "Add tag to or remove tag from contact",
+              "formType": "modify_lead_tags",
+              "eventName": "mautic.lead.on_campaign_trigger_action"
+            },
+            "plugin.leadpush": {
+              "label": "Push contact to integration",
+              "description": "Push a contact to the selected integration.",
+              "formType": "integration_list",
+              "formTheme": "MauticPluginBundle:FormTheme\\Integration",
+              "eventName": "mautic.plugin.on_campaign_trigger_action"
+            },
+            "dwc.push_content": {
+              "label": "Push dynamic content",
+              "description": "Trigger actions when a Dynamic Content slot is requested.",
+              "eventName": "mautic.dwc.on_campaign_trigger_action",
+              "formType": "dwcsend_list",
+              "formTypeOptions": {
+                "update_select": "campaignevent_properties_dynamicContent"
+              },
+              "formTheme": "MauticDynamicContentBundle:FormTheme\\DynamicContentPushList",
+              "timelineTemplate": "MauticDynamicContentBundle:SubscribedEvents\\Timeline:index.html.php",
+              "hideTriggerMode": true,
+              "connectionRestrictions": {
+                "anchor": [
+                  "decision.inaction"
+                ],
+                "source": {
+                  "decision": [
+                    "dwc.decision"
+                  ]
+                }
+              },
+              "channel": "dynamicContent",
+              "channelIdField": "dwc_slot_name"
+            },
+            "email.send": {
+              "label": "Send email",
+              "description": "Send the selected email to the contact.",
+              "eventName": "mautic.email.on_campaign_trigger_action",
+              "formType": "emailsend_list",
+              "formTypeOptions": {
+                "update_select": "campaignevent_properties_email",
+                "with_email_types": true
+              },
+              "formTheme": "MauticEmailBundle:FormTheme\\EmailSendList",
+              "channel": "email",
+              "channelIdField": "email"
+            },
+            "message.send": {
+              "label": "Send marketing message",
+              "description": "Send a message through the configured channels withing the marketing message selected.",
+              "eventName": "mautic.channel.on_campaign_trigger_action",
+              "formType": "message_send",
+              "formTheme": "MauticChannelBundle:FormTheme\\MessageSend",
+              "channel": "channel.message",
+              "channelIdField": "marketingMessage",
+              "connectionRestrictions": {
+                "target": {
+                  "decision": [
+                    "email.open",
+                    "page.pagehit",
+                    "asset.download",
+                    "form.submit"
+                  ]
+                }
+              },
+              "timelineTemplate": "MauticChannelBundle:SubscribedEvents\\Timeline:index.html.php",
+              "timelineTemplateVars": {
+                "messageSettings": {
+                  "email": {
+                    "campaignAction": "email.send",
+                    "campaignDecisionsSupported": [
+                      "email.open",
+                      "page.pagehit",
+                      "asset.download",
+                      "form.submit"
+                    ],
+                    "lookupFormType": "email_list",
+                    "label": "Email"
+                  },
+                  "sms": {
+                    "campaignAction": "sms.send_text_sms",
+                    "campaignDecisionsSupported": [
+                      "page.pagehit",
+                      "asset.download",
+                      "form.submit"
+                    ],
+                    "lookupFormType": "sms_list",
+                    "repository": "MauticSmsBundle:Sms",
+                    "label": "Text Message"
+                  },
+                  "mobile_notification": {
+                    "campaignAction": "notification.send_mobile_notification",
+                    "campaignDecisionsSupported": [
+                      "page.pagehit",
+                      "asset.download",
+                      "form.submit"
+                    ],
+                    "lookupFormType": "notification_list",
+                    "repository": "MauticNotificationBundle:Notification",
+                    "lookupOptions": {
+                      "mobile": true,
+                      "desktop": false
+                    },
+                    "label": "Mobile_notification"
+                  }
+                }
+              }
+            },
+            "sms.send_text_sms": {
+              "label": "Send text message",
+              "description": "Sends a text\/sms to the contact.",
+              "eventName": "mautic.sms.on_campaign_trigger_action",
+              "formType": "smssend_list",
+              "formTypeOptions": {
+                "update_select": "campaignevent_properties_sms"
+              },
+              "formTheme": "MauticSmsBundle:FormTheme\\SmsSendList",
+              "timelineTemplate": "MauticSmsBundle:SubscribedEvents\\Timeline:index.html.php",
+              "channel": "sms",
+              "channelIdField": "sms"
+            },
+            "twitter.tweet": {
+              "label": "Tweet contact",
+              "description": "Send tweets automatically to contacts. This must be in compliance with  <a href='https:\/\/support.twitter.com\/articles\/76915#Tweets' target='_blank'>Twitter's Automation Rules<\/a>.",
+              "eventName": "mautic.social.on_campaign_trigger_action",
+              "formTypeOptions": {
+                "update_select": "campaignevent_properties_channelId"
+              },
+              "formType": "tweetsend_list",
+              "channel": "social.tweet",
+              "channelIdField": "channelId"
+            },
+            "lead.updatelead": {
+              "label": "Update contact",
+              "description": "Update the current contact's fields with the defined values from this action",
+              "formType": "updatelead_action",
+              "formTheme": "MauticLeadBundle:FormTheme\\ActionUpdateLead",
+              "eventName": "mautic.lead.on_campaign_trigger_action"
+            }
+          },
+          "connectionRestrictions": {
+            "anchor": {
+              "decision": {
+                "dwc.push_content": [
+                  "inaction"
+                ]
+              }
+            },
+            "asset.download": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "email.open": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": [
+                  "email.send"
+                ]
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "dwc.decision": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "form.submit": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "page.pagehit": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "lead.field_value": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "lead.owner": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "lead.segments": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "lead.tags": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "form.field_value": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "lead.scorecontactscompanies": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "lead.addtocompany": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "lead.changepoints": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "campaign.addremovelead": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "stage.change": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "lead.deletecontact": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [
+                  "none"
+                ],
+                "condition": [
+                  "none"
+                ],
+                "action": [
+                  "none"
+                ]
+              }
+            },
+            "lead.changelist": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "lead.changetags": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "plugin.leadpush": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "dwc.push_content": {
+              "source": {
+                "decision": [
+                  "dwc.decision"
+                ],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "email.send": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "message.send": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [
+                  "email.open",
+                  "page.pagehit",
+                  "asset.download",
+                  "form.submit"
+                ],
+                "condition": [],
+                "action": []
+              }
+            },
+            "sms.send_text_sms": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "twitter.tweet": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            },
+            "lead.updatelead": {
+              "source": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              },
+              "target": {
+                "decision": [],
+                "condition": [],
+                "action": []
+              }
+            }
+          }
+        }
+      },
+      "contentTemplate": "MauticCampaignBundle:SubscribedEvents\\Timeline:index.html.php",
+      "icon": "fa-clock-o",
+      "contactId": "1190"
+    },
+    {
+      "event": "asset.download",
+      "eventLabel": {
+        "label": "test",
+        "href": "\/s\/assets\/view\/1"
+      },
+      "extra": {
+        "asset": {
+          "isPublished": true,
+          "dateAdded": "2017-07-27T10:05:16+00:00",
+          "dateModified": "2017-08-01T14:12:45+00:00",
+          "createdBy": 1,
+          "createdByUser": "John Doe",
+          "modifiedBy": 1,
+          "modifiedByUser": "John Doe",
+          "id": 1,
+          "title": "test",
+          "alias": "test",
+          "category": {
+            "isPublished": true,
+            "dateAdded": "2017-08-01T14:12:42+00:00",
+            "createdBy": 1,
+            "createdByUser": "John Doe",
+            "id": 29,
+            "title": "test",
+            "alias": "test",
+            "bundle": "asset"
+          },
+          "language": "en",
+          "downloadCount": 4,
+          "uniqueDownloadCount": 2,
+          "revision": 3,
+          "extension": "png",
+          "mime": "image\/png",
+          "size": 38925,
+          "storageLocation": "local"
+        },
+        "assetDownloadUrl": "http:\/\/mautic.dev\/asset\/1:test"
+      },
+      "eventType": "Asset downloaded",
+      "timestamp": "2017-07-27T10:05:46+00:00",
+      "icon": "fa-download",
+      "contentTemplate": "MauticAssetBundle:SubscribedEvents\\Timeline:index.html.php",
+      "contactId": "7152"
+    },
+    {
+      "event": "lead.imported",
+      "eventType": "Imported",
+      "eventLabel": {
+        "label": "Contact imported from Mautic_July15.csv",
+        "href": "\/s\/contacts\/import\/view\/5"
+      },
+      "timestamp": "2017-07-20T16:12:21+00:00",
+      "icon": "fa-download",
+      "extra": {
+        "id": "7895",
+        "lead_id": "7083",
+        "user_id": "1",
+        "user_name": "John Doe",
+        "bundle": "lead",
+        "object": "import",
+        "action": "inserted",
+        "object_id": "5",
+        "date_added": "2017-07-20T16:12:21+00:00",
+        "properties": {
+          "line": 4900,
+          "file": "Mautic_July15.csv"
+        }
+      },
+      "contentTemplate": "MauticLeadBundle:SubscribedEvents\\Timeline:import.html.php",
+      "contactId": "7083"
+    },
+    {
+      "event": "form.submitted",
+      "eventLabel": {
+        "label": "test",
+        "href": "\/s\/forms\/view\/25"
+      },
+      "eventType": "Form submitted",
+      "timestamp": "2017-07-17T09:52:29+00:00",
+      "extra": {
+        "submission": {
+          "id": 1,
+          "ipAddress": {
+            "ip": "127.0.0.1",
+            "id": 1,
+            "ipDetails": {
+              "city": "",
+              "region": "",
+              "zipcode": "",
+              "country": "",
+              "latitude": "",
+              "longitude": "",
+              "isp": "",
+              "organization": "",
+              "timezone": "",
+              "extra": ""
+            }
+          },
+          "form": {
+            "isPublished": true,
+            "dateAdded": "2017-07-17T07:42:35+00:00",
+            "dateModified": "2017-07-28T08:12:22+00:00",
+            "createdBy": 1,
+            "createdByUser": "John Doe",
+            "modifiedBy": 1,
+            "modifiedByUser": "John Doe",
+            "id": 25,
+            "name": "test",
+            "alias": "test",
+            "cachedHtml": "\n\n<style type=\"text\/css\" scoped>\n ...",
+            "fields": [
+              {
+                "id": 25,
+                "label": "email",
+                "showLabel": true,
+                "alias": "email",
+                "type": "email",
+                "isRequired": false,
+                "order": 1,
+                "properties": [],
+                "leadField": "email",
+                "saveResult": true,
+                "isAutoFill": true
+              },
+              {
+                "id": 26,
+                "label": "Submit",
+                "showLabel": true,
+                "alias": "submit",
+                "type": "button",
+                "isRequired": false,
+                "order": 2,
+                "properties": [],
+                "inputAttributes": "class=\"btn btn-default\"",
+                "saveResult": true,
+                "isAutoFill": false
+              }
+            ],
+            "actions": [
+              {
+                "id": 25,
+                "name": "Send form results",
+                "type": "form.email",
+                "order": 1,
+                "properties": {
+                  "subject": "Your form results",
+                  "copy_lead": 1,
+                  "message": "<strong>email<\/strong>: ...",
+                  "templates": "",
+                  "to": "test@test.test"
+                }
+              }
+            ],
+            "inKioskMode": true,
+            "renderStyle": true,
+            "formType": "standalone",
+            "postAction": "return"
+          },
+          "lead": {
+            "isPublished": true,
+            "dateAdded": "2017-07-17T09:52:29+00:00",
+            "dateModified": "2017-07-27T09:02:34+00:00",
+            "createdBy": 1,
+            "createdByUser": "John Doe",
+            "modifiedBy": 1,
+            "modifiedByUser": "John Doe",
+            "id": 2183,
+            "points": 0,
+            "email": "test@test.test",
+            "fields": [],
+            "lastActive": "2017-07-17T09:52:29+00:00",
+            "ipAddresses": [
+              {
+                "ip": "127.0.0.1",
+                "id": 1,
+                "ipDetails": {
+                  "city": "",
+                  "region": "",
+                  "zipcode": "",
+                  "country": "",
+                  "latitude": "",
+                  "longitude": "",
+                  "isp": "",
+                  "organization": "",
+                  "timezone": "",
+                  "extra": ""
+                }
+              }
+            ],
+            "tags": [],
+            "utmtags": [],
+            "dateIdentified": "2017-07-17T09:52:29+00:00",
+            "doNotContact": [
+              {
+                "id": 1,
+                "dateAdded": "2017-07-27T09:02:34+00:00",
+                "reason": 2,
+                "comments": "Soft bounce",
+                "channel": "email"
+              }
+            ],
+            "frequencyRules": [
+              {
+                "channel": "email",
+                "preferredChannel": true,
+                "dateAdded": "2017-07-25T14:58:57+00:00"
+              },
+              {
+                "channel": "sms",
+                "preferredChannel": false,
+                "dateAdded": "2017-07-25T14:58:57+00:00"
+              }
+            ]
+          },
+          "dateSubmitted": "2017-07-17T09:52:29+00:00",
+          "referer": "http:\/\/mautic.dev\/s\/forms\/preview\/25",
+          "results": {
+            "form_id": "25",
+            "email": "test@test.test"
+          }
+        },
+        "form": {
+          "isPublished": true,
+          "dateAdded": "2017-07-17T07:42:35+00:00",
+          "dateModified": "2017-07-28T08:12:22+00:00",
+          "createdBy": 1,
+          "createdByUser": "John Doe",
+          "modifiedBy": 1,
+          "modifiedByUser": "John Doe",
+          "id": 25,
+          "name": "test",
+          "alias": "test",
+          "cachedHtml": "\n\n<style type=\"text\/css\" scoped>\n ...",
+          "fields": [
+            {
+              "id": 25,
+              "label": "email",
+              "showLabel": true,
+              "alias": "email",
+              "type": "email",
+              "isRequired": false,
+              "order": 1,
+              "properties": [],
+              "leadField": "email",
+              "saveResult": true,
+              "isAutoFill": true
+            },
+            {
+              "id": 26,
+              "label": "Submit",
+              "showLabel": true,
+              "alias": "submit",
+              "type": "button",
+              "isRequired": false,
+              "order": 2,
+              "properties": [],
+              "inputAttributes": "class=\"btn btn-default\"",
+              "saveResult": true,
+              "isAutoFill": false
+            }
+          ],
+          "actions": [
+            {
+              "id": 25,
+              "name": "Send form results",
+              "type": "form.email",
+              "order": 1,
+              "properties": {
+                "subject": "Your form results",
+                "copy_lead": 1,
+                "message": "<strong>email<\/strong>: ...",
+                "templates": "",
+                "to": "test@test.test"
+              }
+            }
+          ],
+          "inKioskMode": true,
+          "renderStyle": true,
+          "formType": "standalone",
+          "postAction": "return"
+        },
+        "page": {
+          "isPublished": true,
+          "language": "en",
+          "hits": 0,
+          "uniqueHits": 0,
+          "variantHits": 0,
+          "revision": 1,
+          "variantSettings": [],
+          "variantChildren": [],
+          "translationChildren": []
+        }
+      },
+      "contentTemplate": "MauticFormBundle:SubscribedEvents\\Timeline:index.html.php",
+      "icon": "fa-pencil-square-o",
+      "contactId": "2183"
+    },
+    {
+      "event": "email.sent",
+      "eventLabel": {
+        "label": "Custom Email: API test email - SendToSegment test",
+        "href": "\/email\/view\/5966744653272",
+        "isExternal": true
+      },
+      "eventType": "Email sent",
+      "timestamp": "2017-07-12T19:11:02+00:00",
+      "dateSent": "2017-07-12T19:11:02+00:00",
+      "extra": {
+        "stat": {
+          "id": "5",
+          "dateSent": "2017-07-12T19:11:02+00:00",
+          "isRead": "0",
+          "isFailed": "0",
+          "viewedInBrowser": "0",
+          "retryCount": "0",
+          "idHash": "5966744653272",
+          "openDetails": [],
+          "storedSubject": "API test email - SendToSegment test",
+          "timeToRead": false
+        },
+        "type": "sent"
+      },
+      "contentTemplate": "MauticEmailBundle:SubscribedEvents\\Timeline:index.html.php",
+      "icon": "fa-envelope"
+    },
+    {
+      "event": "page.hit",
+      "eventLabel": {
+        "label": "test",
+        "href": "\/s\/pages\/view\/1"
+      },
+      "eventType": "Page hit",
+      "timestamp": "2017-07-12T15:38:07+00:00",
+      "extra": {
+        "hit": {
+          "page_id": "1",
+          "userAgent": "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/59.0.3071.115 Safari\/537.36",
+          "dateHit": "2017-07-12T15:38:07+00:00",
+          "url": "http:\/\/mautic.dev\/test",
+          "query": {
+            "page_url": "http:\/\/mautic.dev\/test"
+          },
+          "clientInfo": "a:6:{s:4:\"type\";s:7:\"browser\";s:4:\"name\";s:6:\"Chrome\";s:10:\"short_name\";s:2:\"CH\";s:7:\"version\";s:4:\"59.0\";s:6:\"engine\";s:5:\"Blink\";s:14:\"engine_version\";s:0:\"\";}",
+          "device": "desktop",
+          "deviceOsName": "Mac",
+          "deviceBrand": "",
+          "deviceModel": ""
+        }
+      },
+      "contentTemplate": "MauticPageBundle:SubscribedEvents\\Timeline:index.html.php",
+      "icon": "fa-link",
+      "contactId": "2"
+    }
+  ],
+  "filters": {
+    "search": "",
+    "includeEvents": [],
+    "excludeEvents": []
+  },
+  "order": [
+    "timestamp",
+    "DESC"
+  ],
+  "types": {
+    "lead.ipadded": "Accessed from IP",
+    "asset.download": "Asset downloaded",
+    "campaign.event": "Campaign action triggered",
+    "campaign.event.scheduled": "Campaign event scheduled",
+    "lead.create": "Contact created",
+    "lead.identified": "Contact identified",
+    "lead.donotcontact": "Do not contact",
+    "email.failed": "Email failed",
+    "email.read": "Email read",
+    "email.sent": "Email sent",
+    "form.submitted": "Form submitted",
+    "lead.imported": "Imported",
+    "page.hit": "Page hit",
+    "point.gained": "Point gained",
+    "stage.changed": "Stage changed",
+    "lead.utmtagsadded": "UTM tags recorded",
+    "page.videohit": "Video view event"
+  },
+  "total": 5967,
+  "page": 1,
+  "limit": 25,
+  "maxPages": 237
+}
+```
+
+#### HTTP Request
+
+`GET /contacts/events`
+
+#### Response
+
+`Expected response code: 200`
+
+** List Properties **
+
+Name|Type|Description
+----|----|-----------
+events|array|List of events
+event|string|ID of the event type
+icon|string|Icon class from FontAwesome
+eventType|string|Human name of the event
+eventPriority|string|Priority of the event
+contactId|ID of the contact who created the event
+timestamp|timestamp|Date and time when the event was created
+featured|bool|Flag whether the event is featured
+filters|array|Filters used in the query
+order|array|Ordering used in the query
+types|array|Array of available event types
+total|int|Total number of events in the request
+page|int|Current page number
+limit|int|Limit of events per page
+maxPages|int|How many pages of events are there
 
 ### Get Contact's Companies
 ```php
@@ -830,10 +1967,10 @@ maxPages|int|How many pages of events are there
 $companies = $contactApi->getContactCompanies($contactId);
 
 ```json
-{  
+{
   "total":1,
-  "companies":[  
-    {  
+  "companies":[
+    {
       "company_id":"420",
       "date_associated":"2016-12-27 15:03:43",
       "is_primary":"0",
@@ -877,10 +2014,10 @@ score|int|Score of the company
 $devices = $contactApi->getContactDevices($contactId);
 
 ```json
-{  
+{
   "total":1,
-  "devices":[  
-    {  
+  "devices":[
+    {
       "id":60,
       "lead":[],
       "clientInfo":[],
