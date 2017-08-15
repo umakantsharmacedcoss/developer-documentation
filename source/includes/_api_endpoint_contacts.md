@@ -833,7 +833,7 @@ maxPages|int|How many pages of events are there
 ```php
 <?php
 
-$events = $contactApi->getActivityForContact($id, $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page);
+$events = $contactApi->getActivityForContact($id, $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page, $dateFrom, $dateTo);
 ```
 ** Query Parameters **
 
@@ -843,6 +843,8 @@ id|Contact ID
 filters[search]|String or search command to filter events by.
 filters[includeEvents][]|Array of event types to include.
 filters[excludeEvents][]|Array of event types to exclude.
+filters[dateFrom]|Date from filter. Must be type of `\DateTime` for the PHP API libary and in format `Y-m-d H:i:s` for HTTP param
+filters[dateTo]|Date to filter. Must be type of `\DateTime` for the PHP API libary and in format `Y-m-d H:i:s` for HTTP param
 orderBy|Column to sort by. Can use any column listed in the response.
 orderByDir|Sort direction: asc or desc.
 page|What page number to load
@@ -871,21 +873,20 @@ page|What page number to load
     "ASC"
   ],
   "types":{
-    "lead.ipadded":"Accessed from IP",
-    "asset.download":"Asset downloaded",
-    "campaign.event":"Campaign action triggered",
-    "lead.create":"Contact created",
-    "lead.identified":"Contact identified",
-    "lead.donotcontact":"Do not contact",
-    "email.read":"Email read",
-    "email.sent":"Email sent",
-    "email.failed":"Failed",
-    "form.submitted":"Form submitted",
-    "page.hit":"Page hit",
-    "point.gained":"Point gained",
-    "stage.changed":"Stage changed",
-    "lead.utmtagsadded":"UTM tags recorded",
-    "page.videohit":"Video View Event"
+    "asset.download": "Asset downloaded",
+    "campaign.event": "Campaign action triggered",
+    "campaign.event.scheduled": "Campaign event scheduled",
+    "lead.donotcontact": "Do not contact",
+    "email.failed": "Email failed",
+    "email.read": "Email read",
+    "email.sent": "Email sent",
+    "form.submitted": "Form submitted",
+    "lead.imported": "Imported",
+    "page.hit": "Page hit",
+    "point.gained": "Point gained",
+    "stage.changed": "Stage changed",
+    "lead.utmtagsadded": "UTM tags recorded",
+    "page.videohit": "Video view event"
   },
   "total":1,
   "page":1,
@@ -928,7 +929,7 @@ maxPages|int|How many pages of events are there
 ```php
 <?php
 
-$events = $contactApi->getActivity($search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page);
+$events = $contactApi->getActivity($search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page, $dateFrom, $dateTo);
 ```
 ** Query Parameters **
 
@@ -937,6 +938,8 @@ Name|Description
 filters[search]|String or search command to filter events by.
 filters[includeEvents][]|Array of event types to include.
 filters[excludeEvents][]|Array of event types to exclude.
+filters[dateFrom]|Date from filter. Must be type of `\DateTime` for the PHP API libary and in format `Y-m-d H:i:s` for HTTP param
+filters[dateTo]|Date to filter. Must be type of `\DateTime` for the PHP API libary and in format `Y-m-d H:i:s` for HTTP param
 orderBy|Column to sort by. Can use any column listed in the response.
 orderByDir|Sort direction: asc or desc.
 page|What page number to load
@@ -1146,12 +1149,9 @@ page|What page number to load
     "DESC"
   ],
   "types": {
-    "lead.ipadded": "Accessed from IP",
     "asset.download": "Asset downloaded",
     "campaign.event": "Campaign action triggered",
     "campaign.event.scheduled": "Campaign event scheduled",
-    "lead.create": "Contact created",
-    "lead.identified": "Contact identified",
     "lead.donotcontact": "Do not contact",
     "email.failed": "Email failed",
     "email.read": "Email read",
