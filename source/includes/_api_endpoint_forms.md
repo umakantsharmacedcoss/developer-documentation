@@ -40,7 +40,6 @@ $form = $formApi->get($id);
         "category": null,
         "cachedHtml": "\n\n<script...",
         "template": null,
-        "submissionCount": 10,
         "fields": {
             "26": {
                 "id": 26,
@@ -123,7 +122,6 @@ modifiedBy|int|ID of the user that last modified the form
 modifiedByUser|string|Name of the user that last modified the form
 cachedHtml|string|Cached HTML for the form
 template|string/null|Name of the template used to generate the HTML
-submissionCount|Number of times the form has been submitted
 fields|array|Array of Field entities for the form. See below.
 actions|array|Array of Action entities for the form. See below.
 
@@ -185,7 +183,6 @@ $forms = $formApi->getList($searchFilter, $start, $limit, $orderBy, $orderByDir,
             "category": null,
             "cachedHtml": "\n\n<script...",
             "template": null,
-            "submissionCount": 10,
             "fields": {
                 "26": {
                     "id": 26,
