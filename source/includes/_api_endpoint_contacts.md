@@ -948,166 +948,182 @@ page|What page number to load
  {
   "events": [
     {
-      "event": "stage.changed",
+      "event": "meeting.attended",
+      "eventId": "meeting.attended65",
+      "eventLabel": "Attended meeting - Mautic instance",
+      "eventType": "Meeting attendance",
+      "timestamp": "2017-08-03T21:03:04+00:00",
+      "contactId": "12180",
+      "details": {
+        "eventName": "mautic-instance",
+        "eventId": "371343405",
+        "eventDesc": "Mautic instance",
+        "joinUrl": ""
+      }
+    },
+    {
+      "event": "webinar.attended",
+      "eventId": "webinar.attended67",
+      "eventLabel": "Attended webinar - Mautic",
+      "eventType": "Webinar attendance",
+      "timestamp": "2017-08-03T21:03:04+00:00",
+      "contactId": "12180",
+      "details": {
+        "eventName": "mautic",
+        "eventId": "530287395",
+        "eventDesc": "Mautic",
+        "joinUrl": ""
+      }
+    },
+    {
+      "event": "webinar.registered",
+      "eventId": "webinar.registered66",
+      "eventLabel": "Registered for webinar - Mautic",
+      "eventType": "Webinar registered for",
+      "timestamp": "2017-08-03T21:03:04+00:00",
+      "contactId": "12180",
+      "details": {
+        "eventName": "mautic",
+        "eventId": "530287395",
+        "eventDesc": "Mautic",
+        "joinUrl": "https://global.gotowebinar.com/join/xxx/xxx"
+      }
+    },
+    {
+      "event": "campaign.event",
+      "eventId": "campaign.event892",
       "eventLabel": {
-        "label": "12:test",
-        "href": "\/s\/stages\/edit\/12",
-        "isExternal": false
+        "label": "Contact field value \/ Campaign Date",
+        "href": "\/s\/campaigns\/view\/498"
       },
-      "eventType": "Stage changed",
-      "timestamp": "2017-08-03T10:27:50+00:00",
-      "contactId": "7149",
+      "eventType": "Campaign action triggered",
+      "timestamp": "2017-08-03T00:58:25+00:00",
+      "contactId": "12281",
       "details": {
         "log": {
-          "reference": "12",
-          "eventName": "12:test",
-          "actionName": "Stage changed",
-          "dateAdded": "2017-08-03T10:27:50+00:00"
+          "dateTriggered": "2017-08-03T00:58:25+00:00",
+          "metadata": [],
+          "type": "lead.field_value",
+          "isScheduled": "0",
+          "logId": "892",
+          "eventId": "1457",
+          "campaignId": "498",
+          "eventName": "Contact field value",
+          "campaignName": "Campaign Date"
         }
-      }
-    },
-    {
-      "event": "lead.ipadded",
-      "eventLabel": "127.0.0.1",
-      "eventType": "Accessed from IP",
-      "timestamp": "2017-08-02T08:45:20+00:00",
-      "contactId": "1",
-      "details": []
-    },
-    {
-      "event": "lead.utmtagsadded",
-      "eventType": "UTM tags recorded",
-      "timestamp": "2017-07-31T20:20:20+00:00",
-      "contactId": "7151",
-      "details": {
-        "utmtags": {
-          "id": "1",
-          "query": [],
-          "referer": "http:\/\/seznam.cz",
-          "dateAdded": "2017-07-31T20:20:20+00:00"
-        }
-      }
-    },
-    {
-      "event": "point.gained",
-      "eventLabel": "test \/ 3",
-      "eventType": "Point gained",
-      "timestamp": "2017-07-29T20:20:20+00:00",
-      "contactId": "7151",
-      "details": {
-        "log": {
-          "eventName": "test",
-          "actionName": "test",
-          "dateAdded": "2017-07-29T20:20:20+00:00",
-          "type": "test",
-          "delta": "3",
-          "id": "1"
-        }
-      }
-    },
-    {
-      "event": "asset.download",
-      "eventLabel": {
-        "label": "test",
-        "href": "\/s\/assets\/view\/1"
-      },
-      "eventType": "Asset downloaded",
-      "timestamp": "2017-07-27T10:05:46+00:00",
-      "contactId": "7152",
-      "details": {
-        "asset": {
-          "id": 1,
-          "title": "test",
-          "alias": "test",
-          "category": {}
-        },
-        "assetDownloadUrl": "http:\/\/mautic.dev\/asset\/1:test"
       }
     },
     {
       "event": "email.sent",
+      "eventId": "email.sent796",
       "eventLabel": {
-        "label": "An email",
-        "href": "http:\/\/mautic.dev\/\/email\/view\/5975e5501a854",
+        "label": "2017-05-23 - Email - Leads - Nurture Flow (Monica) 1",
+        "href": "http:\/\/mautic.dev\/email\/view\/597a116ae69ca",
         "isExternal": true
       },
       "eventType": "Email sent",
-      "timestamp": "2017-07-24T12:17:20+00:00",
-      "contactId": "1190",
+      "timestamp": "2017-07-27T16:14:34+00:00",
+      "contactId": "16419",
       "details": {
         "stat": {
-          "id": "20",
-          "dateSent": "2017-07-24T12:17:20+00:00",
-          "subject": "An email",
+          "id": "796",
+          "dateSent": "2017-07-27T16:14:34+00:00",
+          "subject": "How to make the case for digital",
           "isRead": "0",
           "isFailed": "0",
           "viewedInBrowser": "0",
           "retryCount": "0",
-          "idHash": "5975e5501a854",
+          "idHash": "597a116ae69ca",
           "openDetails": [],
-          "storedSubject": "An email",
+          "storedSubject": "How to make the case for digital",
           "timeToRead": false,
-          "emailId": "26",
-          "emailName": "An email"
+          "emailId": "78",
+          "emailName": "2017-05-23 - Email - Leads - Nurture Flow (Monica) 1"
         },
         "type": "sent"
       }
     },
     {
-      "event": "lead.imported",
-      "eventType": "Imported",
+      "event": "email.read",
+      "eventId": "email.read769",
       "eventLabel": {
-        "label": "Contact imported from Mautic_July15.csv",
-        "href": "\/s\/contacts\/import\/view\/5"
+        "label": "Custom Email: device test",
+        "href": "http:\/\/mautic.dev\/email\/view\/5966b0cd571f4",
+        "isExternal": true
       },
-      "timestamp": "2017-07-20T16:12:21+00:00",
-      "contactId": "7079",
+      "eventType": "Email read",
+      "timestamp": "2017-07-12T23:30:56+00:00",
+      "contactId": "13930",
       "details": {
-        "id": "7891",
-        "bundle": "lead",
-        "object": "import",
-        "action": "inserted",
-        "properties": {
-          "line": 4896,
-          "file": "Mautic_July15.csv"
+        "stat": {
+          "id": "769",
+          "dateRead": "2017-07-12T23:30:56+00:00",
+          "dateSent": "2017-07-12T23:29:17+00:00",
+          "isRead": "1",
+          "isFailed": "0",
+          "viewedInBrowser": "0",
+          "retryCount": "0",
+          "idHash": "5966b0cd571f4",
+          "openDetails": [
+            {
+              "datetime": "2017-07-12 23:30:56",
+              "useragent": "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/59.0.3071.115 Safari\/537.36",
+              "inBrowser": false
+            },
+            {
+              "datetime": "2017-07-13 02:18:51",
+              "useragent": "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/59.0.3071.115 Safari\/537.36",
+              "inBrowser": false
+            }
+          ],
+          "storedSubject": "device test",
+          "timeToRead": "PT1M39S"
         },
-        "userId": "1",
-        "userName": "John Doe",
-        "objectId": "5",
-        "dateAdded": "2017-07-20T16:12:21+00:00"
+        "type": "read"
       }
     },
     {
+      "event": "lead.ipadded",
+      "eventId": "lead.ipadded3263",
+      "eventLabel": "127.0.0.1",
+      "eventType": "Accessed from IP",
+      "timestamp": "2017-07-27T03:09:09+00:00",
+      "contactId": "3263",
+      "details": []
+    },
+    {
       "event": "form.submitted",
+      "eventId": "form.submitted503",
       "eventLabel": {
-        "label": "test",
-        "href": "\/s\/forms\/view\/25"
+        "label": "3586 Test",
+        "href": "\/s\/forms\/view\/143"
       },
       "eventType": "Form submitted",
-      "timestamp": "2017-07-17T09:52:29+00:00",
-      "contactId": "2183",
+      "timestamp": "2017-07-27T03:09:07+00:00",
+      "contactId": "16417",
       "details": {
         "submission": {
-          "id": 1,
+          "id": 503,
           "ipAddress": {
             "ip": "127.0.0.1"
           },
           "form": {
-            "id": 25,
-            "name": "test",
-            "alias": "test"
+            "id": 143,
+            "name": "3586 Test",
+            "alias": "3586_test"
           },
-          "dateSubmitted": "2017-07-17T09:52:29+00:00",
-          "referer": "http:\/\/mautic.dev\/s\/forms\/preview\/25",
+          "dateSubmitted": "2017-07-27T03:09:07+00:00",
+          "referer": "http:\/\/mautic.dev\/form\/143",
           "results": {
-            "form_id": "25",
-            "email": "test@test.test"
+            "form_id": "143",
+            "email": "formtest7@test.com",
+            "f_name": ""
           }
         },
         "form": {
-          "id": 25,
-          "name": "test",
-          "alias": "test"
+          "id": 143,
+          "name": "3586 Test",
+          "alias": "3586_test"
         },
         "page": {}
       }
@@ -1115,29 +1131,90 @@ page|What page number to load
     {
       "event": "page.hit",
       "eventLabel": {
-        "label": "test",
-        "href": "\/s\/pages\/view\/1"
+        "label": "Test",
+        "href": "\/s\/pages\/view\/8"
       },
       "eventType": "Page hit",
-      "timestamp": "2017-07-12T15:38:07+00:00",
-      "contactId": "2",
+      "timestamp": "2017-07-21T20:36:49+00:00",
+      "contactId": "16380",
       "details": {
         "hit": {
           "userAgent": "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/59.0.3071.115 Safari\/537.36",
-          "dateHit": "2017-07-12T15:38:07+00:00",
-          "url": "http:\/\/mautic.dev\/test",
+          "dateHit": "2017-07-21T20:36:49+00:00",
+          "url": "http:\/\/mautic.dev\/uncategorized\/translation-test1",
           "query": {
-            "pageUrl": "http:\/\/mautic.dev\/test"
+            "pageUrl": "http:\/\/mautic.dev\/uncategorized\/translation-test1"
           },
           "clientInfo": "a:6:{s:4:\"type\";s:7:\"browser\";s:4:\"name\";s:6:\"Chrome\";s:10:\"short_name\";s:2:\"CH\";s:7:\"version\";s:4:\"59.0\";s:6:\"engine\";s:5:\"Blink\";s:14:\"engine_version\";s:0:\"\";}",
           "device": "desktop",
           "deviceOsName": "Mac",
           "deviceBrand": "",
           "deviceModel": "",
-          "pageId": "1"
+          "pageId": "8"
         }
       }
-    }
+    },
+    {
+      "event": "point.gained",
+      "eventLabel": "2: Page Hit Test \/ 20",
+      "eventType": "Point gained",
+      "timestamp": "2017-07-20T22:38:28+00:00",
+      "contactId": "16379",
+      "details": {
+        "log": {
+          "eventName": "2: Page Hit Test",
+          "actionName": "hit",
+          "dateAdded": "2017-07-20T22:38:28+00:00",
+          "type": "url",
+          "delta": "20",
+          "id": "2"
+        }
+      }
+    },
+    {
+      "event": "lead.imported",
+      "eventId": "lead.imported6324",
+      "eventType": "Imported",
+      "eventLabel": {
+        "label": "Contact import failed from FakeNameGenerator.com_20d05d9c.csv",
+        "href": "\/s\/contacts\/import\/view\/4"
+      },
+      "timestamp": "2017-07-17T21:42:35+00:00",
+      "details": {
+        "id": "6324",
+        "bundle": "lead",
+        "object": "import",
+        "action": "failed",
+        "properties": {
+          "line": 2001,
+          "file": "FakeNameGenerator.com_20d05d9c.csv",
+          "error": "No data found"
+        },
+        "userId": "2",
+        "userName": "Bob Smith",
+        "objectId": "4",
+        "dateAdded": "2017-07-17T21:42:35+00:00"
+      }
+    },
+    {
+      "event": "asset.download",
+      "eventId": "asset.download11",
+      "eventLabel": {
+        "label": "Download Mautic",
+        "href": "\/s\/assets\/view\/1"
+      },
+      "eventType": "Asset downloaded",
+      "timestamp": "2017-04-04T01:49:13+00:00",
+      "details": {
+        "asset": {
+          "id": 1,
+          "title": "Download Mautic",
+          "alias": "download-mautic",
+          "description": "test"
+        },
+        "assetDownloadUrl": "http:\/\/mautic.dev\/asset\/1:download-mautic"
+      }
+    },
   ],
   "filters": {
     "search": "",
@@ -1149,7 +1226,10 @@ page|What page number to load
     "DESC"
   ],
   "types": {
+    "lead.ipadded": "Accessed from IP",
     "asset.download": "Asset downloaded",
+    "meeting.attended": "Attended meeting",
+    "webinar.attended": "Attended webinar",
     "campaign.event": "Campaign action triggered",
     "campaign.event.scheduled": "Campaign event scheduled",
     "lead.donotcontact": "Do not contact",
@@ -1160,14 +1240,16 @@ page|What page number to load
     "lead.imported": "Imported",
     "page.hit": "Page hit",
     "point.gained": "Point gained",
+    "meeting.registered": "Registered for meeting",
+    "webinar.registered": "Registration to Webinar",
     "stage.changed": "Stage changed",
     "lead.utmtagsadded": "UTM tags recorded",
     "page.videohit": "Video view event"
   },
-  "total": 5975,
+  "total": 12,
   "page": 1,
   "limit": 25,
-  "maxPages": 237
+  "maxPages": 1
 }
 ```
 
