@@ -35,12 +35,14 @@ $segment = $segmentApi->get($id);
         "alias": "segment-a",
         "description": "This is my first segment created via API.",
         "filters": [
-          "glue": "and",
-          "field": "city",
-          "type": "text",
-          "filter": "Prague",
-          "display": null,
-          "operator": "=",
+          {
+            "glue": "and",
+            "field": "city",
+            "type": "text",
+            "filter": "Prague",
+            "display": null,
+            "operator": "=",
+          }
         ],
         "isGlobal": true
     }
@@ -72,9 +74,18 @@ modifiedByUser|string|Name of the user that last modified the segment
 name|string|Segment name
 alias|string|Segment alias
 description|string|Segment description
-filters|array|Smart filters for the segment
+filters|array|Smart filters for the segment. See filter properties bellow
 isGlobal|boolean|Whether the segment is global. 0 means only the author will see it.
 
+**Segment Filter Properties**
+
+Name|Type|Description
+----|----|-----------
+glue|string|How to glue the filters to others. Possible values: `and`, `or`
+field|string|Alias of the contact or company field to based the filter on
+object|string|Object which have the field. Possible values: 'lead' (for contacts), `company`
+type|string|Type of the field. Possible values: 'boolean', `date` (format `Y-m-d`), `datetime` (format `Y-m-d H:i:s`), `email`, `country`, `locale`, `lookup`, `number`, `tel`, `region`, `select`, `multiselect`, `text`, `textarea`, `time`, `timezone`, `url`
+operator|string|Operator used for matching the values. Possible values: '=', `!=`, `empty`, `!empty`, `like`, `!like`, `regexp`, `!regexp`, `startsWith`, `endsWith`, `contains`
 
 ### List Contact Segments
 
@@ -101,12 +112,14 @@ $segments = $segmentApi->getList($searchFilter, $start, $limit, $orderBy, $order
         "alias": "segment-a",
         "description": "This is my first segment created via API.",
         "filters": [
-          "glue": "and",
-          "field": "city",
-          "type": "text",
-          "filter": "Prague",
-          "display": null,
-          "operator": "=",
+          {
+            "glue": "and",
+            "field": "city",
+            "type": "text",
+            "filter": "Prague",
+            "display": null,
+            "operator": "=",
+          }
         ],
         "isGlobal": true
     },
@@ -142,18 +155,38 @@ modifiedByUser|string|Name of the user that last modified the segment
 name|string|Segment name
 alias|string|Segment alias
 description|string|Segment description
-filters|array|Smart filters for the segment
+filters|array|Smart filters for the segment. See filter properties bellow
 isGlobal|boolean|Whether the segment is global. 0 means only the author will see it.
+
+**Segment Filter Properties**
+
+Name|Type|Description
+----|----|-----------
+glue|string|How to glue the filters to others. Possible values: `and`, `or`
+field|string|Alias of the contact or company field to based the filter on
+object|string|Object which have the field. Possible values: 'lead' (for contacts), `company`
+type|string|Type of the field. Possible values: 'boolean', `date` (format `Y-m-d`), `datetime` (format `Y-m-d H:i:s`), `email`, `country`, `locale`, `lookup`, `number`, `tel`, `region`, `select`, `multiselect`, `text`, `textarea`, `time`, `timezone`, `url`
+operator|string|Operator used for matching the values. Possible values: '=', `!=`, `empty`, `!empty`, `like`, `!like`, `regexp`, `!regexp`, `startsWith`, `endsWith`, `contains`
 
 ### Create Segment
 ```php
-<?php 
+<?php
 
 $data = array(
     'name'        => 'Segment A',
     'alias'       => 'segment-a',
     'description' => 'This is my first segment created via API.',
-    'isPublished' => 1
+    'isPublished' => 1,
+    'filters' => array(
+        array(
+            'glue' => 'and',
+            'field' => 'email',
+            'object' => 'lead',
+            'type' => 'email',
+            'filter' => '*@gmail.com',
+            'operator' => 'like',
+        ),
+    ),
 );
 
 $segment = $segmentApi->create($data);
@@ -173,6 +206,17 @@ alias|Name alias generated automatically if not set
 description|A description of the segment.
 isPublished|A value of 0 or 1
 isGlobal|boolean|Whether the segment is global. 0 means only the author will see it.
+filters|array|Array of filters. See possible properties bellow.
+
+**Segment Filter Properties**
+
+Name|Type|Description
+----|----|-----------
+glue|string|How to glue the filters to others. Possible values: `and`, `or`
+field|string|Alias of the contact or company field to based the filter on
+object|string|Object which have the field. Possible values: 'lead' (for contacts), `company`
+type|string|Type of the field. Possible values: 'boolean', `date` (format `Y-m-d`), `datetime` (format `Y-m-d H:i:s`), `email`, `country`, `locale`, `lookup`, `number`, `tel`, `region`, `select`, `multiselect`, `text`, `textarea`, `time`, `timezone`, `url`
+operator|string|Operator used for matching the values. Possible values: '=', `!=`, `empty`, `!empty`, `like`, `!like`, `regexp`, `!regexp`, `startsWith`, `endsWith`, `contains`
 
 #### Response
 
@@ -221,6 +265,17 @@ alias|Name alias generated automatically if not set
 description|A description of the segment.
 isPublished|A value of 0 or 1
 isGlobal|boolean|Whether the segment is global. 0 means only the author will see it.
+filters|array|Array of filters. See possible properties bellow.
+
+**Segment Filter Properties**
+
+Name|Type|Description
+----|----|-----------
+glue|string|How to glue the filters to others. Possible values: `and`, `or`
+field|string|Alias of the contact or company field to based the filter on
+object|string|Object which have the field. Possible values: 'lead' (for contacts), `company`
+type|string|Type of the field. Possible values: 'boolean', `date` (format `Y-m-d`), `datetime` (format `Y-m-d H:i:s`), `email`, `country`, `locale`, `lookup`, `number`, `tel`, `region`, `select`, `multiselect`, `text`, `textarea`, `time`, `timezone`, `url`
+operator|string|Operator used for matching the values. Possible values: '=', `!=`, `empty`, `!empty`, `like`, `!like`, `regexp`, `!regexp`, `startsWith`, `endsWith`, `contains`
 
 #### Response
 
