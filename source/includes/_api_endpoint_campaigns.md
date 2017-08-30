@@ -351,7 +351,7 @@ Same as [Get Campaign](#get-campaign).
 <?php
 
 //...
-$response = $campaignApi->addContact($contactId, $campaignId);
+$response = $campaignApi->addContact($campaignId, $contactId);
 if (!isset($response['success'])) {
     // handle error
 }
