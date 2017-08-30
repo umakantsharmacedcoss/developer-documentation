@@ -366,7 +366,7 @@ Manually add a contact to a specific campaign.
 
 #### HTTP Request
 
-`POST /campaigns/CAMPAIGN_ID/contact/add/CONTACT_ID`
+`POST /campaigns/CAMPAIGN_ID/contact/CONTACT_ID/add`
 
 #### Response
 
@@ -396,7 +396,7 @@ Manually remove a contact from a specific campaign.
 
 #### HTTP Request
 
-`POST /campaigns/CAMPAIGN_ID/contact/remove/CONTACT_ID`
+`POST /campaigns/CAMPAIGN_ID/contact/CONTACT_ID/remove`
 
 #### Response
 
