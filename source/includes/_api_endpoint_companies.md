@@ -310,7 +310,7 @@ Same as [Get Company](#get-company).
 <?php
 
 //...
-$response = $companyApi->addContact($contactId, $companyId);
+$response = $companyApi->addContact($companyId, $contactId);
 if (!isset($response['success'])) {
     // handle error
 }
