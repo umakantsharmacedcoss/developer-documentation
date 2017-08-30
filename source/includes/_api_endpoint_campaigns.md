@@ -381,7 +381,7 @@ See JSON code example.
 <?php
 
 //...
-$response = $listApi->removeContact($contactId, $listId);
+$response = $listApi->removeContact($campaignId, $contactId);
 if (!isset($response['success'])) {
     // handle error
 }
