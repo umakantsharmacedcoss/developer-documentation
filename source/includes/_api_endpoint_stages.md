@@ -261,7 +261,7 @@ Manually add a contact to a specific stage.
 
 #### HTTP Request
 
-`POST /stages/STAGE_ID/contact/add/CONTACT_ID`
+`POST /stages/STAGE_ID/contact/CONTACT_ID/add`
 
 #### Response
 
@@ -291,7 +291,7 @@ Manually remove a contact from a specific stage.
 
 #### HTTP Request
 
-`POST /stages/STAGE_ID/contact/remove/CONTACT_ID`
+`POST /stages/STAGE_ID/contact/CONTACT_ID/remove`
 
 #### Response
 

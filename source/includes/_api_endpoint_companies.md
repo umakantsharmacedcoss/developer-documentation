@@ -325,7 +325,7 @@ Manually add a contact to a specific company.
 
 #### HTTP Request
 
-`POST /companies/COMPANY_ID/contact/add/CONTACT_ID`
+`POST /companies/COMPANY_ID/contact/CONTACT_ID/add`
 
 #### Response
 
@@ -355,7 +355,7 @@ Manually remove a contact to a specific company.
 
 #### HTTP Request
 
-`POST /companies/COMPANY_ID/contact/remove/CONTACT_ID`
+`POST /companies/COMPANY_ID/contact/CONTACT_ID/remove`
 
 #### Response
 
