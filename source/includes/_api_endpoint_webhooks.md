@@ -35,6 +35,7 @@ $webhook = $webhookApi->get($id);
     "name": "test",
     "description": "Created via API",
     "webhookUrl": "https:\/\/johndoe.com",
+    "eventsOrderbyDir": "DESC",
     "category": {
       "createdByUser": "John Doe",
       "modifiedByUser": "John Doe",
@@ -74,6 +75,7 @@ id|int|ID of the webhook
 name|string|Title of the webhook
 description|string|Description of the webhook
 webhookUrl|string|Url to send the webhook payload to
+eventsOrderbyDir| Order direction for queued events in one webhook. Can be "DESC" or "ASC"
 isPublished|bool|Published state
 publishUp|datetime/null|Date/time when the webhook should be published
 publishDown|datetime/null|Date/time the webhook should be un published
@@ -109,6 +111,7 @@ $webhooks = $webhookApi->getList($searchFilter, $start, $limit, $orderBy, $order
       "name": "Deleted contact",
       "description": "Notify me when a contact is deleted",
       "webhookUrl": "https:\/\/johndoe.com",
+      "eventsOrderbyDir": "DESC",
       "category": null,
       "triggers": [
         "mautic.lead_post_delete",
@@ -151,6 +154,7 @@ $data = array(
     'name' => 'test',
     'description' => 'Created via API',
     'webhookUrl' => 'http://some.url',
+    'eventsOrderbyDir' => "ASC",
     'triggers' => array(
         'mautic.lead_post_save_update',
         'mautic.lead_post_save_new',
@@ -173,6 +177,7 @@ id|int|ID of the webhook
 name|string|Title of the webhook
 description|string|Description of the webhook
 webhookUrl|string|URL to send the webhook payload to
+eventsOrderbyDir| Order direction for queued events in one webhook. Can be "DESC" or "ASC"
 isPublished|bool|Published state
 
 #### Response
@@ -220,6 +225,7 @@ id|int|ID of the webhook
 name|string|Title of the webhook
 description|string|Description of the webhook
 webhookUrl|string|Url to send the webhook payload to
+eventsOrderbyDir| Order direction for queued events in one webhook. Can be "DESC" or "ASC"
 isPublished|bool|Published state
 
 #### Response
