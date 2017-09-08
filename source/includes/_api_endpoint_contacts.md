@@ -73,11 +73,11 @@ $contact = $contactApi->get($id);
                     "group": "core",
                     "value": "Jim"
                 },
-                
+
                 "...": {
                     "..." : "..."
                 }
-                
+
             },
             "social": {
                 "twitter": {
@@ -88,11 +88,11 @@ $contact = $contactApi->get($id);
                     "group": "social",
                     "value": "jimcontact"
                 },
-                
+
                 "...": {
                     "..." : "..."
                 }
-                
+
             },
             "personal": [],
             "professional": [],
@@ -100,7 +100,7 @@ $contact = $contactApi->get($id);
                 "title": "Mr",
                 "firstname": "Jim",
                 "twitter": "jimcontact",
-                
+
                 "...": "..."
             }
         }
@@ -200,7 +200,7 @@ $contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $order
                         "group": "core",
                         "value": "Jim"
                     },
-                    
+
                     "...": {
                         "..." : "..."
                     }
@@ -214,7 +214,7 @@ $contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $order
                         "group": "social",
                         "value": "jimcontact"
                     },
-                    
+
                     "...": {
                         "..." : "..."
                     }
@@ -225,8 +225,8 @@ $contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $order
                     "title": "Mr",
                     "firstname": "Jim",
                     "twitter": "jimcontact",
-                    
-                    "...": "..."    
+
+                    "...": "..."
                 }
             }
         }
@@ -263,7 +263,7 @@ Same as [Get Contact](#get-contact).
 
 ### Create Contact
 ```php
-<?php 
+<?php
 
 $data = array(
     'firstname' => 'Jim',
@@ -562,7 +562,7 @@ $fields = $contactApi->getFieldList();
         "group": "core",
         "order": 3
     },
-    
+
     "...": {
         "..." : "..."
     }
@@ -699,7 +699,7 @@ $campaigns = $contactApi->getContactCampaigns($id);
             "manuallyAdded": false,
             "list_membership": [
                 3
-            ]            
+            ]
         }
     }
 }
@@ -731,15 +731,19 @@ See [Campaigns](#campaigns).
 
 
 ### Get Contact's Events
+
 ```php
 <?php
 
 $events = $contactApi->getEvents($id, $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page);
 ```
+Warining: Deprecated. Use `getActivityForContact` instead.
+
 ** Query Parameters **
 
 Name|Description
 ----|-----------
+id|Contact ID
 filters[search]|String or search command to filter events by.
 filters[includeEvents][]|Array of event types to include.
 filters[excludeEvents][]|Array of event types to exclude.
@@ -748,9 +752,9 @@ orderByDir|Sort direction: asc or desc.
 page|What page number to load
 
 ```json
-{  
-  "events":[  
-    {  
+{
+  "events":[
+    {
       "event":"lead.identified",
       "icon":"fa-user",
       "eventType":"Contact identified",
@@ -759,18 +763,18 @@ page|What page number to load
       "featured":true
     }
   ],
-  "filters":{  
+  "filters":{
     "search":"",
-    "includeEvents":[  
+    "includeEvents":[
       "lead.identified"
     ],
     "excludeEvents":[]
   },
-  "order":[  
+  "order":[
     "",
     "ASC"
   ],
-  "types":{  
+  "types":{
     "lead.ipadded":"Accessed from IP",
     "asset.download":"Asset downloaded",
     "campaign.event":"Campaign action triggered",
@@ -799,6 +803,103 @@ Get a list of contact events the contact created.
 
 `GET /contacts/ID/events`
 
+Warining: Deprecated. Use `GET /contacts/ID/activity` instead.
+
+#### Response
+
+`Expected response code: 200`
+
+** List Properties **
+
+Name|Type|Description
+----|----|-----------
+events|array|List of events
+event|string|ID of the event type
+icon|string|Icon class from FontAwesome
+eventType|string|Human name of the event
+eventPriority|string|Priority of the event
+timestamp|timestamp|Date and time when the event was created
+featured|bool|Flag whether the event is featured
+filters|array|Filters used in the query
+order|array|Ordering used in the query
+types|array|Array of available event types
+total|int|Total number of events in the request
+page|int|Current page number
+limit|int|Limit of events per page
+maxPages|int|How many pages of events are there
+
+### Get activity events for specific contact
+
+```php
+<?php
+
+$events = $contactApi->getActivityForContact($id, $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page, $dateFrom, $dateTo);
+```
+** Query Parameters **
+
+Name|Description
+----|-----------
+id|Contact ID
+filters[search]|String or search command to filter events by.
+filters[includeEvents][]|Array of event types to include.
+filters[excludeEvents][]|Array of event types to exclude.
+filters[dateFrom]|Date from filter. Must be type of `\DateTime` for the PHP API libary and in format `Y-m-d H:i:s` for HTTP param
+filters[dateTo]|Date to filter. Must be type of `\DateTime` for the PHP API libary and in format `Y-m-d H:i:s` for HTTP param
+orderBy|Column to sort by. Can use any column listed in the response.
+orderByDir|Sort direction: asc or desc.
+page|What page number to load
+
+```json
+{
+  "events":[
+    {
+      "event":"lead.identified",
+      "icon":"fa-user",
+      "eventType":"Contact identified",
+      "eventPriority":-4,
+      "timestamp":"2016-06-09T21:39:08+00:00",
+      "featured":true
+    }
+  ],
+  "filters":{
+    "search":"",
+    "includeEvents":[
+      "lead.identified"
+    ],
+    "excludeEvents":[]
+  },
+  "order":[
+    "",
+    "ASC"
+  ],
+  "types":{
+    "asset.download": "Asset downloaded",
+    "campaign.event": "Campaign action triggered",
+    "campaign.event.scheduled": "Campaign event scheduled",
+    "lead.donotcontact": "Do not contact",
+    "email.failed": "Email failed",
+    "email.read": "Email read",
+    "email.sent": "Email sent",
+    "form.submitted": "Form submitted",
+    "lead.imported": "Imported",
+    "page.hit": "Page hit",
+    "point.gained": "Point gained",
+    "stage.changed": "Stage changed",
+    "lead.utmtagsadded": "UTM tags recorded",
+    "page.videohit": "Video view event"
+  },
+  "total":1,
+  "page":1,
+  "limit":25,
+  "maxPages":1
+}
+```
+Get a list of contact events the contact had created.
+
+#### HTTP Request
+
+`GET /contacts/ID/activity`
+
 #### Response
 
 `Expected response code: 200`
@@ -823,6 +924,363 @@ limit|int|Limit of events per page
 maxPages|int|How many pages of events are there
 
 
+### Get Activity events for all contacts
+
+```php
+<?php
+
+$events = $contactApi->getActivity($search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page, $dateFrom, $dateTo);
+```
+** Query Parameters **
+
+Name|Description
+----|-----------
+filters[search]|String or search command to filter events by.
+filters[includeEvents][]|Array of event types to include.
+filters[excludeEvents][]|Array of event types to exclude.
+filters[dateFrom]|Date from filter. Must be type of `\DateTime` for the PHP API libary and in format `Y-m-d H:i:s` for HTTP param
+filters[dateTo]|Date to filter. Must be type of `\DateTime` for the PHP API libary and in format `Y-m-d H:i:s` for HTTP param
+orderBy|Column to sort by. Can use any column listed in the response.
+orderByDir|Sort direction: asc or desc.
+page|What page number to load
+
+```json
+ {
+  "events": [
+    {
+      "event": "meeting.attended",
+      "eventId": "meeting.attended65",
+      "eventLabel": "Attended meeting - Mautic instance",
+      "eventType": "Meeting attendance",
+      "timestamp": "2017-08-03T21:03:04+00:00",
+      "contactId": "12180",
+      "details": {
+        "eventName": "mautic-instance",
+        "eventId": "371343405",
+        "eventDesc": "Mautic instance",
+        "joinUrl": ""
+      }
+    },
+    {
+      "event": "webinar.attended",
+      "eventId": "webinar.attended67",
+      "eventLabel": "Attended webinar - Mautic",
+      "eventType": "Webinar attendance",
+      "timestamp": "2017-08-03T21:03:04+00:00",
+      "contactId": "12180",
+      "details": {
+        "eventName": "mautic",
+        "eventId": "530287395",
+        "eventDesc": "Mautic",
+        "joinUrl": ""
+      }
+    },
+    {
+      "event": "webinar.registered",
+      "eventId": "webinar.registered66",
+      "eventLabel": "Registered for webinar - Mautic",
+      "eventType": "Webinar registered for",
+      "timestamp": "2017-08-03T21:03:04+00:00",
+      "contactId": "12180",
+      "details": {
+        "eventName": "mautic",
+        "eventId": "530287395",
+        "eventDesc": "Mautic",
+        "joinUrl": "https://global.gotowebinar.com/join/xxx/xxx"
+      }
+    },
+    {
+      "event": "campaign.event",
+      "eventId": "campaign.event892",
+      "eventLabel": {
+        "label": "Contact field value \/ Campaign Date",
+        "href": "\/s\/campaigns\/view\/498"
+      },
+      "eventType": "Campaign action triggered",
+      "timestamp": "2017-08-03T00:58:25+00:00",
+      "contactId": "12281",
+      "details": {
+        "log": {
+          "dateTriggered": "2017-08-03T00:58:25+00:00",
+          "metadata": [],
+          "type": "lead.field_value",
+          "isScheduled": "0",
+          "logId": "892",
+          "eventId": "1457",
+          "campaignId": "498",
+          "eventName": "Contact field value",
+          "campaignName": "Campaign Date"
+        }
+      }
+    },
+    {
+      "event": "email.sent",
+      "eventId": "email.sent796",
+      "eventLabel": {
+        "label": "2017-05-23 - Email - Leads - Nurture Flow (Monica) 1",
+        "href": "http:\/\/mautic.dev\/email\/view\/597a116ae69ca",
+        "isExternal": true
+      },
+      "eventType": "Email sent",
+      "timestamp": "2017-07-27T16:14:34+00:00",
+      "contactId": "16419",
+      "details": {
+        "stat": {
+          "id": "796",
+          "dateSent": "2017-07-27T16:14:34+00:00",
+          "subject": "How to make the case for digital",
+          "isRead": "0",
+          "isFailed": "0",
+          "viewedInBrowser": "0",
+          "retryCount": "0",
+          "idHash": "597a116ae69ca",
+          "openDetails": [],
+          "storedSubject": "How to make the case for digital",
+          "timeToRead": false,
+          "emailId": "78",
+          "emailName": "2017-05-23 - Email - Leads - Nurture Flow (Monica) 1"
+        },
+        "type": "sent"
+      }
+    },
+    {
+      "event": "email.read",
+      "eventId": "email.read769",
+      "eventLabel": {
+        "label": "Custom Email: device test",
+        "href": "http:\/\/mautic.dev\/email\/view\/5966b0cd571f4",
+        "isExternal": true
+      },
+      "eventType": "Email read",
+      "timestamp": "2017-07-12T23:30:56+00:00",
+      "contactId": "13930",
+      "details": {
+        "stat": {
+          "id": "769",
+          "dateRead": "2017-07-12T23:30:56+00:00",
+          "dateSent": "2017-07-12T23:29:17+00:00",
+          "isRead": "1",
+          "isFailed": "0",
+          "viewedInBrowser": "0",
+          "retryCount": "0",
+          "idHash": "5966b0cd571f4",
+          "openDetails": [
+            {
+              "datetime": "2017-07-12 23:30:56",
+              "useragent": "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/59.0.3071.115 Safari\/537.36",
+              "inBrowser": false
+            },
+            {
+              "datetime": "2017-07-13 02:18:51",
+              "useragent": "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/59.0.3071.115 Safari\/537.36",
+              "inBrowser": false
+            }
+          ],
+          "storedSubject": "device test",
+          "timeToRead": "PT1M39S"
+        },
+        "type": "read"
+      }
+    },
+    {
+      "event": "lead.ipadded",
+      "eventId": "lead.ipadded3263",
+      "eventLabel": "127.0.0.1",
+      "eventType": "Accessed from IP",
+      "timestamp": "2017-07-27T03:09:09+00:00",
+      "contactId": "3263",
+      "details": []
+    },
+    {
+      "event": "form.submitted",
+      "eventId": "form.submitted503",
+      "eventLabel": {
+        "label": "3586 Test",
+        "href": "\/s\/forms\/view\/143"
+      },
+      "eventType": "Form submitted",
+      "timestamp": "2017-07-27T03:09:07+00:00",
+      "contactId": "16417",
+      "details": {
+        "submission": {
+          "id": 503,
+          "ipAddress": {
+            "ip": "127.0.0.1"
+          },
+          "form": {
+            "id": 143,
+            "name": "3586 Test",
+            "alias": "3586_test"
+          },
+          "dateSubmitted": "2017-07-27T03:09:07+00:00",
+          "referer": "http:\/\/mautic.dev\/form\/143",
+          "results": {
+            "form_id": "143",
+            "email": "formtest7@test.com",
+            "f_name": ""
+          }
+        },
+        "form": {
+          "id": 143,
+          "name": "3586 Test",
+          "alias": "3586_test"
+        },
+        "page": {}
+      }
+    },
+    {
+      "event": "page.hit",
+      "eventLabel": {
+        "label": "Test",
+        "href": "\/s\/pages\/view\/8"
+      },
+      "eventType": "Page hit",
+      "timestamp": "2017-07-21T20:36:49+00:00",
+      "contactId": "16380",
+      "details": {
+        "hit": {
+          "userAgent": "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/59.0.3071.115 Safari\/537.36",
+          "dateHit": "2017-07-21T20:36:49+00:00",
+          "url": "http:\/\/mautic.dev\/uncategorized\/translation-test1",
+          "query": {
+            "pageUrl": "http:\/\/mautic.dev\/uncategorized\/translation-test1"
+          },
+          "clientInfo": "a:6:{s:4:\"type\";s:7:\"browser\";s:4:\"name\";s:6:\"Chrome\";s:10:\"short_name\";s:2:\"CH\";s:7:\"version\";s:4:\"59.0\";s:6:\"engine\";s:5:\"Blink\";s:14:\"engine_version\";s:0:\"\";}",
+          "device": "desktop",
+          "deviceOsName": "Mac",
+          "deviceBrand": "",
+          "deviceModel": "",
+          "pageId": "8"
+        }
+      }
+    },
+    {
+      "event": "point.gained",
+      "eventLabel": "2: Page Hit Test \/ 20",
+      "eventType": "Point gained",
+      "timestamp": "2017-07-20T22:38:28+00:00",
+      "contactId": "16379",
+      "details": {
+        "log": {
+          "eventName": "2: Page Hit Test",
+          "actionName": "hit",
+          "dateAdded": "2017-07-20T22:38:28+00:00",
+          "type": "url",
+          "delta": "20",
+          "id": "2"
+        }
+      }
+    },
+    {
+      "event": "lead.imported",
+      "eventId": "lead.imported6324",
+      "eventType": "Imported",
+      "eventLabel": {
+        "label": "Contact import failed from FakeNameGenerator.com_20d05d9c.csv",
+        "href": "\/s\/contacts\/import\/view\/4"
+      },
+      "timestamp": "2017-07-17T21:42:35+00:00",
+      "details": {
+        "id": "6324",
+        "bundle": "lead",
+        "object": "import",
+        "action": "failed",
+        "properties": {
+          "line": 2001,
+          "file": "FakeNameGenerator.com_20d05d9c.csv",
+          "error": "No data found"
+        },
+        "userId": "2",
+        "userName": "Bob Smith",
+        "objectId": "4",
+        "dateAdded": "2017-07-17T21:42:35+00:00"
+      }
+    },
+    {
+      "event": "asset.download",
+      "eventId": "asset.download11",
+      "eventLabel": {
+        "label": "Download Mautic",
+        "href": "\/s\/assets\/view\/1"
+      },
+      "eventType": "Asset downloaded",
+      "timestamp": "2017-04-04T01:49:13+00:00",
+      "details": {
+        "asset": {
+          "id": 1,
+          "title": "Download Mautic",
+          "alias": "download-mautic",
+          "description": "test"
+        },
+        "assetDownloadUrl": "http:\/\/mautic.dev\/asset\/1:download-mautic"
+      }
+    },
+  ],
+  "filters": {
+    "search": "",
+    "includeEvents": [],
+    "excludeEvents": []
+  },
+  "order": [
+    "timestamp",
+    "DESC"
+  ],
+  "types": {
+    "lead.ipadded": "Accessed from IP",
+    "asset.download": "Asset downloaded",
+    "meeting.attended": "Attended meeting",
+    "webinar.attended": "Attended webinar",
+    "campaign.event": "Campaign action triggered",
+    "campaign.event.scheduled": "Campaign event scheduled",
+    "lead.donotcontact": "Do not contact",
+    "email.failed": "Email failed",
+    "email.read": "Email read",
+    "email.sent": "Email sent",
+    "form.submitted": "Form submitted",
+    "lead.imported": "Imported",
+    "page.hit": "Page hit",
+    "point.gained": "Point gained",
+    "meeting.registered": "Registered for meeting",
+    "webinar.registered": "Registration to Webinar",
+    "stage.changed": "Stage changed",
+    "lead.utmtagsadded": "UTM tags recorded",
+    "page.videohit": "Video view event"
+  },
+  "total": 12,
+  "page": 1,
+  "limit": 25,
+  "maxPages": 1
+}
+```
+
+#### HTTP Request
+
+`GET /contacts/events`
+
+#### Response
+
+`Expected response code: 200`
+
+** List Properties **
+
+Name|Type|Description
+----|----|-----------
+events|array|List of events
+event|string|ID of the event type
+icon|string|Icon class from FontAwesome
+eventType|string|Human name of the event
+eventPriority|string|Priority of the event
+contactId|ID of the contact who created the event
+timestamp|timestamp|Date and time when the event was created
+featured|bool|Flag whether the event is featured
+filters|array|Filters used in the query
+order|array|Ordering used in the query
+types|array|Array of available event types
+total|int|Total number of events in the request
+page|int|Current page number
+limit|int|Limit of events per page
+maxPages|int|How many pages of events are there
+
 ### Get Contact's Companies
 ```php
 <?php
@@ -830,10 +1288,10 @@ maxPages|int|How many pages of events are there
 $companies = $contactApi->getContactCompanies($contactId);
 
 ```json
-{  
+{
   "total":1,
-  "companies":[  
-    {  
+  "companies":[
+    {
       "company_id":"420",
       "date_associated":"2016-12-27 15:03:43",
       "is_primary":"0",
@@ -877,10 +1335,10 @@ score|int|Score of the company
 $devices = $contactApi->getContactDevices($contactId);
 
 ```json
-{  
+{
   "total":1,
-  "devices":[  
-    {  
+  "devices":[
+    {
       "id":60,
       "lead":[],
       "clientInfo":[],
