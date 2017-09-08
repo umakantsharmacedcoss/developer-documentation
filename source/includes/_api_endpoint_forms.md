@@ -40,7 +40,6 @@ $form = $formApi->get($id);
         "category": null,
         "cachedHtml": "\n\n<script...",
         "template": null,
-        "submissionCount": 10,
         "fields": {
             "26": {
                 "id": 26,
@@ -122,8 +121,7 @@ dateModified|datetime/null|Date/time form was last modified
 modifiedBy|int|ID of the user that last modified the form
 modifiedByUser|string|Name of the user that last modified the form
 cachedHtml|string|Cached HTML for the form
-template|string/null|Name of the template used to generate the HTML 
-submissionCount|Number of times the form has been submitted
+template|string/null|Name of the template used to generate the HTML
 fields|array|Array of Field entities for the form. See below.
 actions|array|Array of Action entities for the form. See below.
 
@@ -142,7 +140,7 @@ validationMessage|string|Validation message if required field is left empty
 helpMessage|string|Help message for the field
 order|int|Order of the field
 properties|array|Configured properties for the field
-labelAttributes|string/null|Custom HTML attributes for the label 
+labelAttributes|string/null|Custom HTML attributes for the label
 inputAttributes|Custom HTML attributes for the input
 containerAttributes|Custom HTML attributes for the container
 
@@ -185,7 +183,6 @@ $forms = $formApi->getList($searchFilter, $start, $limit, $orderBy, $orderByDir,
             "category": null,
             "cachedHtml": "\n\n<script...",
             "template": null,
-            "submissionCount": 10,
             "fields": {
                 "26": {
                     "id": 26,
@@ -266,7 +263,7 @@ Same as [Get Form](#get-form).
 
 ### Create Form
 ```php
-<?php 
+<?php
 
 $data = array(
     'name' => 'test',
@@ -438,3 +435,171 @@ Delete a form actions.
 **Properties**
 
 Same as [Get Form](#get-form).
+
+### List Form Submissions
+```php
+<?php
+
+$submissions = $formApi->getSubmissions($formId, $searchFilter, $start, $limit, $orderBy, $orderByDir, $publishedOnly, $minimal);
+```
+```json
+{
+  "total": "1",
+  "submissions": [
+    {
+      "id": 1,
+      "ipAddress": {
+        "ip": "127.0.0.1"
+      },
+      "form": {
+        "id": 25,
+        "name": "test",
+        "alias": "test",
+        "category": null
+      },
+      "lead": {
+        "id": 2183,
+        "points": 0,
+        "color": null,
+        "title": null,
+        "firstname": null,
+        "lastname": null,
+        "company": null,
+        "position": null,
+        "email": "test@test.test",
+        "phone": null,
+        "mobile": null,
+        "address1": null,
+        "address2": null,
+        "city": null,
+        "state": null,
+        "zipcode": null,
+        "timezone": null,
+        "country": null
+      },
+      "trackingId": null,
+      "dateSubmitted": "2017-07-17T09:52:29+00:00",
+      "referer": "http:\/\/mautic.dev\/s\/forms\/preview\/25",
+      "page": null,
+      "results": {
+        "email": "test@test.test"
+      }
+    }
+  ]
+}
+```
+#### HTTP Request
+
+`GET /forms/FORM_ID/submissions`
+
+**Query Parameters**
+
+Name|Description
+----|-----------
+formId|ID of the form you want to get submissions for
+search|String or search command to filter entities by.
+start|Starting row for the entities returned. Defaults to 0.
+limit|Limit number of entities to return. Defaults to the system configuration for pagination (30).
+orderBy|Column to sort by. Can use any column listed in the response.
+orderByDir|Sort direction: asc or desc.
+publishedOnly|Only return currently published entities.
+minimal|Return only array of entities without additional lists in it.
+
+#### Response
+
+`Expected Response Code: 200`
+
+See JSON code example.
+
+**Properties**
+
+Name|Type|Description
+----|----|-----------
+id|int|ID of the submission
+ipAddress|array|Associative array containing IP address of the client who made the submission
+form|array|Simplified associative array of the form containing id, name, alias and category
+lead|array|Associative array of the lead containing the core values as well as custom fields
+dateSubmitted|string|Date time string holding the UTC date and time when the submission was made
+referer|string|HTTP referer info
+results|array|Associative array of the form fields as the keys and submission values
+
+### List Form Submissions for a contact
+```php
+<?php
+
+$submissions = $formApi->getSubmissionsForContact($formId, $contactId, $searchFilter, $start, $limit, $orderBy, $orderByDir, $publishedOnly, $minimal);
+```
+
+#### HTTP Request
+
+`GET /forms/FORM_ID/submissions/contact/CONTACT_ID`
+
+Response and properties same as [Get Form Submissions](#get-form-submissions). Parameters too except the ContactId was added.
+
+### Get Form Submission
+```php
+<?php
+
+//...
+$form = $formApi->getSubmission($formId, $submissionId);
+```
+```json
+{
+  "submission": {
+    "id": 1,
+    "ipAddress": {
+      "ip": "127.0.0.1"
+    },
+    "form": {
+      "id": 25,
+      "name": "test",
+      "alias": "test",
+      "category": null
+    },
+    "lead": {
+      "id": 2183,
+      "points": 0,
+      "color": null,
+      "title": null,
+      "firstname": null,
+      "lastname": null,
+      "company": null,
+      "position": null,
+      "email": "test@test.test",
+      "phone": null,
+      "mobile": null,
+      "address1": null,
+      "address2": null,
+      "city": null,
+      "state": null,
+      "zipcode": null,
+      "timezone": null,
+      "country": null
+    },
+    "trackingId": null,
+    "dateSubmitted": "2017-07-17T09:52:29+00:00",
+    "referer": "http:\/\/mautic.dev\/s\/forms\/preview\/25",
+    "page": null,
+    "results": {
+      "form_id": "25",
+      "email": "test@test.test"
+    }
+  }
+}
+```
+Get an individual form submission by ID.
+
+#### HTTP Request
+
+`GET /forms/FORM_ID/submissions/SUBMISSION_ID`
+
+#### Response
+
+`Expected Response Code: 200`
+
+See JSON code example.
+
+**Form Properties**
+
+Same as [Get Form Submissions](#get-form-submissions).
+
