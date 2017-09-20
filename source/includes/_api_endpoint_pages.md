@@ -39,6 +39,7 @@ $page = $pageApi->get($id);
         "category": "Events",
         "language": "en",
         "template": "blank",
+        "customHtml": "<!DOCTYPE ...",
         "hits": 0,
         "uniqueHits": 0,
         "variantHits": 0,
@@ -86,6 +87,7 @@ modifiedBy|int|ID of the user that last modified the page
 modifiedByUser|string|Name of the user that last modified the page
 language|string|Language locale of the page
 template|string|Template of the page
+customHtml|string|Static HTML of the page
 hits|int|Total page hit count
 uniqueHits|int|Unique page hit count
 revision|int|Page revision
