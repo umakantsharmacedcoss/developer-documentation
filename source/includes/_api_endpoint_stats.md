@@ -41,6 +41,7 @@ $tables = $statsApi->get();
         "lead_companies_change_log",
         "lead_devices",
         "lead_donotcontact",
+        "lead_event_log",
         "lead_frequencyrules",
         "lead_lists_leads",
         "lead_points_change_log",
@@ -48,6 +49,7 @@ $tables = $statsApi->get();
         "lead_utmtags",
         "page_hits",
         "page_redirects",
+        "plugin_citrix_events",
         "point_lead_action_log",
         "point_lead_event_log",
         "push_notification_stats",
@@ -234,6 +236,18 @@ $tables = $statsApi->get();
             "lead_id",
             "reason"
         ],
+        "lead_event_log": [
+            "action",
+            "bundle",
+            "date_added",
+            "id",
+            "lead_id",
+            "object",
+            "object_id",
+            "properties",
+            "user_id",
+            "user_name"
+        ],
         "lead_frequencyrules": [
             "channel",
             "date_added",
@@ -330,6 +344,16 @@ $tables = $statsApi->get();
             "unique_hits",
             "url"
         ],
+        "plugin_citrix_events": [
+            "email",
+            "event_date",
+            "event_desc",
+            "event_name",
+            "event_type",
+            "id",
+            "lead_id",
+            "product"
+        ],
         "point_lead_action_log": [
             "date_fired",
             "ip_id",
@@ -346,6 +370,7 @@ $tables = $statsApi->get();
             "click_count",
             "click_details",
             "date_clicked",
+            "date_read",
             "date_sent",
             "id",
             "ip_id",
@@ -421,6 +446,8 @@ $tables = $statsApi->get();
         "webhook_logs": [
             "date_added",
             "id",
+            "note",
+            "runtime",
             "status_code",
             "webhook_id"
         ]
@@ -497,7 +524,7 @@ Name|Type|Description
 start|int|Which row to start on
 limit|int|How many rows to return
 order|array|An array of arrays which contain ordering (example above)
-where|array|An array of arrays which contain where conditions (example above). As the `expr` param can be used most of the methods from [DBAL Doctrine where methods](http://www.doctrine-project.org/api/dbal/2.3/class-Doctrine.DBAL.Query.Expression.ExpressionBuilder.html). 
+where|array|An array of arrays which contain where conditions (example above). As the `expr` param can be used most of the methods from [DBAL Doctrine where methods](http://www.doctrine-project.org/api/dbal/2.3/class-Doctrine.DBAL.Query.Expression.ExpressionBuilder.html).
 
 If using cURL, a query parameter may look something like `where%5B0%5D%5Bcol%5D=id&where%5B0%5D%5Bexpr%5D=eq&where%5B0%5D%5Bval%5D=3` which is the equivalent to the following:
 
