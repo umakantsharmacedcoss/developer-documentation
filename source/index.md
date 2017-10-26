@@ -100,6 +100,7 @@ includes:
   - api_endpoint_smses
   - api_endpoint_stages
   - api_endpoint_stats
+  - api_endpoint_tags
   - api_endpoint_themes
   - api_endpoint_tweets
   - api_endpoint_users
