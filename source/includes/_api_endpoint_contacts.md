@@ -147,7 +147,7 @@ $contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $order
 ```json
 {
     "total": "1",
-    "contacts": [
+    "contacts": {"47":
         {
             "id": 47,
             "isPublished": true,
@@ -230,7 +230,7 @@ $contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $order
                 }
             }
         }
-    ]
+    }
 }
 ```
 Get a list of contacts.
