@@ -120,7 +120,7 @@ $campaigns = $campaignApi->getList($searchFilter, $start, $limit, $orderBy, $ord
 ```json
 {
     "total": 1,
-    "campaigns": [
+    "campaigns": {"3":
         {
             "id": 3,
             "name": "Welcome Campaign",
@@ -174,7 +174,7 @@ $campaigns = $campaignApi->getList($searchFilter, $start, $limit, $orderBy, $ord
                 }
             }
         }
-    ]
+    }
 }
 ```
 #### HTTP Request

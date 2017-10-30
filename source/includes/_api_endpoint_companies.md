@@ -117,7 +117,8 @@ $companies = $companyApi->getList($searchFilter, $start, $limit, $orderBy, $orde
 ```json
 {
   "total": 13,
-  "companies": [{  
+  "companies": {"176":
+  {  
     "isPublished":true,
     "dateAdded":"2016-10-25T09:46:36+00:00",
     "createdBy":1,
@@ -173,7 +174,7 @@ $companies = $companyApi->getList($searchFilter, $start, $limit, $orderBy, $orde
     }
   },
   [...]
-  ]
+  }
 }
 ```
 Returns a list of contact companies available to the user. This list is not filterable.
