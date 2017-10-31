@@ -147,8 +147,8 @@ $contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $order
 ```json
 {
     "total": "1",
-    "contacts": {"47":
-        {
+    "contacts": {
+        "47": {
             "id": 47,
             "isPublished": true,
             "dateAdded": "2015-07-21T12:27:12-05:00",

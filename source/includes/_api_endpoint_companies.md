@@ -117,17 +117,17 @@ $companies = $companyApi->getList($searchFilter, $start, $limit, $orderBy, $orde
 ```json
 {
   "total": 13,
-  "companies": {"176":
-  {  
-    "isPublished":true,
-    "dateAdded":"2016-10-25T09:46:36+00:00",
-    "createdBy":1,
-    "createdByUser":"John Doe",
-    "dateModified":null,
-    "modifiedBy":null,
-    "modifiedByUser":null,
-    "id":176,
-    "fields":{  
+  "companies": {
+    "176": {  
+      "isPublished":true,
+      "dateAdded":"2016-10-25T09:46:36+00:00",
+      "createdBy":1,
+      "createdByUser":"John Doe",
+      "dateModified":null,
+      "modifiedBy":null,
+      "modifiedByUser":null,
+      "id":176,
+      "fields":{  
         "core":{  
             "companywebsite":{  
                 "id":"91",
@@ -205,7 +205,7 @@ fields|array|Custom fields for the company
 
 ### Create Company
 ```php
-<?php 
+<?php
 
 $data = array(
     'companyname' => 'test',
