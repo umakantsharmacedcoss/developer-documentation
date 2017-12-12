@@ -238,3 +238,29 @@ MauticFormCallback['replaceWithFormName'] = {
 
 Called prior to default enabling of the submit button.  Receives no values. Return `True` to skip the default enabling of the submit button.
 
+### onShowNextPage()
+
+```js
+MauticFormCallback['replaceWithFormName'] = {
+    onShowNextPage: function (pageNumber) {
+         // called prior to going to the next page
+    },
+};
+```
+
+Called prior to going to the next page in the form. Useful to adjust the DOM prior to making the page visible.
+
+
+### onShowPreviousPage()
+
+```js
+MauticFormCallback['replaceWithFormName'] = {
+    onShowPreviousPage: function (pageNumber) {
+         // called prior to going back to previous page
+    },
+};
+```
+
+Called prior to going back to a previous page in the form. Useful to adjust the DOM prior to making the page visible.
+
+
