@@ -145,6 +145,7 @@ category|object/null|Category information
 unsubscribeForm|int|Id of the form displayed in the unsubscribe page
 dynamicContent|object|Dynamic content configuration
 lists|array|Array of segment IDs which should be added to the segment email
+assetAttachments|array|asset IDs Array for email attachment
 
 ### List Emails
 ```php
