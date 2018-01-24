@@ -1255,7 +1255,7 @@ page|What page number to load
 
 #### HTTP Request
 
-`GET /contacts/events`
+`GET /contacts/activity`
 
 #### Response
 
