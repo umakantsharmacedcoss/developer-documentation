@@ -122,7 +122,7 @@ $webhooks = $webhookApi->getList($searchFilter, $start, $limit, $orderBy, $order
 ```
 #### HTTP Request
 
-`GET /webhooks`
+`GET /hooks`
 
 **Query Parameters**
 
