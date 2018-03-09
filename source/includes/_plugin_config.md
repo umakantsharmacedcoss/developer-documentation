@@ -29,7 +29,7 @@ May contain <strong>HTML</strong> too.',
 The version should be "[PHP-standardized](http://php.net/manual/en/function.version-compare.php)" as the Plugin manager will use version_compare() to determine if the [onUpdate callback](#update) should be executed.  
 
 ### Routes
-> If copying, do not copy `<?php //continued` as it is simply used to force sytax highlighting.
+> If copying, do not copy `<?php //continued` as it is simply used to force syntax highlighting.
 
 ```php
 <?php // continued
