@@ -10,13 +10,22 @@ Mautic leverages a simple array config file that will register routes, menu item
 
 return array(
     'name'        => 'Hello World',
-    'description' => 'This is an example config file for a simple Hellow World plugin.',
+    'description' => 'This is an example config file for a simple Hello World plugin.',
     'author'      => 'Marty Mautibot',
     'version'     => '1.0.0',
 ```
 
 The general config options will define what should be listed in the Plugin manager.
- 
+
+The description will show up in a H3 tag when the plugin detail modal window opens. If you want to show some longer text bellow the plugin logo and heading place `---` on a new line as a separator of primary and secondary description. So the longer description can be like this:
+
+```
+'description' => 'Primary short description of the plugin here
+---
+Secondary longer description here.
+May contain <strong>HTML</strong> too.',
+```
+
 The version should be "[PHP-standardized](http://php.net/manual/en/function.version-compare.php)" as the Plugin manager will use version_compare() to determine if the [onUpdate callback](#update) should be executed.  
 
 ### Routes
@@ -75,7 +84,7 @@ Firewall|Description
 --------|-----------
 **main**|Secure area of Mautic (/s/ will be auto prepended to the path). The user will be required to login to access this path.
 **public**|Public access without needing authentication. The URL will be appended directly to Mautic's base URL.
-**api**|Secure API area of Mautic (/api/ will be auto prepended to the path). OAuth authorization will be required to access the path. 
+**api**|Secure API area of Mautic (/api/ will be auto prepended to the path). OAuth authorization will be required to access the path.
 
 Each firewall accepts an array of defined routes. Each key, the route's name, must be unique across all bundles and firewalls. Paths must be unique across the same firewall.  **Order does matter** as the first matching route will be used.
 
@@ -94,7 +103,7 @@ Note that there are some internally used placeholders that Mautic will set defau
 
 {page} will default to 1 with a requirement of \d+
 
-{objectId} will default to 0 
+{objectId} will default to 0
 
 {id} will have a requirement of \d+ if under the api firewall
 
@@ -164,7 +173,7 @@ php app/console router:match /blog/my-latest-post
 Menu defines the menu items to display in the different menus.
 
 #### Menu types
-Mautic 2.0 has four customizable menus. 
+Mautic 2.0 has four customizable menus.
 
 Menu Name|Location|
 ---------|--------|
@@ -177,12 +186,12 @@ Menu Name|Location|
 To control the placement of the menu item set, set an array with 'priority' and 'items' keys. Priority can be negative to position the items lower than others or positive to position them higher. If the menu items are returned without setting priority, like the admin menu in the code example, priority is treated as 9999.
 
 To control the priority of individual menu items, set `priority` it's definition array.
-  
+
 #### Parent
 To place a menu item in another bundles parent menu item, for example Channels or Components, define the `parent` key with the key of the menu item this item should display under. For example, to show an item under the Channels parent menu item, use `'parent'    => 'mautic.core.channels',`.  
-  
+
 #### Menu item definitions
-The menu item's name should be the [language string key](#translations) that will be displayed as the item's link. 
+The menu item's name should be the [language string key](#translations) that will be displayed as the item's link.
 
 Item definitions:
 
@@ -190,7 +199,7 @@ Array Key|Required|Type|Description
 ---------|--------|----|-----------
 **route**|OPTIONAL|string|The route name as defined in [routes](#routes). Do not set a route to treat the item as a parent to activate a submenu.
 **routeParameters**|OPTIONAL|array|Route placeholder values to use when generating the URL
-**id**|OPTIONAL|string|Sets the id of the &lt;a /&gt; attribute. This will default to what is set as route. This is used in conjuction with `returnUrl` returned in a controller's response so that the correct menu item is highlighted when ajax is used to navigate the interface. 
+**id**|OPTIONAL|string|Sets the id of the &lt;a /&gt; attribute. This will default to what is set as route. This is used in conjuction with `returnUrl` returned in a controller's response so that the correct menu item is highlighted when ajax is used to navigate the interface.
 **iconClass**|OPTIONAL|string|Font Awesome class to set the icon for the menu item.
 **access**|OPTIONAL|string|Set the [permission](#security) required for this item to display to the user currently logged in. Can also set 'admin' to restrict to Administrators only.
 **checks**|OPTIONAL|array|Restricts display of the link based on either configured parameters or the GET request. It will accept a 'parameters' and/or 'request' array of key => value pairs that must be true to display the menu item.
@@ -201,7 +210,7 @@ Array Key|Required|Type|Description
 ### Services
 
 ```php
-<?php // continued 
+<?php // continued
 
     'services'    => array(
         'events' => array(
@@ -233,8 +242,8 @@ Array Key|Required|Type|Description
 
 ```
 
-Services are PHP objects stored in the service container and are used all throughout Mautic. They can be as simple or as complex as required. Read more about Symfony's service container [here](http://symfony.com/doc/2.8/book/service_container.html). 
-   
+Services are PHP objects stored in the service container and are used all throughout Mautic. They can be as simple or as complex as required. Read more about Symfony's service container [here](http://symfony.com/doc/2.8/book/service_container.html).
+
 #### Service types
 Mautic allows easy configuration for four types of services:
 
@@ -256,7 +265,7 @@ Array Key|Required|Type|Description
 **arguments**|OPTIONAL|string or array|String of a single argument to pass to the construct or an array of arguments to pass. Arguments enclosed with %% will be treated as a [parameter](#parameters). To pass a specific string, enclose the argument with double quotations "". Anything else that is not a boolean or a namespaced class (string with \ in it) will be treated as the name of another registered service. Often, this will simply be [mautic.factory](#factory-service).
 **alias**|OPTIONAL|string|Sets the alias used by the service. For example, the key for the template helpers, $view, array or the string to retrieve a specific form type.
 **tag**|OPTIONAL|string|[Tags](http://symfony.com/doc/2.8/components/dependency_injection/tags.html) the service used by bundles to get a list of specific services (for example form types and event subscribers).
-**tags**|OPTIONAL|array|Array of of tags 
+**tags**|OPTIONAL|array|Array of of tags
 **tagArguments**|OPTIONAL|array|Array of attributes for the tag. See [Symfony docs](http://symfony.com/doc/2.8/components/dependency_injection/tags.html#adding-additional-attributes-on-tags) for more information.
 **scope**|OPTIONAL|string|Defines the [service scope](http://symfony.com/doc/2.8/cookbook/service_container/scopes.html). Deprecated.
 **factory**|OPTIONAL|string|Preferred method for using a factory class. [Factory class](http://symfony.com/doc/2.8/components/dependency_injection/factories.html) for managing creating the service.
@@ -294,7 +303,7 @@ Defines category types available or the Category manager. See [Extending Categor
 );
 ```
 
-The parameters array define and set default values for [custom configuration parameters](#custom-config-params) specific to the plugin. 
+The parameters array define and set default values for [custom configuration parameters](#custom-config-params) specific to the plugin.
 
 To obtain the values of these parameters, use the [`mautic.helper.core_parameters` service](#config-parameters).
 
