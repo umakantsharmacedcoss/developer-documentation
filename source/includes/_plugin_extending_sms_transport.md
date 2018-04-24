@@ -4,8 +4,9 @@ Custom SMS transport can be registered in Mautic by registering a service with a
 
 #### Service definition
 
-Service must implement translatable alias, in this case: ```mautic.sms.transport.twilio```. 
+Service must implement translatable alias if it is something different than the service name, in this case: `mautic.sms.transport.twilio`. 
 Service must have service tag **mautic.sms_transport**
+Service must implement `'tagArguments' => ['integrationAlias' => 'NAME']` if `NAME` is something different than the service name. 
 
 ```php
 'mautic.sms.transport.twilio' => [
@@ -16,8 +17,13 @@ Service must have service tag **mautic.sms_transport**
             'mautic.helper.integration',
             'monolog.logger.mautic',
         ],
+        // Optional if different than the service name
         'alias' => 'mautic.sms.transport.twilio',
+        // Required to notify Mautic this is a SMS transport
         'tag'  => 'mautic.sms_transport',
+        // Required if this service name is different than the Integration's name defined in the inherited AbstractIntegration::getName() method
+        'tagArguments' => [
+            'integrationAlias' => 'Twilio',   
         ],
     ],
 ```
