@@ -1,4 +1,4 @@
-### Extending SMS Transport
+### Extending SMS Transports
 
 Custom SMS transport can be registered in Mautic by registering a service with a **mautic.sms_transport** service tag. Any service tagged will be considered a SMS Transport service.
 
