@@ -383,7 +383,7 @@ Add a contact to DNC list
 
 To add Do Not Contact entry to a contact:
 
-`PATCH /contacts/ID/dnc/add/CHANNEL`
+`POST /contacts/ID/dnc/CHANNEL/add`
 
 ** Data Parameters (optional) **
 
@@ -410,7 +410,7 @@ Remove a contact from DNC list
 
 To remove Do Not Contact entry from a contact:
 
-`PATCH /contacts/ID/dnc/remove/CHANNEL`
+`POST /contacts/ID/dnc/CHANNEL/remove`
 
 ** Data Parameters (optional) **
 
