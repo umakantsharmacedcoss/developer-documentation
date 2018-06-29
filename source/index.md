@@ -57,7 +57,6 @@ includes:
   - plugin_extending_pages
   - plugin_extending_points
   - plugin_extending_reports
-  - plugin_extending_sms_transport
   - plugin_extending_webhooks
   - plugin_extending_ui
   - plugin_misc
