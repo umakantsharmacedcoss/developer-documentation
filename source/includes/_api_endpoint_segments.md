@@ -338,6 +338,42 @@ Manually add a contact to a specific segment.
 See JSON code example.
 
 
+### Add Contacts to a Segment
+
+```php
+<?php
+
+//...
+$contactIds = ['ids'=>[ 1, 45, 39]];
+$response = $segmentApi->addContact($segmentId, $contactIds);
+if (!isset($response['success'])) {
+    // handle error
+}
+```
+```json
+{
+     "success":true,
+     "details":{
+        "1" :{"success":true},
+        "45":{"success":true},
+        "39":{"success":false}
+     }
+}
+```
+
+Manually add contacts to a specific segment.
+
+#### HTTP Request
+
+`POST /segments/SEGMENT_ID/contacts/add`
+
+#### Response
+
+`Expected Response Code: 200`
+
+See JSON code example.
+
+
 ### Remove Contact from a Segment
 
 ```php
