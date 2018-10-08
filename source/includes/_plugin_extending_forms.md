@@ -23,7 +23,8 @@ class FormSubscriber extends CommonSubscriber
     static public function getSubscribedEvents()
     {
         return array(
-            FormEvents::FORM_ON_BUILD => array('onFormBuilder', 0)
+            FormEvents::FORM_ON_BUILD => array('onFormBuilder', 0),
+            FormEvents::FORM_VALIDATION_TAB_ON_BUILD => array('onValidationBuilder', 0),
         );
     }
 
@@ -78,6 +79,16 @@ class FormSubscriber extends CommonSubscriber
             ]
         );
     }
+    
+      /**
+         * @param Events\ValidationBuilderEvent $event
+         */
+        public function onValidationBuilder(Events\ValidationBuilderEvent $event)
+        {
+            if ($event->getFormField()['type'] == 'hello.world') {
+                $event->setValidator(\MauticPlugin\HelloWorldBundle\Form\Type\HelloWorldType::class);
+            }
+        }
 }
 ```
 
@@ -119,7 +130,12 @@ The subscriber registered to listen to the `eventName` will be passed an instanc
  
 Sometimes, it is necessary to handle something after all the other submit actions have done their thing - like redirect to another page. This is done by registering a post submit callback through the subscriber that processes the action. You can either inject the `Symfony\Component\HttpFoundation\Response` at that time with `$event->setPostSubmitCallbackResponse($response);` or register another custom event to be dispatched after all submit actions have been processed using `$event->setPostSubmitCallback($key, ['eventName' => HelloWorld::ANOTHER_CUSTOM_EVENT]);`.
 
-#### Form Validations
+
+#### Form Validations - build 
+
+Validators can be extended by listening to the `\Mautic\FormBundle\FormEvents::FORM_VALIDATION_TAB_ON_BUILD` event.  Read more about [listeners and subscribers](#events). 
+
+#### Form Validations - execute
 
 To add a custom validation, use the `$event->addValidator($identifier, $parameters)` method. `$identifier` must be something unique. The `$parameters` array can contain the following elements:
 
