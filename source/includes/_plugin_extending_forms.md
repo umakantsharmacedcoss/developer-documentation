@@ -147,6 +147,6 @@ Key|Required|Type|Description
 ---|--------|----|-----------
 **eventName**|REQUIRED|string|The name of the custom event that will be dispatched to validate the form or specific field
 **fieldType**|optional|string|The key to a custom form type (for example something registered by `addFormField()`) to limit this listener to. Otherwise every field will be sent to listener.
-**formType**|optional|string|The key to a form builder type class to generate form in validator tab
+**formType**|optional|string|Form type class to generate additional fields to validator tab
   
 The listener for the form event will receive a `Mautic\FormBundle\Event\ValidationEvent` object. Obtain the field with `$event->getField();` do the logic then to fail a validation, execute `$event->failedValidation('I said so.');`.
