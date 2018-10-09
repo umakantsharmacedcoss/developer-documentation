@@ -24,7 +24,8 @@ class FormSubscriber extends CommonSubscriber
     {
         return array(
             FormEvents::FORM_ON_BUILD => array('onFormBuilder', 0),
-            FormEvents::FORM_VALIDATION_TAB_ON_BUILD => array('onValidationBuilder', 0),
+            FormEvents::ON_FORM_VALIDATE             => ['onFormValidate', 0],
+
         );
     }
 
@@ -80,6 +81,22 @@ class FormSubscriber extends CommonSubscriber
                 'template' => 'HelloWorldBundle:SubscribedEvents\FormField:customfield.html.php'
             ]
         );
+    }
+    
+    
+    /**
+     * @param Events\ValidationEvent $event
+     */
+    public function onFormValidate(Events\ValidationEvent $event)
+    {
+        $field = $event->getField();
+        if ($field->getType() === 'helloworld.customfield' && !empty($field->getValidation()['c_enable'])) {
+            if (empty($field->getValidation()['helloworld_customfield_enable_validationmsg'])) {
+                $event->failedValidation($field->getValidation()['helloworld_customfield_enable_validationmsg']);
+            } else {
+                $event->failedValidation('plugin.helloworld.formfield.customfield.invalid');
+            }
+        }
     }
 }
 ```
