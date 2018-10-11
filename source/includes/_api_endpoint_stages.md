@@ -246,7 +246,7 @@ Same as [Get Stage](#get-stage).
 <?php
 
 //...
-$response = $stageApi->addContact($contactId, $stageId);
+$response = $stageApi->addContact($stageId, $contactId);
 if (!isset($response['success'])) {
     // handle error
 }
@@ -261,7 +261,7 @@ Manually add a contact to a specific stage.
 
 #### HTTP Request
 
-`POST /stages/SEGMENT_ID/contact/add/CONTACT_ID`
+`POST /stages/STAGE_ID/contact/CONTACT_ID/add`
 
 #### Response
 
@@ -276,7 +276,7 @@ See JSON code example.
 <?php
 
 //...
-$response = $stageApi->removeContact($contactId, $stageId);
+$response = $stageApi->removeContact($stageId, $contactId);
 if (!isset($response['success'])) {
     // handle error
 }
@@ -287,11 +287,11 @@ if (!isset($response['success'])) {
 }
 ```
 
-Manually remove a contact to a specific stage.
+Manually remove a contact from a specific stage.
 
 #### HTTP Request
 
-`POST /stages/SEGMENT_ID/contact/remove/CONTACT_ID`
+`POST /stages/STAGE_ID/contact/CONTACT_ID/remove`
 
 #### Response
 

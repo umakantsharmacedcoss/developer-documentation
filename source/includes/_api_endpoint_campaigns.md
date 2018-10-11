@@ -104,7 +104,7 @@ order|int|Order in relation to the other events (used for levels)
 properties|object|Configured properties for the event
 triggerMode|string|"immediate", "interval" or "date"
 triggerDate|datetime/null|Date/time of when the event should trigger if triggerMode is "date"
-triggerInterval|int/null|Interval for when the event should trigger 
+triggerInterval|int/null|Interval for when the event should trigger
 triggerIntervalUnit|string|Interval unit for when the event should trigger. Options are i = minutes, h = hours, d = days, m = months, y = years
 children|array|Array of this event's children ,
 parent|object/null|This event's parent
@@ -120,8 +120,8 @@ $campaigns = $campaignApi->getList($searchFilter, $start, $limit, $orderBy, $ord
 ```json
 {
     "total": 1,
-    "campaigns": [
-        {
+    "campaigns": {
+        "3": {
             "id": 3,
             "name": "Welcome Campaign",
             "description": null,
@@ -174,7 +174,7 @@ $campaigns = $campaignApi->getList($searchFilter, $start, $limit, $orderBy, $ord
                 }
             }
         }
-    ]
+    }
 }
 ```
 #### HTTP Request
@@ -190,7 +190,7 @@ start|Starting row for the entities returned. Defaults to 0.
 limit|Limit number of entities to return. Defaults to the system configuration for pagination (30).
 orderBy|Column to sort by. Can use any column listed in the response.
 orderByDir|Sort direction: asc or desc.
-publishedOnly|Only return currently published entities.
+published|Only return currently published entities.
 minimal|Return only array of entities without additional lists in it.
 
 #### Response
@@ -204,9 +204,46 @@ See JSON code example.
 Same as [Get Campaign](#get-campaign).
 
 
+### List Campaign Contacts
+
+This endpoint is basically an alias for the stats endpoint with 'campaign_leads' table and campaign_id specified. Other parameters are the same as in the stats endpoint.
+
+```php
+<?php
+// ...
+
+$response = $campaignApi->getContacts($campaignId, $start, $limit, $order, $where);
+```
+```json
+{  
+  "total":"1",
+  "contacts":[  
+    {  
+      "campaign_id":"311",
+      "lead_id":"3126",
+      "date_added":"2017-01-25 15:11:10",
+      "manually_removed":"0",
+      "manually_added":"1"
+    }
+  ]
+}
+```
+#### HTTP Request
+
+`GET /campaigns/ID/contacts`
+
+**Query Parameters**
+
+#### Response
+
+`Expected Response Code: 200`
+
+See JSON code example.
+
+
 ### Create Campaign
 ```php
-<?php 
+<?php
 
 $data = array(
     'name'        => 'Campaign A',
@@ -314,7 +351,7 @@ Same as [Get Campaign](#get-campaign).
 <?php
 
 //...
-$response = $campaignApi->addContact($contactId, $campaignId);
+$response = $campaignApi->addContact($campaignId, $contactId);
 if (!isset($response['success'])) {
     // handle error
 }
@@ -329,7 +366,7 @@ Manually add a contact to a specific campaign.
 
 #### HTTP Request
 
-`POST /campaigns/CAMPAIGN_ID/contact/add/CONTACT_ID`
+`POST /campaigns/CAMPAIGN_ID/contact/CONTACT_ID/add`
 
 #### Response
 
@@ -344,7 +381,7 @@ See JSON code example.
 <?php
 
 //...
-$response = $listApi->removeContact($contactId, $listId);
+$response = $listApi->removeContact($campaignId, $contactId);
 if (!isset($response['success'])) {
     // handle error
 }
@@ -359,7 +396,7 @@ Manually remove a contact from a specific campaign.
 
 #### HTTP Request
 
-`POST /campaigns/CAMPAIGN_ID/contact/remove/CONTACT_ID`
+`POST /campaigns/CAMPAIGN_ID/contact/CONTACT_ID/remove`
 
 #### Response
 

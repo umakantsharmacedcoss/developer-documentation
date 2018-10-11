@@ -246,3 +246,28 @@ Delete a sms.
 **Properties**
 
 Same as [Get Text message](#get-sms).
+
+### Send SMS to Contact
+```php
+<?php
+
+$sms = $smsApi->sendToContact($smsId, $contactId);
+```
+Send a predefined sms to existing contact.
+
+#### HTTP Request
+
+`DELETE /smses/ID/send/contact/CONTACT_ID`
+
+#### Response
+
+`Expected Response Code: 200`
+
+**Properties**
+```json
+{
+    "success": 1,
+    "status": "Delivered"
+}
+```
+

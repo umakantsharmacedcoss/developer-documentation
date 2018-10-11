@@ -73,11 +73,11 @@ $contact = $contactApi->get($id);
                     "group": "core",
                     "value": "Jim"
                 },
-                
+
                 "...": {
                     "..." : "..."
                 }
-                
+
             },
             "social": {
                 "twitter": {
@@ -88,11 +88,11 @@ $contact = $contactApi->get($id);
                     "group": "social",
                     "value": "jimcontact"
                 },
-                
+
                 "...": {
                     "..." : "..."
                 }
-                
+
             },
             "personal": [],
             "professional": [],
@@ -100,7 +100,7 @@ $contact = $contactApi->get($id);
                 "title": "Mr",
                 "firstname": "Jim",
                 "twitter": "jimcontact",
-                
+
                 "...": "..."
             }
         }
@@ -118,7 +118,7 @@ Get an individual contact by ID.
 
 See JSON code example.
 
-**Contact Properties**
+** Contact Properties **
 
 Name|Type|Description
 ----|----|-----------
@@ -150,8 +150,8 @@ $contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $order
 ```json
 {
     "total": "1",
-    "contacts": [
-        {
+    "contacts": {
+        "47": {
             "id": 47,
             "isPublished": true,
             "dateAdded": "2015-07-21T12:27:12-05:00",
@@ -203,7 +203,7 @@ $contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $order
                         "group": "core",
                         "value": "Jim"
                     },
-                    
+
                     "...": {
                         "..." : "..."
                     }
@@ -217,7 +217,7 @@ $contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $order
                         "group": "social",
                         "value": "jimcontact"
                     },
-                    
+
                     "...": {
                         "..." : "..."
                     }
@@ -228,8 +228,8 @@ $contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $order
                     "title": "Mr",
                     "firstname": "Jim",
                     "twitter": "jimcontact",
-                    
-                    "...": "..."    
+
+                    "...": "..."
                 }
             },
             "tags": [{
@@ -254,7 +254,7 @@ $contacts = $contactApi->getList($searchFilter, $start, $limit, $orderBy, $order
               "utmTerm": "test1"
             }]
         }
-    ]
+    }
 }
 ```
 Get a list of contacts.
@@ -263,14 +263,14 @@ Get a list of contacts.
 
 `GET /contacts`
 
-**Query Parameters**
+** Query Parameters **
 
 Name|Description
 ----|-----------
 search|String or search command to filter entities by.
 start|Starting row for the entities returned. Defaults to 0.
 limit|Limit number of entities to return. Defaults to the system configuration for pagination (30).
-orderBy|Column to sort by. Can use any column listed in the response.
+orderBy|Column to sort by. Can use any column listed in the response. However, all properties in the response that are written in camelCase need to be changed a bit. Before every capital add an underscore `_` and then change the capital letters to non-capital letters. So `dateIdentified` becomes `date_identified`, `modifiedByUser` becomes `modified_by_user` etc.
 orderByDir|Sort direction: asc or desc.
 publishedOnly|Only return currently published entities.
 minimal|Return only array of entities without additional lists in it.
@@ -281,13 +281,13 @@ minimal|Return only array of entities without additional lists in it.
 
 See JSON code example.
 
-**Properties**
+** Properties **
 
 Same as [Get Contact](#get-contact).
 
 ### Create Contact
 ```php
-<?php 
+<?php
 
 $data = array(
     'firstname' => 'Jim',
@@ -304,7 +304,7 @@ Create a new contact.
 
 `POST /contacts/new`
 
-**Post Parameters**
+** Post Parameters **
 
 Name|Description
 ----|-----------
@@ -317,7 +317,7 @@ owner|ID of a Mautic user to assign this contact to
 
 `Expected Response Code: 201`
 
-**Properties**
+** Properties **
 
 Same as [Get Contact](#get-contact).
 
@@ -338,7 +338,7 @@ $contact = $contactApi->edit($id, $data, $createIfNotFound);
 ```
 Edit a new contact.  Note that this supports PUT or PATCH depending on the desired behavior.
 
-**PUT** creates a contact if the given ID does not exist and clears all the contact information, adds the information from the request.
+** PUT ** creates a contact if the given ID does not exist and clears all the contact information, adds the information from the request.
 **PATCH** fails if the contact with the given ID does not exist and updates the contact field values with the values form the request.
 
 #### HTTP Request
@@ -351,7 +351,7 @@ To edit a contact and create a new one if the contact is not found:
 
 `PUT /contacts/ID/edit`
 
-**Post Parameters**
+** Post Parameters **
 
 Name|Description
 ----|-----------
@@ -366,7 +366,7 @@ If `PUT`, the expected response code is `200` if the contact was edited or `201`
 
 If `PATCH`, the expected response code is `200`.
 
-**Properties**
+** Properties **
 
 Same as [Get Contact](#get-contact).
 
@@ -386,7 +386,7 @@ Delete a contact.
 
 `Expected Response Code: 200`
 
-**Properties**
+** Properties **
 
 Same as [Get Contact](#get-contact).
 
@@ -395,8 +395,8 @@ Same as [Get Contact](#get-contact).
 <?php
 
 $data = array(
-     'eventname' => 'Score via api',
-     'actionname' => 'Adding',
+     'eventName' => 'Score via api',
+     'actionName' => 'Adding',
  );
 $contactApi->addDnc($contactId, $channel, $reason, $channelId, $comments);
 ```
@@ -407,7 +407,7 @@ Add a contact to DNC list
 
 To add Do Not Contact entry to a contact:
 
-`PATCH /contacts/ID/dnc/add/CHANNEL`
+`POST /contacts/ID/dnc/CHANNEL/add`
 
 **Data Parameters (optional)**
 
@@ -434,7 +434,7 @@ Remove a contact from DNC list
 
 To remove Do Not Contact entry from a contact:
 
-`PATCH /contacts/ID/dnc/remove/CHANNEL`
+`POST /contacts/ID/dnc/CHANNEL/remove`
 
 **Data Parameters (optional)**
 
@@ -523,26 +523,26 @@ Same as [Get Contact](#get-contact) without the removed UTM Tags.
 <?php
 
 $data = array(
-	 'eventname' => 'Score via api',
-	 'actionname' => 'Adding',
+	 'eventName' => 'Score via api',
+	 'actionName' => 'Adding',
  );
 $contactApi->addPoints($contactId, $pointDelta, $data);
 ```
 
-Add lead points
+Add contact points
 
 #### HTTP Request
 
 To add points to a contact and return a 404 if the lead is not found:
 
-`PATCH /contacts/ID/points/plus/POINTS`
+`POST /contacts/ID/points/plus/POINTS`
 
 **Data Parameters (optional)**
 
 Name|Description
 ----|-----------
-eventname|Name of the event
-actionname|Name of the action
+eventName|Name of the event
+actionName|Name of the action
 
 #### Response
 
@@ -563,13 +563,13 @@ $data = array(
  );
 $contactApi->subtractPoints($contactId, $pointDelta, $data);
 ```
-Subtract lead points
+Subtract contact points
 
 #### HTTP Request
 
-To subtract points to a contact and return a 404 if the lead is not found:
+To subtract points from a contact and return a 404 if the contact is not found:
 
-`PATCH /contacts/ID/points/minus/POINTS`
+`POST /contacts/ID/points/minus/POINTS`
 
 **Data Parameters (optional)**
 
@@ -588,6 +588,7 @@ actionname|Name of the action
 ```
 
 ### List Available Owners
+
 ```php
 <?php
 
@@ -617,7 +618,7 @@ Get a list of owners that can be used to assign contacts to when creating/editin
 
 `Expected Response Code: 200`
 
-**Owner Properties**
+** Owner Properties **
 
 Name|Type|Description
 ----|----|-----------
@@ -657,7 +658,7 @@ $fields = $contactApi->getFieldList();
         "group": "core",
         "order": 3
     },
-    
+
     "...": {
         "..." : "..."
     }
@@ -673,7 +674,7 @@ Get a list of available contact fields including custom ones.
 
 `Expected Response Code: 200`
 
-**Field Properties**
+** Field Properties **
 
 Name|Type|Description
 ----|----|-----------
@@ -709,7 +710,7 @@ Get a list of notes for a specific contact.
 
 `GET /contacts/ID/notes`
 
-**Query Parameters**
+** Query Parameters **
 
 Name|Description
 ----|-----------
@@ -723,7 +724,7 @@ orderByDir|Sort direction: asc or desc.
 
 `Expected response code: 200`
 
-**Note Properties**
+** Note Properties **
 
 Name|Type|Description
 ----|----|-----------
@@ -760,7 +761,7 @@ Get a list of contact segments the contact is a member of.
 
 `Expected response code: 200`
 
-**List Properties**
+** List Properties **
 
 Name|Type|Description
 ----|----|-----------
@@ -780,7 +781,7 @@ See [Segements](#segments).
 ```php
 <?php
 
-$segments = $contactApi->getContactCampaigns($id);
+$campaigns = $contactApi->getContactCampaigns($id);
 ```
 ```json
 {
@@ -794,7 +795,7 @@ $segments = $contactApi->getContactCampaigns($id);
             "manuallyAdded": false,
             "list_membership": [
                 3
-            ]            
+            ]
         }
     }
 }
@@ -809,7 +810,7 @@ Get a list of campaigns the contact is a member of.
 
 `Expected response code: 200`
 
-**List Properties**
+** List Properties **
 
 Name|Type|Description
 ----|----|-----------
@@ -824,27 +825,32 @@ listMembership|array|Array of contact list IDs this contact belongs to that is a
 
 See [Campaigns](#campaigns).
 
-### Get Contact Events
+
+### Get Contact's Events
+
 ```php
 <?php
 
-$segments = $contactApi->getEvents($id, $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page);
+$events = $contactApi->getEvents($id, $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page);
 ```
-**Query Parameters**
+Warining: Deprecated. Use `getActivityForContact` instead.
+
+** Query Parameters **
 
 Name|Description
 ----|-----------
-search|String or search command to filter events by.
-includeEvents|Array of event types to include
-excludeEvents|Array of event types to exclude
+id|Contact ID
+filters[search]|String or search command to filter events by.
+filters[includeEvents][]|Array of event types to include.
+filters[excludeEvents][]|Array of event types to exclude.
 orderBy|Column to sort by. Can use any column listed in the response.
 orderByDir|Sort direction: asc or desc.
 page|What page number to load
 
 ```json
-{  
-  "events":[  
-    {  
+{
+  "events":[
+    {
       "event":"lead.identified",
       "icon":"fa-user",
       "eventType":"Contact identified",
@@ -853,18 +859,18 @@ page|What page number to load
       "featured":true
     }
   ],
-  "filters":{  
+  "filters":{
     "search":"",
-    "includeEvents":[  
+    "includeEvents":[
       "lead.identified"
     ],
     "excludeEvents":[]
   },
-  "order":[  
+  "order":[
     "",
     "ASC"
   ],
-  "types":{  
+  "types":{
     "lead.ipadded":"Accessed from IP",
     "asset.download":"Asset downloaded",
     "campaign.event":"Campaign action triggered",
@@ -893,11 +899,13 @@ Get a list of contact events the contact created.
 
 `GET /contacts/ID/events`
 
+Warining: Deprecated. Use `GET /contacts/ID/activity` instead.
+
 #### Response
 
 `Expected response code: 200`
 
-**List Properties**
+** List Properties **
 
 Name|Type|Description
 ----|----|-----------
@@ -915,3 +923,546 @@ total|int|Total number of events in the request
 page|int|Current page number
 limit|int|Limit of events per page
 maxPages|int|How many pages of events are there
+
+### Get activity events for specific contact
+
+```php
+<?php
+
+$events = $contactApi->getActivityForContact($id, $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page, $dateFrom, $dateTo);
+```
+** Query Parameters **
+
+Name|Description
+----|-----------
+id|Contact ID
+filters[search]|String or search command to filter events by.
+filters[includeEvents][]|Array of event types to include.
+filters[excludeEvents][]|Array of event types to exclude.
+filters[dateFrom]|Date from filter. Must be type of `\DateTime` for the PHP API libary and in format `Y-m-d H:i:s` for HTTP param
+filters[dateTo]|Date to filter. Must be type of `\DateTime` for the PHP API libary and in format `Y-m-d H:i:s` for HTTP param
+orderBy|Column to sort by. Can use any column listed in the response.
+orderByDir|Sort direction: asc or desc.
+page|What page number to load
+
+```json
+{
+  "events":[
+    {
+      "event":"lead.identified",
+      "icon":"fa-user",
+      "eventType":"Contact identified",
+      "eventPriority":-4,
+      "timestamp":"2016-06-09T21:39:08+00:00",
+      "featured":true
+    }
+  ],
+  "filters":{
+    "search":"",
+    "includeEvents":[
+      "lead.identified"
+    ],
+    "excludeEvents":[]
+  },
+  "order":[
+    "",
+    "ASC"
+  ],
+  "types":{
+    "asset.download": "Asset downloaded",
+    "campaign.event": "Campaign action triggered",
+    "campaign.event.scheduled": "Campaign event scheduled",
+    "lead.donotcontact": "Do not contact",
+    "email.failed": "Email failed",
+    "email.read": "Email read",
+    "email.sent": "Email sent",
+    "form.submitted": "Form submitted",
+    "lead.imported": "Imported",
+    "page.hit": "Page hit",
+    "point.gained": "Point gained",
+    "stage.changed": "Stage changed",
+    "lead.utmtagsadded": "UTM tags recorded",
+    "page.videohit": "Video view event"
+  },
+  "total":1,
+  "page":1,
+  "limit":25,
+  "maxPages":1
+}
+```
+Get a list of contact events the contact had created.
+
+#### HTTP Request
+
+`GET /contacts/ID/activity`
+
+#### Response
+
+`Expected response code: 200`
+
+** List Properties **
+
+Name|Type|Description
+----|----|-----------
+events|array|List of events
+event|string|ID of the event type
+icon|string|Icon class from FontAwesome
+eventType|string|Human name of the event
+eventPriority|string|Priority of the event
+timestamp|timestamp|Date and time when the event was created
+featured|bool|Flag whether the event is featured
+filters|array|Filters used in the query
+order|array|Ordering used in the query
+types|array|Array of available event types
+total|int|Total number of events in the request
+page|int|Current page number
+limit|int|Limit of events per page
+maxPages|int|How many pages of events are there
+
+
+### Get Activity events for all contacts
+
+```php
+<?php
+
+$events = $contactApi->getActivity($search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page, $dateFrom, $dateTo);
+```
+** Query Parameters **
+
+Name|Description
+----|-----------
+filters[search]|String or search command to filter events by.
+filters[includeEvents][]|Array of event types to include.
+filters[excludeEvents][]|Array of event types to exclude.
+filters[dateFrom]|Date from filter. Must be type of `\DateTime` for the PHP API libary and in format `Y-m-d H:i:s` for HTTP param
+filters[dateTo]|Date to filter. Must be type of `\DateTime` for the PHP API libary and in format `Y-m-d H:i:s` for HTTP param
+orderBy|Column to sort by. Can use any column listed in the response.
+orderByDir|Sort direction: asc or desc.
+page|What page number to load
+
+```json
+ {
+  "events": [
+    {
+      "event": "meeting.attended",
+      "eventId": "meeting.attended65",
+      "eventLabel": "Attended meeting - Mautic instance",
+      "eventType": "Meeting attendance",
+      "timestamp": "2017-08-03T21:03:04+00:00",
+      "contactId": "12180",
+      "details": {
+        "eventName": "mautic-instance",
+        "eventId": "371343405",
+        "eventDesc": "Mautic instance",
+        "joinUrl": ""
+      }
+    },
+    {
+      "event": "webinar.attended",
+      "eventId": "webinar.attended67",
+      "eventLabel": "Attended webinar - Mautic",
+      "eventType": "Webinar attendance",
+      "timestamp": "2017-08-03T21:03:04+00:00",
+      "contactId": "12180",
+      "details": {
+        "eventName": "mautic",
+        "eventId": "530287395",
+        "eventDesc": "Mautic",
+        "joinUrl": ""
+      }
+    },
+    {
+      "event": "webinar.registered",
+      "eventId": "webinar.registered66",
+      "eventLabel": "Registered for webinar - Mautic",
+      "eventType": "Webinar registered for",
+      "timestamp": "2017-08-03T21:03:04+00:00",
+      "contactId": "12180",
+      "details": {
+        "eventName": "mautic",
+        "eventId": "530287395",
+        "eventDesc": "Mautic",
+        "joinUrl": "https://global.gotowebinar.com/join/xxx/xxx"
+      }
+    },
+    {
+      "event": "campaign.event",
+      "eventId": "campaign.event892",
+      "eventLabel": {
+        "label": "Contact field value \/ Campaign Date",
+        "href": "\/s\/campaigns\/view\/498"
+      },
+      "eventType": "Campaign action triggered",
+      "timestamp": "2017-08-03T00:58:25+00:00",
+      "contactId": "12281",
+      "details": {
+        "log": {
+          "dateTriggered": "2017-08-03T00:58:25+00:00",
+          "metadata": [],
+          "type": "lead.field_value",
+          "isScheduled": "0",
+          "logId": "892",
+          "eventId": "1457",
+          "campaignId": "498",
+          "eventName": "Contact field value",
+          "campaignName": "Campaign Date"
+        }
+      }
+    },
+    {
+      "event": "email.sent",
+      "eventId": "email.sent796",
+      "eventLabel": {
+        "label": "2017-05-23 - Email - Leads - Nurture Flow (Monica) 1",
+        "href": "http:\/\/mautic.dev\/email\/view\/597a116ae69ca",
+        "isExternal": true
+      },
+      "eventType": "Email sent",
+      "timestamp": "2017-07-27T16:14:34+00:00",
+      "contactId": "16419",
+      "details": {
+        "stat": {
+          "id": "796",
+          "dateSent": "2017-07-27T16:14:34+00:00",
+          "subject": "How to make the case for digital",
+          "isRead": "0",
+          "isFailed": "0",
+          "viewedInBrowser": "0",
+          "retryCount": "0",
+          "idHash": "597a116ae69ca",
+          "openDetails": [],
+          "storedSubject": "How to make the case for digital",
+          "timeToRead": false,
+          "emailId": "78",
+          "emailName": "2017-05-23 - Email - Leads - Nurture Flow (Monica) 1"
+        },
+        "type": "sent"
+      }
+    },
+    {
+      "event": "email.read",
+      "eventId": "email.read769",
+      "eventLabel": {
+        "label": "Custom Email: device test",
+        "href": "http:\/\/mautic.dev\/email\/view\/5966b0cd571f4",
+        "isExternal": true
+      },
+      "eventType": "Email read",
+      "timestamp": "2017-07-12T23:30:56+00:00",
+      "contactId": "13930",
+      "details": {
+        "stat": {
+          "id": "769",
+          "dateRead": "2017-07-12T23:30:56+00:00",
+          "dateSent": "2017-07-12T23:29:17+00:00",
+          "isRead": "1",
+          "isFailed": "0",
+          "viewedInBrowser": "0",
+          "retryCount": "0",
+          "idHash": "5966b0cd571f4",
+          "openDetails": [
+            {
+              "datetime": "2017-07-12 23:30:56",
+              "useragent": "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/59.0.3071.115 Safari\/537.36",
+              "inBrowser": false
+            },
+            {
+              "datetime": "2017-07-13 02:18:51",
+              "useragent": "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/59.0.3071.115 Safari\/537.36",
+              "inBrowser": false
+            }
+          ],
+          "storedSubject": "device test",
+          "timeToRead": "PT1M39S"
+        },
+        "type": "read"
+      }
+    },
+    {
+      "event": "lead.ipadded",
+      "eventId": "lead.ipadded3263",
+      "eventLabel": "127.0.0.1",
+      "eventType": "Accessed from IP",
+      "timestamp": "2017-07-27T03:09:09+00:00",
+      "contactId": "3263",
+      "details": []
+    },
+    {
+      "event": "form.submitted",
+      "eventId": "form.submitted503",
+      "eventLabel": {
+        "label": "3586 Test",
+        "href": "\/s\/forms\/view\/143"
+      },
+      "eventType": "Form submitted",
+      "timestamp": "2017-07-27T03:09:07+00:00",
+      "contactId": "16417",
+      "details": {
+        "submission": {
+          "id": 503,
+          "ipAddress": {
+            "ip": "127.0.0.1"
+          },
+          "form": {
+            "id": 143,
+            "name": "3586 Test",
+            "alias": "3586_test"
+          },
+          "dateSubmitted": "2017-07-27T03:09:07+00:00",
+          "referer": "http:\/\/mautic.dev\/form\/143",
+          "results": {
+            "form_id": "143",
+            "email": "formtest7@test.com",
+            "f_name": ""
+          }
+        },
+        "form": {
+          "id": 143,
+          "name": "3586 Test",
+          "alias": "3586_test"
+        },
+        "page": {}
+      }
+    },
+    {
+      "event": "page.hit",
+      "eventLabel": {
+        "label": "Test",
+        "href": "\/s\/pages\/view\/8"
+      },
+      "eventType": "Page hit",
+      "timestamp": "2017-07-21T20:36:49+00:00",
+      "contactId": "16380",
+      "details": {
+        "hit": {
+          "userAgent": "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/59.0.3071.115 Safari\/537.36",
+          "dateHit": "2017-07-21T20:36:49+00:00",
+          "url": "http:\/\/mautic.dev\/uncategorized\/translation-test1",
+          "query": {
+            "pageUrl": "http:\/\/mautic.dev\/uncategorized\/translation-test1"
+          },
+          "clientInfo": "a:6:{s:4:\"type\";s:7:\"browser\";s:4:\"name\";s:6:\"Chrome\";s:10:\"short_name\";s:2:\"CH\";s:7:\"version\";s:4:\"59.0\";s:6:\"engine\";s:5:\"Blink\";s:14:\"engine_version\";s:0:\"\";}",
+          "device": "desktop",
+          "deviceOsName": "Mac",
+          "deviceBrand": "",
+          "deviceModel": "",
+          "pageId": "8"
+        }
+      }
+    },
+    {
+      "event": "point.gained",
+      "eventLabel": "2: Page Hit Test \/ 20",
+      "eventType": "Point gained",
+      "timestamp": "2017-07-20T22:38:28+00:00",
+      "contactId": "16379",
+      "details": {
+        "log": {
+          "eventName": "2: Page Hit Test",
+          "actionName": "hit",
+          "dateAdded": "2017-07-20T22:38:28+00:00",
+          "type": "url",
+          "delta": "20",
+          "id": "2"
+        }
+      }
+    },
+    {
+      "event": "lead.imported",
+      "eventId": "lead.imported6324",
+      "eventType": "Imported",
+      "eventLabel": {
+        "label": "Contact import failed from FakeNameGenerator.com_20d05d9c.csv",
+        "href": "\/s\/contacts\/import\/view\/4"
+      },
+      "timestamp": "2017-07-17T21:42:35+00:00",
+      "details": {
+        "id": "6324",
+        "bundle": "lead",
+        "object": "import",
+        "action": "failed",
+        "properties": {
+          "line": 2001,
+          "file": "FakeNameGenerator.com_20d05d9c.csv",
+          "error": "No data found"
+        },
+        "userId": "2",
+        "userName": "Bob Smith",
+        "objectId": "4",
+        "dateAdded": "2017-07-17T21:42:35+00:00"
+      }
+    },
+    {
+      "event": "asset.download",
+      "eventId": "asset.download11",
+      "eventLabel": {
+        "label": "Download Mautic",
+        "href": "\/s\/assets\/view\/1"
+      },
+      "eventType": "Asset downloaded",
+      "timestamp": "2017-04-04T01:49:13+00:00",
+      "details": {
+        "asset": {
+          "id": 1,
+          "title": "Download Mautic",
+          "alias": "download-mautic",
+          "description": "test"
+        },
+        "assetDownloadUrl": "http:\/\/mautic.dev\/asset\/1:download-mautic"
+      }
+    },
+  ],
+  "filters": {
+    "search": "",
+    "includeEvents": [],
+    "excludeEvents": []
+  },
+  "order": [
+    "timestamp",
+    "DESC"
+  ],
+  "types": {
+    "lead.ipadded": "Accessed from IP",
+    "asset.download": "Asset downloaded",
+    "meeting.attended": "Attended meeting",
+    "webinar.attended": "Attended webinar",
+    "campaign.event": "Campaign action triggered",
+    "campaign.event.scheduled": "Campaign event scheduled",
+    "lead.donotcontact": "Do not contact",
+    "email.failed": "Email failed",
+    "email.read": "Email read",
+    "email.sent": "Email sent",
+    "form.submitted": "Form submitted",
+    "lead.imported": "Imported",
+    "page.hit": "Page hit",
+    "point.gained": "Point gained",
+    "meeting.registered": "Registered for meeting",
+    "webinar.registered": "Registration to Webinar",
+    "stage.changed": "Stage changed",
+    "lead.utmtagsadded": "UTM tags recorded",
+    "page.videohit": "Video view event"
+  },
+  "total": 12,
+  "page": 1,
+  "limit": 25,
+  "maxPages": 1
+}
+```
+
+#### HTTP Request
+
+`GET /contacts/activity`
+
+#### Response
+
+`Expected response code: 200`
+
+** List Properties **
+
+Name|Type|Description
+----|----|-----------
+events|array|List of events
+event|string|ID of the event type
+icon|string|Icon class from FontAwesome
+eventType|string|Human name of the event
+eventPriority|string|Priority of the event
+contactId|ID of the contact who created the event
+timestamp|timestamp|Date and time when the event was created
+featured|bool|Flag whether the event is featured
+filters|array|Filters used in the query
+order|array|Ordering used in the query
+types|array|Array of available event types
+total|int|Total number of events in the request
+page|int|Current page number
+limit|int|Limit of events per page
+maxPages|int|How many pages of events are there
+
+### Get Contact's Companies
+```php
+<?php
+
+$companies = $contactApi->getContactCompanies($contactId);
+
+```json
+{
+  "total":1,
+  "companies":[
+    {
+      "company_id":"420",
+      "date_associated":"2016-12-27 15:03:43",
+      "is_primary":"0",
+      "companyname":"test",
+      "companyemail":"test@company.com",
+      "companycity":"Raleigh",
+      "score":"0",
+      "date_added":"2016-12-27 15:03:42"
+    }
+  ]
+}
+```
+Get a list of contact's companies the contact belongs to.
+
+#### HTTP Request
+
+`GET /contacts/ID/companies`
+
+#### Response
+
+`Expected response code: 200`
+
+**List Properties**
+
+Name|Type|Description
+----|----|-----------
+company_id|int|Company ID
+date_associated|datetime|Date and time when the contact was associated to the company
+date_added|datetime|Date and time when the company was created
+is_primary|bool|Flag whether the company association is primary (current)
+companyname|string|Name of the company
+companyemail|string|Email of the company
+companycity|string|City of the company
+score|int|Score of the company
+
+
+### Get Contact's Devices
+```php
+<?php
+
+$devices = $contactApi->getContactDevices($contactId);
+
+```json
+{
+  "total":1,
+  "devices":[
+    {
+      "id":60,
+      "lead":[],
+      "clientInfo":[],
+      "device":"desktop",
+      "deviceOsName":"Ubuntu",
+      "deviceOsShortName":"UBT",
+      "deviceOsPlatform":"x64"
+    }
+  ]
+}
+```
+Get a list of contact's devices the contact has used.
+
+#### HTTP Request
+
+`GET /contacts/ID/devices`
+
+#### Response
+
+`Expected response code: 200`
+
+**List Properties**
+
+Name|Type|Description
+----|----|-----------
+id|int|Device ID
+clientInfo|array|Array with various information about the client (browser)
+device|string|Device type; desktop, mobile..
+deviceOsName|string|Full device OS name
+deviceOsShortName|string|Short device OS name
+deviceOsPlatform|string|OS platform

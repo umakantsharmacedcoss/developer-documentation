@@ -36,10 +36,6 @@ If you want to make your theme installable via the Theme Manager, make a zip pac
    ]
  }
 
-## Theme Thumbnail
-
-The thumbnail should be a screenshot of the theme with demo content. The width x height should be 575 x 600 px. This thumbnail will be available for Mautic users for quick theme preview in the Email edit form, Landing Page edit form and the Theme Manager.
-
 ```
  The config file defines the name of the theme and the features it supports.
   
@@ -51,7 +47,23 @@ The thumbnail should be a screenshot of the theme with demo content. The width x
  author|string|Name of the theme author
  authorUrl|string|URL to the author's website
  features|array|Array of features the theme supports. Options currently are email, form, and/or page
-  
+
+## Theme Thumbnail
+
+The thumbnail should be a screenshot of the theme with demo content. The width x height should be 575 x 600 px. This thumbnail will be available for Mautic users for quick theme preview in the Email edit form, Landing Page edit form and the Theme Manager.
+
+<aside class="warning">
+Mautic will be look for thumbnail.png for default but if you want a specific image for your [email, page, form] template you can add a thumbnail_feature.png.
+</aside>
+
+Example
+
+ Feature|thumbnail name
+ ---|-----------
+ email|thumbnail_email.png
+ form|thumbnail_form.png
+ page|thumbnail_page.png
+
 ## Slots
 
 ### Slot definition
@@ -60,19 +72,43 @@ The slot can be defined by a single HTML attribute `data-slot="{slot type here}"
 
 When the theme is opened in the builder, the div with attribute `data-slot="text"` will make the text inside the div editable within the inline Froala editor.
 
-The 2 slot types currently built:
+Example:
 
-Image: Inserts a single image into the div. User can click on it and edit it with options which provides Froala editor (link, change image source, alt text, …)
+```html
+<div data-slot=”text”>
+    <a>@JaneDoe</a> has invited you to join Awesome inc!
+</div>
+```
 
-Button: Insert a HTML button. User can define URL as well as padding, size and position.
+The slot types currently built:
+
+#### Image
+
+Inserts a single image into the div. User can click on it and edit it with options which provides Froala editor (link, change image source, alt text, …)
+
+#### Button
+
+Inserts a HTML button. User can define text, URL as well as padding, size and position.
+
+#### Text
+
+Inserts a new text slot which you can edit with a HTML editor, so you can insert even media like images and videos in it.
+
+#### Separator
+
+Inserts a horizontal line to separate content.
 
 ### Slot containers
 
-As stated before, users can drag & drop the new slots into the theme. So as a theme developer, you have to define where the user can drop the slots. You can do it again with a single HTML attribute data-slot-container.
+As stated before, users can drag & drop the new slots into the theme. So as a theme developer, you have to define where the user can drop the slots. You can do it again with a single HTML attribute `data-slot-container="1"`.
+
+Example:
 
 ```html
-<div data-slot-container=””>
-<div data-slot=”text”><a>@JaneDoe</a> has invited you to join Awesome inc!</div>
+<div data-slot-container="1">
+    <div data-slot=”text”>
+        <a>@JaneDoe</a> has invited you to join Awesome inc!
+    </div>
 </div>
 ```
 
@@ -82,15 +118,42 @@ This functionality will provide you with lots of creative freedom for designing 
 
 ## Sections
 
-Sections are full width parts of the theme which can currently (Mautic 2.0.0) let user to change the background color in the section wrapper and in the section itself. Additional functionality like reordering the sections, deleting and adding new are planned.
+Sections are full width parts of the theme which can let user to change the background color in the section wrapper (full monitor width) and in the section content itself. Since Mautic 2.7.0 it's possible to move the sections up or down, delete the sections and even create a new ones with layout of 1,2 or 3 columns.
+
+### Section
+
+The section holds the content. It should be centered and should have fixed width. This fixed width should be consistent with all other sections. Section also wraps the content. The section can be any block HTML element with attribute `data-section="1"`.
+
+Example:
+
+```html
+<div data-section="1">
+    <div data-slot-container="1">
+        <div data-slot=”text”>
+            <a>@JaneDoe</a> has invited you to join Awesome inc!
+        </div>
+    </div>
+</div>
+```
+
 
 ### Section Wrapper
 
 Section wrapper must have 100% width of the browser window. You thus have to split your theme into several "rows" if you want to enable the users to change the background of each section. The section wrapper can be any block HTML element with attribute `data-section-wrapper`.
 
-### Section
+Example:
 
-The section itself should be centered and should have fixed width. This fixed width should be consistent with all other sections. Section also wraps the content. The section can be any block HTML element with attribute `data-section`.
+```html
+<div data-slot-container="1">
+    <div data-section="1">
+      <div data-slot-container="1">
+          <div data-slot=”text”>
+              <a>@JaneDoe</a> has invited you to join Awesome inc!
+          </div>
+      </div>
+    </div>
+</div>
+```
 
 ## Theme HTML Files
 
@@ -104,13 +167,13 @@ Notice that in the directory structure above, there is a base.html.twig file. Th
         <title>{subject}</title>
     </head>
     <body style="margin:0">
-        <div data-section-wrapper>
+        <div data-section-wrapper="1">
             <center>
-                <table data-section style="width: 600;" width="600" cellpadding="0" cellspacing="0">
+                <table data-section="1" style="width: 600;" width="600" cellpadding="0" cellspacing="0">
                     <tbody>
                         <tr>
                             <td>
-                                <div data-slot-container style="min-height: 30px">
+                                <div data-slot-container="1" style="min-height: 30px">
                                     <div data-slot="text">
                                         <br>
                                         <h2>Hello there!</h2>
