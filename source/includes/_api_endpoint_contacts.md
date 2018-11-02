@@ -394,11 +394,15 @@ Same as [Get Contact](#get-contact).
 ```php
 <?php
 
-$data = array(
-     'eventName' => 'Score via api',
-     'actionName' => 'Adding',
- );
 $contactApi->addDnc($contactId, $channel, $reason, $channelId, $comments);
+```
+
+```json
+{
+  "channelId": "26",
+  "reason": "Integration issued DNC",
+  "comments": "Unsubscribed via API"
+}
 ```
 
 Add a contact to DNC list
@@ -414,7 +418,7 @@ To add Do Not Contact entry to a contact:
 Name|Description
 ----|-----------
 channel|Channel of DNC. For example 'email', 'sms'... Default is email.
-reason|Int value of the reason. Use Contacts constants: Contacts::UNSUBSCRIBED, Contacts::BOUNCED, Contacts::MANUAL. Default is Manual
+reason|Int value of the reason. Use Contacts constants: Contacts::UNSUBSCRIBED (1), Contacts::BOUNCED (2), Contacts::MANUAL (3). Default is Manual
 channelId|ID of the entity which was the reason for unsubscription
 comments|A text describing details of DNC entry
 
@@ -425,7 +429,7 @@ Same as [Get Contact](#get-contact).
 ### Remove from Do Not Contact
 ```php
 <?php
-$contactApi->addDnc($contactId, $channel);
+$contactApi->removeDnc($contactId, $channel);
 ```
 
 Remove a contact from DNC list
