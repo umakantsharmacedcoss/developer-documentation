@@ -2,14 +2,14 @@
 ## API Rate limiter
 
 You can configure rate limiter cache in local.php
-By default, filesystem is used as :
+By default, filesystem is used as:
 ```php
 api_rate_limiter_cache => [ 
     'type'      => 'file_system',
 ], 
 ```
 
-You can configure memcached server :
+You can configure memcached server:
 ```php
 'api_rate_limiter_cache' => [
     'memcached' => [
@@ -24,4 +24,4 @@ You can configure memcached server :
   ],
 ```
 
-Or whatever cache you want describe in[Symfony cache documentation](https://symfony.com/doc/current/bundles/DoctrineCacheBundle/reference.html)
+Or whatever cache you want described in [Symfony cache documentation](https://symfony.com/doc/current/bundles/DoctrineCacheBundle/reference.html).
