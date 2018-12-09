@@ -847,8 +847,7 @@ id|Contact ID
 filters[search]|String or search command to filter events by.
 filters[includeEvents][]|Array of event types to include.
 filters[excludeEvents][]|Array of event types to exclude.
-orderBy|Column to sort by. Can use any column listed in the response.
-orderByDir|Sort direction: asc or desc.
+order|Array of Column and Direction [COLUMN, DIRECTION].
 page|What page number to load
 
 ```json
