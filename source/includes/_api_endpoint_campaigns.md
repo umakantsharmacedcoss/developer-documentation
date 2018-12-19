@@ -276,6 +276,31 @@ isPublished|A value of 0 or 1
 
 Same as [Get Campaign](#get-campaign).
 
+
+
+### Clone A Campaign
+```php
+<?php
+
+$camnpaignId = 12;
+
+$campaign = $campaignApi->cloneCampaign($campaignId);
+```
+Clone an existing campaign. To see more advanced example with campaign events and so on, see the unit tests.
+
+#### HTTP Request
+
+`POST /campaigns/clone/CAMPAIGN_ID`
+
+#### Response
+
+`Expected Response Code: 201`
+
+**Properties**
+
+Same as [Get Campaign](#get-campaign).
+
+
 ### Edit Campaign
 ```php
 <?php
