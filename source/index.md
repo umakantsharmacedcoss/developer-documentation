@@ -76,6 +76,7 @@ includes:
   - api_authorization_oauth1a
   - api_authorization_oauth2
   - api_authorization_basic
+  - api_rate_limiter
   - api_libraries
   - api_endpoints
   - api_endpoint_assets
