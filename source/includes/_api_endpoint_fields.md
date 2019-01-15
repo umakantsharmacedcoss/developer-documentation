@@ -235,6 +235,22 @@ properties|array|Field options if the field type needs some.
 **Properties**
 
 Same as [Get Field](#get-field).
+**Example(multiselect)**
+```php
+<?php
+
+$properties = array(
+  'list' => array(
+    array(
+      'label' => 'label 1',
+      'value' => 'value 1'
+    ),
+    array(
+      'label' => 'label 2',
+      'value' => 'value 2'
+    )
+  )
+)
 
 ### Edit Field
 ```php
